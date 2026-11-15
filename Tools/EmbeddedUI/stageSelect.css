@@ -1,0 +1,836 @@
+/**
+ * ORBITAL — Stage Progression Selector Stylesheet
+ * 
+ * Implements the horizontal stage progression menu inspired by Hill Climb Racing,
+ * adapted to ORBITAL's space-mission aesthetic and navy/pale-teal design system.
+ */
+
+.stage-progression-screen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  max-width: 100vw;
+  max-height: 100vh;
+  background-color: var(--orbital-bg-space, #0B121B);
+  color: var(--orbital-text-primary, #E8F0F4);
+  font-family: var(--orbital-font-sans, "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif);
+  overflow: hidden;
+  user-select: none;
+  box-sizing: border-box;
+}
+
+/* =========================================================================
+   1. Header Region (~60-64px)
+   ========================================================================= */
+.stage-header {
+  height: 60px;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  background: linear-gradient(180deg, rgba(18, 29, 41, 0.95) 0%, rgba(14, 23, 34, 0.85) 100%);
+  border-bottom: 1px solid var(--orbital-border-subtle, #1E2D3D);
+  z-index: 10;
+}
+
+.stage-header-brand {
+  display: flex;
+  align-items: center;
+}
+
+.stage-home-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  color: var(--orbital-text-bright, #FFFFFF);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: var(--orbital-radius-sm, 4px);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.stage-home-btn:hover {
+  background: var(--orbital-surface-hover, #223547);
+  color: var(--orbital-accent-primary, #9ADBD8);
+}
+
+.brand-glyph {
+  color: var(--orbital-accent-primary, #9ADBD8);
+  font-size: 16px;
+}
+
+.brand-divider {
+  color: var(--orbital-text-muted, #667B8F);
+  font-weight: 300;
+}
+
+.brand-sub {
+  color: var(--orbital-accent-primary, #9ADBD8);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+}
+
+.stage-header-progress {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 260px;
+}
+
+.progress-meter {
+  width: 100%;
+  height: 6px;
+  background: var(--orbital-surface-2, #1A2937);
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid var(--orbital-border-subtle, #1E2D3D);
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #36767c 0%, var(--orbital-accent-primary, #9ADBD8) 100%);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  font-family: var(--orbital-font-mono, "Consolas", monospace);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--orbital-text-secondary, #9AAEC0);
+}
+
+.stage-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.stage-currency {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  background: var(--orbital-surface-1, #121D29);
+  border: 1px solid var(--orbital-border-strong, #32485A);
+  border-radius: 16px;
+  font-family: var(--orbital-font-mono, "Consolas", monospace);
+  font-size: 12px;
+}
+
+.currency-icon {
+  color: var(--orbital-status-warning, #E4B96B);
+}
+
+.currency-val {
+  color: var(--orbital-text-bright, #FFFFFF);
+  font-weight: 700;
+}
+
+.currency-unit {
+  color: var(--orbital-text-muted, #667B8F);
+  font-size: 10px;
+}
+
+.stage-nav-link {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--orbital-text-secondary, #9AAEC0);
+  font-size: 13px;
+  padding: 6px 12px;
+  border-radius: var(--orbital-radius-sm, 4px);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.stage-nav-link:hover {
+  background: var(--orbital-surface-hover, #223547);
+  color: var(--orbital-text-bright, #FFFFFF);
+  border-color: var(--orbital-border-subtle, #1E2D3D);
+}
+
+.stage-jump-btn {
+  background: rgba(154, 219, 216, 0.12);
+  border: 1px solid var(--orbital-accent-primary, #9ADBD8);
+  color: var(--orbital-accent-primary, #9ADBD8);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.stage-jump-btn:hover {
+  background: var(--orbital-accent-primary, #9ADBD8);
+  color: var(--orbital-accent-text, #09282D);
+}
+
+/* =========================================================================
+   Notice Banner
+   ========================================================================= */
+.stage-notice-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 24px;
+  background: rgba(228, 185, 107, 0.12);
+  border-bottom: 1px solid var(--orbital-status-warning, #E4B96B);
+  color: #faeccf;
+  font-size: 12px;
+  z-index: 9;
+}
+
+.stage-notice-close {
+  background: transparent;
+  border: none;
+  color: #faeccf;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
+/* =========================================================================
+   2. Chapter Strip (~44-48px)
+   ========================================================================= */
+.stage-chapter-strip {
+  height: 46px;
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  background: var(--orbital-surface-1, #121D29);
+  border-bottom: 1px solid var(--orbital-border-subtle, #1E2D3D);
+  overflow-x: auto;
+  scrollbar-width: none;
+  z-index: 5;
+}
+
+.stage-chapter-strip::-webkit-scrollbar {
+  display: none;
+}
+
+.chapter-scroll-track {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.chapter-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: var(--orbital-surface-2, #1A2937);
+  border: 1px solid var(--orbital-border-subtle, #1E2D3D);
+  border-radius: 16px;
+  color: var(--orbital-text-secondary, #9AAEC0);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.chapter-tab:hover {
+  background: var(--orbital-surface-hover, #223547);
+  color: var(--orbital-text-bright, #FFFFFF);
+  border-color: var(--orbital-border-strong, #32485A);
+}
+
+.chapter-tab.active {
+  background: rgba(154, 219, 216, 0.15);
+  border-color: var(--orbital-accent-primary, #9ADBD8);
+  color: var(--orbital-accent-primary, #9ADBD8);
+  font-weight: 600;
+}
+
+.chapter-tab.done .chapter-count {
+  color: var(--orbital-status-success, #86CFAA);
+}
+
+.chapter-count {
+  font-family: var(--orbital-font-mono, "Consolas", monospace);
+  font-size: 11px;
+  color: var(--orbital-text-muted, #667B8F);
+}
+
+/* =========================================================================
+   3. Main Stage Strip (Cards Track)
+   ========================================================================= */
+.stage-track-viewport {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 48px;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 40%, #152230 0%, #0B121B 80%);
+}
+
+.stage-track-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 64px;
+  background: rgba(18, 29, 41, 0.85);
+  border: 1px solid var(--orbital-border-strong, #32485A);
+  color: var(--orbital-text-primary, #E8F0F4);
+  font-size: 28px;
+  line-height: 1;
+  border-radius: var(--orbital-radius-sm, 4px);
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.stage-track-arrow:hover {
+  background: var(--orbital-surface-hover, #223547);
+  color: var(--orbital-accent-primary, #9ADBD8);
+  border-color: var(--orbital-accent-primary, #9ADBD8);
+}
+
+.stage-track-arrow.prev {
+  left: 12px;
+}
+
+.stage-track-arrow.next {
+  right: 12px;
+}
+
+.stage-track {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  height: 100%;
+  padding: 24px 20px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--orbital-border-strong, #32485A) transparent;
+  outline: none;
+}
+
+.stage-track::-webkit-scrollbar {
+  height: 6px;
+}
+
+.stage-track::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.stage-track::-webkit-scrollbar-thumb {
+  background: var(--orbital-border-strong, #32485A);
+  border-radius: 3px;
+}
+
+/* Background orbital track connector */
+.stage-connector-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(154, 219, 216, 0.15) 5%, 
+    rgba(154, 219, 216, 0.25) 50%, 
+    rgba(154, 219, 216, 0.15) 95%, 
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* =========================================================================
+   Stage Card Component (~260px wide, ~290px tall)
+   ========================================================================= */
+.stage-card {
+  position: relative;
+  flex: 0 0 256px;
+  height: 284px;
+  background: var(--orbital-surface-1, #121D29);
+  border: 1px solid var(--orbital-border-subtle, #1E2D3D);
+  border-radius: var(--orbital-radius-md, 6px);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), 
+              border-color 0.2s ease, 
+              box-shadow 0.2s ease;
+  z-index: 2;
+  box-sizing: border-box;
+}
+
+.stage-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--orbital-border-strong, #32485A);
+  background: var(--orbital-surface-hover, #223547);
+}
+
+.stage-card.selected {
+  border-color: var(--orbital-accent-primary, #9ADBD8);
+  box-shadow: 0 0 16px rgba(154, 219, 216, 0.35);
+  transform: translateY(-6px);
+  background: #192a3b;
+}
+
+.stage-card.locked {
+  opacity: 0.72;
+  border-style: dashed;
+}
+
+.stage-card.recommended {
+  border-color: rgba(154, 219, 216, 0.6);
+}
+
+.stage-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.stage-num-badge {
+  font-family: var(--orbital-font-mono, "Consolas", monospace);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--orbital-text-secondary, #9AAEC0);
+}
+
+.stage-core-badge {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 2px 6px;
+  border-radius: 3px;
+  text-transform: uppercase;
+}
+
+.stage-core-badge.core {
+  background: rgba(154, 219, 216, 0.15);
+  color: var(--orbital-accent-primary, #9ADBD8);
+}
+
+.stage-core-badge.optional {
+  background: rgba(154, 174, 192, 0.12);
+  color: var(--orbital-text-muted, #667B8F);
+}
+
+.stage-card-art {
+  position: relative;
+  width: 100%;
+  height: 120px;
+  background: #080E15;
+  border: 1px solid var(--orbital-border-subtle, #1E2D3D);
+  border-radius: var(--orbital-radius-sm, 4px);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.stage-card-art img,
+.stage-card-art svg,
+.stage-card-art .mission-orbit-art {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.stage-lock-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(11, 18, 27, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lock-icon {
+  font-size: 26px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+}
+
+.stage-card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.stage-title {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--orbital-text-bright, #FFFFFF);
+  margin: 0 0 4px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.stage-dest {
+  font-size: 11px;
+  color: var(--orbital-text-muted, #667B8F);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stage-card-footer {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--orbital-border-subtle, #1E2D3D);
+}
+
+.stage-badge-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  font-family: var(--orbital-font-mono, "Consolas", monospace);
+}
+
+.stage-badge-status.completed {
+  color: var(--orbital-status-success, #86CFAA);
+}
+
+.stage-badge-status.next {
+  color: var(--orbital-accent-primary, #9ADBD8);
+}
+
+.stage-badge-status.progress {
+  color: var(--orbital-status-warning, #E4B96B);
+}
+
+.stage-badge-status.available {
+  color: var(--orbital-text-secondary, #9AAEC0);
+}
+
+.stage-badge-status.locked {
+  color: var(--orbital-text-muted, #667B8F);
+}
+
+.badge-stars {
+  margin-left: auto;
+  color: var(--orbital-status-warning, #E4B96B);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+}
+
+/* =========================================================================
+   4. Selected Stage Detail & Action Bar (~160-180px)
+   ========================================================================= */
+.stage-detail-panel {
+  height: 175px;
+  min-height: 175px;
+  display: flex;
+  align-items: stretch;
+  background: var(--orbital-surface-1, #121D29);
+  border-top: 1px solid var(--orbital-border-strong, #32485A);
+  padding: 16px 24px;
+  gap: 24px;
+  z-index: 10;
+  box-sizing: border-box;
+}
+
+.detail-col {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Col 1: Mission Summary */
+.detail-summary {
+  flex: 4;
+  min-width: 0;
+  justify-content: space-between;
+}
+
+.detail-kicker {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--orbital-font-mono, "Consolas", monospace);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--orbital-accent-primary, #9ADBD8);
+}
+
+.kicker-sep {
+  color: var(--orbital-text-muted, #667B8F);
+}
+
+.detail-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--orbital-text-bright, #FFFFFF);
+  margin: 4px 0 6px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.detail-desc {
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--orbital-text-secondary, #9AAEC0);
+  margin: 0 0 8px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.detail-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.detail-tag {
+  display: inline-block;
+  padding: 3px 8px;
+  background: var(--orbital-surface-2, #1A2937);
+  border: 1px solid var(--orbital-border-subtle, #1E2D3D);
+  border-radius: var(--orbital-radius-sm, 4px);
+  font-size: 11px;
+  color: var(--orbital-text-secondary, #9AAEC0);
+}
+
+.detail-tag strong {
+  color: var(--orbital-text-primary, #E8F0F4);
+  font-weight: 600;
+}
+
+/* Col 2: Status & Requirement Info */
+.detail-status-box {
+  flex: 3;
+  min-width: 0;
+  justify-content: center;
+}
+
+.status-callout {
+  padding: 12px 14px;
+  border-radius: var(--orbital-radius-sm, 4px);
+  border: 1px solid transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.status-callout.locked {
+  background: rgba(237, 141, 137, 0.08);
+  border-color: rgba(237, 141, 137, 0.25);
+  color: var(--orbital-status-danger, #ED8D89);
+}
+
+.status-callout.completed {
+  background: rgba(134, 207, 170, 0.08);
+  border-color: rgba(134, 207, 170, 0.25);
+  color: var(--orbital-status-success, #86CFAA);
+}
+
+.status-callout.in-progress {
+  background: rgba(228, 185, 107, 0.08);
+  border-color: rgba(228, 185, 107, 0.25);
+  color: var(--orbital-status-warning, #E4B96B);
+}
+
+.status-callout.ready {
+  background: rgba(154, 219, 216, 0.08);
+  border-color: rgba(154, 219, 216, 0.25);
+  color: var(--orbital-accent-primary, #9ADBD8);
+}
+
+.callout-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.callout-body {
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--orbital-text-primary, #E8F0F4);
+  margin: 0;
+}
+
+.btn-prereq-jump {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  margin-top: 4px;
+  background: transparent;
+  border: none;
+  color: var(--orbital-accent-primary, #9ADBD8);
+  font-size: 11px;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
+
+.btn-prereq-jump:hover {
+  color: var(--orbital-accent-hover, #B2E5E3);
+}
+
+/* Col 3: Launch / Action Buttons */
+.detail-action-box {
+  flex: 2;
+  min-width: 170px;
+  justify-content: center;
+  align-items: stretch;
+  gap: 8px;
+}
+
+.action-btn-row {
+  display: flex;
+  flex-direction: column;
+}
+
+.stage-action-btn.primary {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: var(--orbital-accent-primary, #9ADBD8);
+  border: 1px solid var(--orbital-accent-primary, #9ADBD8);
+  color: var(--orbital-accent-text, #09282D);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  border-radius: var(--orbital-radius-sm, 4px);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  width: 100%;
+}
+
+.stage-action-btn.primary:hover:not(:disabled) {
+  background: var(--orbital-accent-hover, #B2E5E3);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(154, 219, 216, 0.35);
+}
+
+.stage-action-btn.primary:active:not(:disabled) {
+  background: var(--orbital-accent-active, #7ECFCB);
+  transform: translateY(0);
+}
+
+.stage-action-btn.primary.disabled,
+.stage-action-btn.primary:disabled {
+  background: var(--orbital-surface-2, #1A2937);
+  border-color: var(--orbital-border-subtle, #1E2D3D);
+  color: var(--orbital-text-muted, #667B8F);
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.stage-action-btn.primary.replay {
+  background: rgba(154, 219, 216, 0.15);
+  border-color: var(--orbital-accent-primary, #9ADBD8);
+  color: var(--orbital-accent-primary, #9ADBD8);
+}
+
+.stage-action-btn.primary.replay:hover {
+  background: var(--orbital-accent-primary, #9ADBD8);
+  color: var(--orbital-accent-text, #09282D);
+}
+
+.stage-starter-btn {
+  background: transparent;
+  border: 1px solid var(--orbital-border-strong, #32485A);
+  color: var(--orbital-text-secondary, #9AAEC0);
+  font-size: 11px;
+  padding: 6px 12px;
+  border-radius: var(--orbital-radius-sm, 4px);
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+  transition: all 0.15s ease;
+}
+
+.stage-starter-btn:hover {
+  background: var(--orbital-surface-hover, #223547);
+  color: var(--orbital-text-bright, #FFFFFF);
+  border-color: var(--orbital-accent-primary, #9ADBD8);
+}
+
+/* =========================================================================
+   Responsive Adaptations
+   ========================================================================= */
+@media (max-width: 1100px) {
+  .stage-detail-panel {
+    height: 160px;
+    min-height: 160px;
+    padding: 12px 18px;
+    gap: 16px;
+  }
+  .stage-card {
+    flex: 0 0 230px;
+    height: 265px;
+    padding: 12px;
+  }
+  .stage-card-art {
+    height: 105px;
+  }
+  .detail-title {
+    font-size: 16px;
+  }
+  .detail-desc {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 800px) {
+  .stage-header {
+    padding: 0 16px;
+  }
+  .stage-chapter-strip {
+    padding: 0 16px;
+  }
+  .stage-track-viewport {
+    padding: 0 36px;
+  }
+  .stage-detail-panel {
+    flex-direction: column;
+    height: auto;
+    max-height: 230px;
+    overflow-y: auto;
+  }
+  .detail-col {
+    flex: none;
+    width: 100%;
+  }
+}

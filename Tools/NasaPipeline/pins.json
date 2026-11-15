@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "resources": [
+    {
+      "url": "https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_pcp/seasonal/slon/pols/pcp_avg_tbol_pols_ls030_slon01_240.xml",
+      "range": null,
+      "sha256": "c434aa4916cf70917a09ecbed4c6bd44537ff343687c6c9c056ede843a4064e8",
+      "bytes": 13093
+    },
+    {
+      "url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/float_img/ldem_75s_240m_float.lbl",
+      "range": null,
+      "sha256": "8ad7ed746f0944762d249281db50667d4e1e9a0059eb836b4003909c1a5b336a",
+      "bytes": 4877
+    },
+    {
+      "url": "https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_pcp/seasonal/slon/pols/pcp_avg_tbol_pols_ls030_slon01_240.tab",
+      "range": "bytes=107989644-108120203",
+      "sha256": "a4360dbf30b43982d3463d21810202d6f4cfb8f0f6856a3623dfbade98667565",
+      "bytes": 130560
+    },
+    {
+      "url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/float_img/ldem_75s_240m_float.img",
+      "range": "bytes=26988960-31639599",
+      "sha256": "74652056638667d32554e6f8b3dab625fe5136dcf48444b70de5b37b547af3bb",
+      "bytes": 4650640
+    },
+    {
+      "url": "https://firms.modaps.eosdis.nasa.gov/data/country/modis/2023/modis_2023_Greece.csv",
+      "range": null,
+      "sha256": "3130a6465f3eefcbd206ad39e0b0fba36c6e09714de2e9aac106499fadc57a9d",
+      "bytes": 260442
+    }
+  ]
+}

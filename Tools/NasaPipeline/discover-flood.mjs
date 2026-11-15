@@ -1,0 +1,16 @@
+import fs from 'node:fs/promises';
+import {download} from './download.mjs';
+const date=process.argv[2]||'2022-08-29';
+if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!Number.isFinite(Date.parse(date)))throw Error('Use an explicit UTC date YYYY-MM-DD');
+const collectionParams=new URLSearchParams({short_name:'MCDWD_L3_F3_NRT',version:'6.1',page_size:'2'});
+const collections=await download('https://cmr.earthdata.nasa.gov/search/collections.json?'+collectionParams);
+const collectionList=JSON.parse(collections.bytes).feed?.entry;
+if(!Array.isArray(collectionList)||!collectionList.length)throw Error('NASA flood collection/version not available; review current CMR metadata.');
+const params=new URLSearchParams({short_name:'MCDWD_L3_F3_NRT',version:'6.1',bounding_box:'66,24,70,28',temporal:date+'T00:00:00Z,'+date+'T23:59:59Z',page_size:'4'});
+const granules=await download('https://cmr.earthdata.nasa.gov/search/granules.json?'+params);
+const list=JSON.parse(granules.bytes).feed?.entry;
+if(!Array.isArray(list))throw Error('Unexpected CMR granule response schema');
+const report={schemaVersion:1,region:'Pakistan Sindh; 66–70 E, 24–28 N',date,product:'MCDWD_L3_F3_NRT',version:'6.1',collectionRecords:collectionList.map(c=>({id:c.id,title:c.title,links:c.links})),retrievals:[collections.record,granules.record],granules:list,status:list.length?'discovered, numerical ingestion not yet validated':'blocked: no historical granules returned by this archive query',requirements:'A dated numerical flood classification plus validity/cloud masks, archived granule identifier, documented class definitions and authorized download access where required. GIBS colours cannot replace scientific classes.'};
+await fs.writeFile('Verification/Sol61-2026-11-10/flood-acquisition-status.json',JSON.stringify(report,null,2)+'\n');
+console.log(report.status);
+if(!list.length)process.exitCode=2;

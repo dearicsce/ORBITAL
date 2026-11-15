@@ -1,0 +1,40 @@
+{
+  "source": "https://ssd.jpl.nasa.gov/horizons/",
+  "epochTDB": "2026-11-05 00:00:00",
+  "frame": "Sun-centred, J2000 ecliptic",
+  "use": "Educational reference only. Campaign windows use authored circular orbits.",
+  "vectors": [
+    {
+      "name": "Earth",
+      "id": "399",
+      "julianDayTDB": 2461349.5,
+      "positionKm": [
+        109885602.3601905,
+        99670599.13118644,
+        -6630.191395610571
+      ],
+      "velocityKmSec": [
+        -20.49542011226964,
+        21.96376617049793,
+        -0.0002566577270446402
+      ],
+      "query": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27399%27&CENTER=%27500%4010%27&EPHEM_TYPE=VECTORS&REF_PLANE=ECLIPTIC&REF_SYSTEM=ICRF&START_TIME=%272026-11-05%27&STOP_TIME=%272026-11-06%27&STEP_SIZE=%271+d%27&OUT_UNITS=%27KM-S%27&VEC_TABLE=2&CSV_FORMAT=YES"
+    },
+    {
+      "name": "Mars",
+      "id": "499",
+      "julianDayTDB": 2461349.5,
+      "positionKm": [
+        -51019726.92011663,
+        233561578.1023529,
+        6145594.680333033
+      ],
+      "velocityKmSec": [
+        -22.75380008600897,
+        -3.112912036076923,
+        0.4926822275009552
+      ],
+      "query": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27499%27&CENTER=%27500%4010%27&EPHEM_TYPE=VECTORS&REF_PLANE=ECLIPTIC&REF_SYSTEM=ICRF&START_TIME=%272026-11-05%27&STOP_TIME=%272026-11-06%27&STEP_SIZE=%271+d%27&OUT_UNITS=%27KM-S%27&VEC_TABLE=2&CSV_FORMAT=YES"
+    }
+  ]
+}

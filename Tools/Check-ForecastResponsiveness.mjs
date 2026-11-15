@@ -1,0 +1,36 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {enrichCampaign,starterDesign} from '../Assets/StreamingAssets/WebUI/js/campaign.js';
+import {designForecast,designForecastAsync,createForecastService} from '../Assets/StreamingAssets/WebUI/js/unity/consequences.js';
+import {opportunityTimeline} from '../Assets/StreamingAssets/WebUI/js/unity/operationsPreview.js';
+import {designImpact} from '../Assets/StreamingAssets/WebUI/js/unity/journeyBar.js';
+import {createOperations,operationEnvironment} from '../Assets/StreamingAssets/WebUI/js/engine/operations.js';
+import {evaluateDesign} from '../Assets/StreamingAssets/WebUI/js/engine.js';
+const record=process.argv[2]||'Verification/UsabilityRelease-2026-11-11';
+const data=enrichCampaign(JSON.parse(fs.readFileSync('Assets/StreamingAssets/WebUI/data/world1.json')));
+const before=JSON.parse(fs.readFileSync(record+'/forecast-before.json'));
+const rows=[];
+for(const mission of data.missions){
+ const design=starterDesign(mission,data),original=structuredClone(design),sync=designForecast(design,data);
+ const asyncResult=await designForecastAsync(design,data,{budgetMs:1});
+ assert.deepEqual(asyncResult,sync,'Yielding must preserve every forecast output');
+ assert.deepEqual(design,original,'Forecast must not mutate a design or flight input');
+ const historical=before.samples.find(s=>s.id===mission.id&&!s.error);
+ if(historical)assert.deepEqual(sync.values,historical.values,'Preserved outputs must exactly equal baseline host numbers');
+ rows.push({id:mission.id,asyncMatchesSync:true,exactBaselineMatch:Boolean(historical),scope:sync.scope});
+}
+const design=starterDesign(data.missions.find(m=>m.id==='m1'),data),service=createForecastService(data);
+const expected=designForecast(design,data),first=await service.forecast(design);first.values.massKg=-10;
+assert.deepEqual(await service.forecast(design),expected,'Caller mutations cannot poison the cache');
+const controller=new AbortController();let ticked=false;
+const forecast=designForecastAsync(design,data,{signal:controller.signal,budgetMs:0});
+setTimeout(()=>{ticked=true;controller.abort();},0);
+await assert.rejects(forecast,{name:'AbortError'});assert.ok(ticked,'Cancellation runs between bounded batches');
+const state=createOperations(design,data,evaluateDesign(design,data));
+const old=structuredClone(state),timeline=opportunityTimeline(state),env=operationEnvironment(state);
+assert.deepEqual(state,old,'Timeline must not advance or alter active flight');
+assert.equal(timeline[0].contact,env.contactFraction??Number(env.contact));
+assert.equal(timeline[0].minutes,state.tick*4.5);
+assert.ok(designImpact(design,{...design,batteryIds:['battery_l']}).affected.includes('power reserve'));
+fs.writeFileSync(record+'/forecast-models.json',JSON.stringify({passed:true,missions:rows,cancellation:true,cacheIsolation:true,timelineImmutable:true},null,2));
+console.log('PASS: '+rows.length+' exact async/sync forecast pairs, baseline parity, cancellation, cache and timeline isolation');

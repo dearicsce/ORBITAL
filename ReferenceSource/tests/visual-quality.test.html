@@ -1,0 +1,32 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>Visual quality regression checks</title>
+<script type="importmap">{"imports":{"three":"../vendor/three/three.module.js","three/addons/":"../vendor/three/addons/"}}</script>
+<h1>Visual quality regression checks</h1><p id="results">Running…</p><div id="view" style="width:800px;height:500px"></div>
+<script type="module">
+import * as THREE from 'three';
+import {createCatchTower} from '../js/three/catchTower.js';
+import {applyHDMaterials} from '../js/three/hdMaterials.js';
+import {getModel} from '../js/three/models.js';
+import {createScene,disposeObject} from '../js/three/sceneKit.js';
+let checks=0;const check=(ok,message)=>{if(!ok)throw new Error(message);checks++;};
+try{
+  const tower=createCatchTower(),left=tower.getObjectByName('arm_left_pivot'),right=tower.getObjectByName('arm_right_pivot');
+  check(Boolean(left&&right),'Separate arm pivots');
+  for(const opening of [0,.5,1]){
+    tower.userData.setArmOpening(opening);tower.updateMatrixWorld(true);
+    const a=left.getObjectByName('catch_contact_rail').getWorldPosition(new THREE.Vector3()),b=right.getObjectByName('catch_contact_rail').getWorldPosition(new THREE.Vector3());
+    check(Math.abs(a.x+b.x)<1e-6&&Math.abs(a.y-b.y)<1e-6&&Math.abs(a.z-b.z)<1e-6,'Mirrored arm articulation');
+    check(a.x<0&&b.x>0,'Arms remain on either side of catch corridor');
+  }
+  const scene=createScene(document.querySelector('#view'));
+  check(Boolean(scene.renderer),'WebGL available');
+  const bounds=new THREE.Box3().setFromObject(tower),center=bounds.getCenter(new THREE.Vector3());tower.position.sub(center);tower.scale.setScalar(.05);scene.scene.add(tower);
+  scene.renderer.compile(scene.scene,scene.camera);check(true,'Catch geometry compiles');
+  const panel=await getModel('solar_wing_m');
+  let materials=[];panel.traverse(o=>{if(o.isMesh)materials.push(...(Array.isArray(o.material)?o.material:[o.material]));});
+  check(materials.every(m=>m.userData.originalSolar||m.customProgramCacheKey().includes('orbital-hd')),'Builder solar wings receive HD finish');
+  scene.scene.add(panel);scene.renderer.compile(scene.scene,scene.camera);
+  const probe=new THREE.Mesh(new THREE.BoxGeometry(1,1,1),new THREE.MeshStandardMaterial({color:0xbbaa66}));applyHDMaterials(probe);scene.scene.add(probe);scene.renderer.compile(scene.scene,scene.camera);
+  check(scene.renderer.info.programs.every(p=>p.diagnostics?.runnable!==false),'HD shaders compile');
+  document.querySelector('#results').textContent=`PASS: ${checks} visual assertions`;
+}catch(error){document.querySelector('#results').textContent='FAIL: '+error.message;console.error(error);}
+</script></html>

@@ -1,0 +1,187 @@
+/* A live console owns the window; only its evidence drawers scroll. */
+.solar-system-viewport { position: relative; height: min(55vh, 500px); min-height: 300px; overflow: hidden; background: #030811; }
+.solar-system-viewport canvas { display: block; width: 100%; height: 100%; }
+.solar-body-label {
+  position: absolute; transform: translate(-50%,10px); color: #d1e3e9;
+  background: #0b1823d0; border: 1px solid #233e50; border-radius: 3px;
+  font: 11px system-ui; padding: 3px 7px; cursor: pointer; white-space: nowrap;
+  pointer-events: auto; user-select: none; transition: background .15s, color .15s, border-color .15s;
+}
+.solar-body-label:hover { color: #8ce6d3; border-color: #5bb3a2; background: #132b3cd0; }
+.solar-body-label.solar-craft-label { color: #8ef8e0; border-color: #2dd4bf; background: #09242fd0; font-weight: 600; }
+.solar-body-label.solar-earth-label { border-color: #38bdf8; color: #bae6fd; font-weight: 600; }
+
+#app > .mission-control {
+  height: 100dvh;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
+  grid-template-columns: 100%;
+  overflow: hidden;
+  background: #070e17;
+  font-family: var(--font-body), system-ui;
+  position: relative;
+  box-sizing: border-box;
+}
+#app .mission-control .control-header {
+  grid-row: 1;
+  padding: 14px 24px;
+  min-height: 70px;
+  box-sizing: border-box;
+  background: #141b23;
+  gap: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 5;
+}
+#app .mission-control .control-header h1 { font-size: 25px; margin: 0; }
+#app .mission-control .control-header .orbital-eyebrow { margin: 0 0 4px; }
+#app .mission-control .control-clock strong { font-size: 23px; margin: 2px 0; }
+
+#app .mission-control .control-phase-badge {
+  display: inline-flex;
+  flex-direction: column;
+  padding: 4px 10px;
+  border-radius: 3px;
+  background: #19232d;
+  border: 1px solid #2f3d4d;
+  font-size: 11px;
+  line-height: 1.35;
+  box-sizing: border-box;
+}
+#app .mission-control .control-phase-badge strong {
+  color: #8ef8e0;
+}
+#app .mission-control .control-phase-badge small {
+  color: #8fa3b5;
+  font-size: 10px;
+}
+
+#app .mission-control .control-layout {
+  grid-row: 2;
+  min-height: 0;
+  height: 100%;
+  padding: 12px 20px;
+  gap: 12px;
+  grid-template-columns: minmax(250px, 25%) minmax(0, 1fr) minmax(216px, 21%);
+  overflow: hidden;
+  display: grid;
+  background: #070e17;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 2;
+}
+#app .mission-control .control-panel {
+  min-width: 0;
+  min-height: 0;
+  max-height: 100%;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  padding: 16px;
+  border: 1px solid #303a46;
+  border-radius: 4px;
+  background: #171e27;
+  backdrop-filter: none;
+  box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: #546577 transparent;
+}
+#app .mission-control .control-panel h2 { font-size: 16px; line-height: 1.45; margin: 0 0 14px; }
+#app .mission-control .control-panel :is(select, input, table) { max-width: 100%; box-sizing: border-box; }
+#app .mission-control .control-panel select {
+  display: block; width: 100%; min-width: 0; margin: 6px 0;
+  color: #edf1ee; background: #222d39; border: 1px solid #495b6c;
+  padding: 8px 6px; font: inherit;
+}
+#app .mission-control .control-panel :is(p,label,summary) { font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
+#app .mission-control .control-objective { margin-bottom: 12px; }
+#app .mission-control .control-objective strong { font-size: 19px; }
+#app .mission-control .control-centre {
+  position: relative; inset: auto; min-width: 0; min-height: 0;
+  height: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+  padding: 10px; overflow: hidden; border: 1px solid #26323e; border-radius: 4px;
+  background: #030912; isolation: isolate; box-sizing: border-box; pointer-events: auto;
+}
+#app .mission-control .mission-control-space { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; }
+#app .mission-control .control-vignette { display: none; }
+#app .mission-control .control-centre .flight-camera {
+  position: absolute; top: 10px; left: 10px; right: 10px;
+  margin: 0; width: auto; padding: 8px; border-radius: 3px;
+  background: #101b25e8; font-size: 11px; gap: 8px;
+  display: flex; align-items: center; flex-wrap: wrap; z-index: 10;
+  box-sizing: border-box;
+}
+#app .mission-control .flight-camera small { display: inline-block; color: #8ba2b5; margin-left: auto; }
+#app .mission-control .flight-camera .orbital-btn-focus-craft {
+  border: 1px solid #385163; background: #192a38; color: #aaece2;
+  font: inherit; font-size: 11px; padding: 4px 8px; border-radius: 3px;
+  cursor: pointer; transition: background .15s, border-color .15s;
+}
+#app .mission-control .flight-camera .orbital-btn-focus-craft:hover {
+  background: #254055; border-color: #5fb8aa; color: #fff;
+}
+#app .mission-control .control-orbit-label {
+  background: #09111bd9; padding: 9px 12px; border-radius: 3px;
+  max-width: 100%; box-sizing: border-box;
+}
+#app .mission-control .control-orbit-label strong { font-size: 13px; margin: 5px 0; letter-spacing: .08em; }
+#app .mission-control .control-orbit-label p { margin: 3px 0 0; }
+#app .mission-control .control-metric strong { font-size: 18px; }
+#app .mission-control .control-metric-grid { gap: 16px 8px; }
+#app .mission-control .control-chart { margin-top: 14px; }
+#app .mission-control .control-chart svg { height: 42px; }
+
+#app .mission-control .ground-overlay {
+  grid-row: 3;
+  margin: 0 20px 8px;
+  max-height: 38vh;
+  overflow: auto;
+  background: #18222d;
+  box-sizing: border-box;
+}
+#app .mission-control .control-bottom {
+  grid-row: 4;
+  padding: 0 20px 12px;
+  min-width: 0;
+  background: #101820;
+  box-sizing: border-box;
+  z-index: 5;
+}
+#app .mission-control .control-progress { padding: 8px 0; }
+#app .mission-control .control-commandbar { gap: 8px; padding: 6px; flex-wrap: wrap; background: #1a232e; }
+#app .mission-control .control-commands { flex: 1; }
+#app .mission-control .control-commands button { padding: 10px 12px; min-height: 40px; gap: 6px; }
+#app .mission-control .control-commandbar > .orbital-button { min-height: 40px; padding: 8px 12px; font-size: 11px; }
+#app .mission-control .control-command-help { margin: 6px 0 0; font-size: 11px; }
+#app .mission-control .control-log { font-size: 10px; min-height: 0; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+#app .mission-control #incident-host { position: absolute; inset: 0; pointer-events: none; z-index: 20; }
+#app .mission-control #incident-host > * { pointer-events: auto; }
+#app .mission-control :is(.campaign-live-evidence, .ops-preview details) { border-top: 1px solid #364250; margin-top: 12px; padding-top: 10px; }
+#app .mission-control .campaign-panel { padding: 8px 0; border: 0; background: transparent; }
+#app .mission-control .campaign-table { overflow: auto; }
+#app .mission-control .campaign-metrics { grid-template-columns: 1fr; }
+
+@media (max-width: 1050px) {
+  #app .mission-control .control-layout { grid-template-columns: 240px minmax(0,1fr) 200px; padding-inline: 12px; gap: 8px; }
+  #app .mission-control .control-panel { padding: 12px; }
+  #app .mission-control .control-commands button small { display: none; }
+}
+@media (max-width: 800px) {
+  #app .mission-control .control-layout { grid-template-columns: minmax(0,1fr) minmax(0,1fr); grid-template-rows: minmax(150px, 1fr) minmax(0, 1fr); }
+  #app .mission-control .control-centre { grid-column: 1 / -1; grid-row: 1; }
+  #app .mission-control .control-telemetry { grid-column: 2; grid-row: 2; }
+  #app .mission-control .control-objectives { grid-column: 1; grid-row: 2; }
+  #app .mission-control .control-orbit-label p { display: none; }
+  #app .mission-control .control-commandbar { gap: 4px; }
+  #app .mission-control .control-commands { width: auto; }
+  #app .mission-control .control-commands button { padding: 8px; }
+}
+@media (max-height: 650px) {
+  #app .mission-control .control-header { padding-block: 8px; min-height: 56px; }
+  #app .mission-control .control-header h1 { font-size: 21px; }
+  #app .mission-control .control-command-help { display: none; }
+  #app .mission-control .control-bottom { padding-bottom: 6px; }
+}

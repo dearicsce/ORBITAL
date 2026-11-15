@@ -1,0 +1,15 @@
+{
+  "method": "Browser acceptance on fresh local server",
+  "passed": 18,
+  "failed": 0,
+  "coverage": [
+    "Design A 4.5 Silver",
+    "Pass unlocks",
+    "Retry preserves design",
+    "Launch failure score cap and no unlocks",
+    "Training completion without rewards",
+    "Training returns to menu",
+    "Unfinished training route guard",
+    "Three difficulty budget and finite-value checks"
+  ]
+}

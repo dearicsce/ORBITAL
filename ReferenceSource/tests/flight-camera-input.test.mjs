@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import * as THREE from 'three';
+import {flightCameraInput} from '../js/three/flightCameraInput.js';
+const listeners=new Map(),element={style:{},addEventListener:(name,fn)=>listeners.set(name,fn),removeEventListener:name=>listeners.delete(name),setPointerCapture(){}};
+const camera=flightCameraInput(element),up=new THREE.Vector3(0,1,0),base=new THREE.Vector3(0,2,10);
+assert.ok(camera.offset(base,up).distanceTo(base)<1e-10);
+listeners.get('pointerdown')({button:0,pointerId:1,clientX:100,clientY:100});
+listeners.get('pointermove')({pointerId:1,clientX:200,clientY:150});
+const rotated=camera.offset(base,up);assert.ok(rotated.distanceTo(base)>3);assert.ok(Math.abs(rotated.length()-base.length())<1e-10);
+listeners.get('wheel')({deltaY:100000,preventDefault(){}});assert.ok(Math.abs(camera.offset(base,up).length()/base.length()-4)<1e-10);
+camera.reset();assert.ok(camera.offset(base,up).distanceTo(base)<1e-10);
+camera.destroy();assert.equal(listeners.size,0);
+console.log('PASS: orbit drag, bounded zoom, reset, and listener cleanup');

@@ -1,0 +1,78 @@
+{
+  "design": {
+    "missionId": "m3",
+    "difficulty": "normal",
+    "launcherId": "albatross",
+    "orbitId": "llo",
+    "busId": "bus_micro",
+    "panelIds": [
+      "panel_m"
+    ],
+    "batteryIds": [
+      "battery_m"
+    ],
+    "commsId": "comms_x_band",
+    "computerId": "computer_rad_hard",
+    "pointingId": "pointing_star_tracker",
+    "fuelIds": [
+      "fuel_l"
+    ],
+    "instrumentIds": [
+      "spectrometer"
+    ]
+  },
+  "payloadKg": 178,
+  "vehicle": {
+    "area": 11,
+    "parts": [
+      {
+        "id": "core",
+        "dryKg": 13000,
+        "propellantKg": 139000,
+        "thrustN": 2600000,
+        "isp": 310
+      },
+      {
+        "id": "upper",
+        "dryKg": 1600,
+        "propellantKg": 28600,
+        "thrustN": 200000,
+        "isp": 445
+      },
+      {
+        "id": "fairing-left",
+        "dryKg": 290,
+        "propellantKg": 0,
+        "thrustN": 0,
+        "isp": 1
+      },
+      {
+        "id": "fairing-right",
+        "dryKg": 290,
+        "propellantKg": 0,
+        "thrustN": 0,
+        "isp": 1
+      },
+      {
+        "id": "payload",
+        "dryKg": 178,
+        "propellantKg": 0,
+        "thrustN": 0,
+        "isp": 1
+      }
+    ]
+  },
+  "target": {
+    "body": "earth",
+    "semiMajorAxisM": 6871008.4,
+    "eccentricity": 0,
+    "inclinationRad": 0,
+    "raanRad": 0,
+    "argumentRad": 0,
+    "meanAnomalyRad": -0.25,
+    "parkingOnly": true
+  },
+  "seed": 6103,
+  "provenance": "Existing m3 campaign starter preset, resolved without rocketId/blueprint. Screenshot personal design/seed unavailable; do not claim extracted personal save.",
+  "model": "albatross / Ares I concept preset"
+}

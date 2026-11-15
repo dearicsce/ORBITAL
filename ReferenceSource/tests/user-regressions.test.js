@@ -1,0 +1,32 @@
+import {completedFlight} from './flight-fixture.js';
+import * as THREE from 'three';
+import {loadData} from '../js/data.js';
+import {resetState,getState,setDesign,markTutorialDone,completeMission} from '../js/state.js';
+import {checkLaunchGate} from '../js/engine.js';
+import {initRouter,showScreen} from '../js/ui/router.js';
+import {clearSimulationResults} from '../js/ui/simulation.js';
+import {clearLines} from '../js/ui/speech.js';
+import {createAssembly} from '../js/three/spacecraftParts.js';
+const saved=localStorage.getItem('space_mission_game_state_v1'),flight=sessionStorage.getItem('space_mission_flight_v1');
+const data=await loadData(),app=document.querySelector('#app'),out=document.querySelector('#results');out.textContent='';let passed=0,failed=0;
+const check=(name,ok)=>{ok?passed++:failed++;out.textContent+=(ok?'PASS ':'FAIL ')+name+'\n';};
+const A={missionId:'m1',difficulty:'normal',busId:'bus_micro',panelIds:['panel_m'],batteryIds:['battery_s'],commsId:'comms_x_band',computerId:'computer_basic',pointingId:'pointing_reaction_wheels',fuelIds:['fuel_s'],instrumentIds:['optical_camera'],launcherId:'kestrel',orbitId:'sso'};
+try{
+ resetState();markTutorialDone();completeMission('m1', {total:4.5,medal:'Silver'}, 3, completedFlight);setDesign({...A,missionId:'m2',launcherId:'condor',orbitId:'geo',pointingId:'pointing_magnetorquers',instrumentIds:['magnetometer']});initRouter(app,data);showScreen('advisory');
+ check('GEO magnetorquer warning reproduced',!!app.querySelector('[data-fix="pointing"]'));
+ app.querySelector('[data-fix="pointing"]').click();check('Fix it opens Pointing category',app.querySelector('[data-tab="Pointing"]').classList.contains('active'));
+ app.querySelector('[data-part-id="pointing_reaction_wheels"]').click();check('Pointing replacement reaches saved design',getState().currentDesign.pointingId==='pointing_reaction_wheels');
+ check('Builder names the installed pointing system',app.querySelector('#edit-pointing').textContent.includes('Reaction wheels'));
+ showScreen('advisory');check('Old magnetorquer warning disappears',!app.querySelector('[data-fix="pointing"]'));
+ const group=new THREE.Group(),assembly=createAssembly(group);await assembly.update(A,data);
+ check('Computer and pointing do not create exterior cubes',![...assembly.instances.values()].some(m=>['computerId','pointingId'].includes(m.userData.field)));
+ check('Actual bus mesh remains visible',!new THREE.Box3().setFromObject(assembly.instances.get('bus')).isEmpty());assembly.destroy();
+ clearSimulationResults();setDesign(A);showScreen('simulation');const original=app.querySelector('canvas');let lost=0;original.addEventListener('webglcontextlost',()=>lost++);
+ out.textContent+='Running live launch-to-operations handoff…\n';
+ await new Promise((resolve,reject)=>{const started=performance.now();const timer=setInterval(()=>{if(app.querySelector('[data-screen="operations"]')){clearInterval(timer);resolve();}else if(performance.now()-started>90000){clearInterval(timer);reject(Error('Live handoff timed out'));}},100);});
+ check('Operations keeps the same WebGL canvas',app.querySelector('canvas')===original);
+ check('Handoff does not destroy the WebGL context',lost===0);
+ check('Only one canvas after handoff',app.querySelectorAll('canvas').length===1);
+ app.querySelector('#skip').click();app.querySelector('#report').click();check('Report remains reachable after live handoff',!!app.querySelector('[data-screen="report"]'));
+ showScreen('menu');
+}catch(error){check(error.stack,false);}finally{clearLines();clearSimulationResults();if(saved===null)localStorage.removeItem('space_mission_game_state_v1');else localStorage.setItem('space_mission_game_state_v1',saved);if(flight===null)sessionStorage.removeItem('space_mission_flight_v1');else sessionStorage.setItem('space_mission_flight_v1',flight);out.textContent+='\n'+passed+' passed, '+failed+' failed';}

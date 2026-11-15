@@ -1,0 +1,515 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>Scene repair acceptance</title>
+<script type="importmap">{"imports":{"three":"../vendor/three/three.module.js","three/addons/":"../vendor/three/addons/"}}</script>
+<style>
+  body{background:#09141d;color:#d9e5ec;font:14px system-ui;margin:16px;line-height:1.4}
+  header{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:12px}
+  button,select,input{padding:6px 10px;background:#182836;color:#e2ecf2;border:1px solid #33485c;border-radius:4px;cursor:pointer}
+  button:hover{background:#23394d}
+  #view-container{position:relative;width:100%;height:min(620px,65vh);min-height:300px;background:#030913;border-radius:6px;overflow:hidden;border:1px solid #1a2c3d}
+  #view{width:100%;height:100%}
+  #controls-bar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:10px}
+  .bookmark-group{display:flex;flex-wrap:wrap;gap:4px}
+  .tag{padding:2px 6px;border-radius:3px;font-size:12px;background:#20384f;color:#8dc4eb}
+  #telemetry-overlay{position:absolute;bottom:12px;left:12px;background:rgba(7,16,26,0.85);padding:8px 12px;border-radius:4px;font-family:monospace;font-size:12px;pointer-events:none}
+</style>
+<h1>Scene repair acceptance</h1>
+<p id="result">Running checks…</p>
+
+<header>
+  <label>Bookmark:
+    <select id="bookmark-select" aria-label="Camera and scene bookmarks">
+      <option value="">Select bookmark…</option>
+      <option value="builder_close_up">Builder close-up (Spacecraft)</option>
+      <option value="pad_closed_vehicle">Launchpad & closed vehicle</option>
+      <option value="ascent">Ascent flight</option>
+      <option value="fairing_release">Fairing release</option>
+      <option value="payload_separation">Payload separation</option>
+      <option value="deployed_earth">Deployed Earth operations</option>
+      <option value="lunar_operations">Lunar operations (LRO Moon)</option>
+      <option value="narrow_viewport">Narrow viewport (390×844)</option>
+    </select>
+  </label>
+
+  <label>Bus:
+    <select id="bus-preview" aria-label="Spacecraft bus preview">
+      <option value="bus_micro">bus_micro</option>
+      <option value="bus_small">bus_small</option>
+      <option value="bus_medium">bus_medium</option>
+      <option value="bus_large">bus_large</option>
+    </select>
+  </label>
+
+  <label>Launcher:
+    <select id="launcher-select" aria-label="Launcher selection">
+      <option value="kestrel">Kestrel (Falcon 9)</option>
+      <option value="condor">Condor (Atlas V)</option>
+      <option value="roc">Roc (Heavy)</option>
+      <option value="albatross">Albatross (Small)</option>
+    </select>
+  </label>
+
+  <label>Quality:
+    <select id="quality-toggle" aria-label="Renderer quality preset">
+      <option value="high">High Quality (PBR + Shadows)</option>
+      <option value="standard">Standard Quality</option>
+    </select>
+  </label>
+
+  <label>Sun Angle:
+    <input id="sun-slider" type="range" min="0" max="360" value="0" style="width:120px" title="Sun direction in XY plane">
+    <span id="sun-angle-val">0° (+X)</span>
+  </label>
+
+  <button id="reset-btn">Reset</button>
+</header>
+
+<div id="controls-bar">
+  <button id="play-pause">Play</button>
+  <label>Deployment scrub:
+    <input id="progress" type="range" min="0" max="1" step="0.001" value="0" style="width:300px">
+  </label>
+  <span id="scrub-label">p = 0.000</span>
+  <span class="tag" id="mode-tag">Deployment harness ready</span>
+</div>
+
+<div id="view-container">
+  <div id="view"></div>
+  <div id="telemetry-overlay">Camera: [0, 0, 0] | Target: [0, 0, 0] | Quality: High</div>
+</div>
+
+<script type="module">
+import * as THREE from 'three';
+import {createScene,disposeObject,addEarth} from '../js/three/sceneKit.js';
+import {createLaunchVehicle} from '../js/three/launchVehicle.js';
+import {createLaunchSite} from '../js/three/launchSite.js';
+import {getModel} from '../js/three/models.js';
+import {createAssembly} from '../js/three/spacecraftParts.js';
+import {createLaunchSpace,INSERTION_ANGLE} from '../js/three/launchSpace.js';
+import {sampleAscent,ASCENT_SECONDS} from '../js/three/launchTimeline.js';
+import {segmentBlocked} from '../js/engine/orbitalGeometry.js';
+import {orbitPoint,operationCamera,operationPoint} from '../js/three/orbitPresentation.js';
+import {addWorldBody} from '../js/three/worldBody.js';
+import {loadData} from '../js/data.js';
+import {starterDesign} from '../js/campaign.js';
+import {loadOrbiterTexture} from '../js/three/orbiterAssets.js';
+
+let assertions=0;const check=(ok,message)=>{if(!ok)throw new Error(message);assertions++;};
+const container=document.querySelector('#view');
+const kit=createScene(container,{position:[20,12,30],target:[0,8,0]});
+const root=new THREE.Group();kit.scene.add(root);
+let cinematic=null,previewAssembly=null,currentStage=null,currentPayload=null,currentHorizon=null;
+let playing=false,animFrame=null;
+
+// Align directional sun with engine +X
+if(kit.sun){
+  kit.sun.position.set(40,0,0);
+  kit.sun.target.position.set(0,0,0);
+  if(!kit.sun.target.parent)kit.scene.add(kit.sun.target);
+}
+
+function updateTelemetry(msg){
+  const el=document.querySelector('#telemetry-overlay');
+  if(!el)return;
+  const p=kit.camera.position, t=kit.controls?.target||new THREE.Vector3();
+  el.textContent=`Pos: [${p.x.toFixed(1)}, ${p.y.toFixed(1)}, ${p.z.toFixed(1)}] | Target: [${t.x.toFixed(1)}, ${t.y.toFixed(1)}, ${t.z.toFixed(1)}] | ${msg||''}`;
+}
+
+function clear(){
+  playing=false;
+  if(animFrame)cancelAnimationFrame(animFrame);
+  document.querySelector('#play-pause').textContent='Play';
+  previewAssembly?.destroy();previewAssembly=null;
+  cinematic?.destroy();cinematic=null;
+  if(kit.launchTrajectory){kit.launchTrajectory.destroy();kit.launchTrajectory=null;}
+  if(typeof launchTrajectory!=='undefined'&&launchTrajectory){launchTrajectory.destroy();launchTrajectory=null;}
+  currentStage=null;currentPayload=null;currentHorizon=null;
+  disposeObject(root);root.clear();
+  kit.controls.enabled=true;
+  kit.camera.position.set(20,12,30);
+  kit.controls.target.set(0,8,0);
+  kit.controls.update();
+  const c=document.querySelector('#view-container');
+  if(c.style.width!=='100%'||c.style.height!=='620px'){
+    c.style.width='100%';c.style.height='min(620px,65vh)';
+    kit.renderer.setSize(c.clientWidth,c.clientHeight);
+    kit.camera.aspect=c.clientWidth/c.clientHeight;
+    kit.camera.updateProjectionMatrix();
+  }
+}
+
+try{
+ const data=await loadData('../'),design=starterDesign(data.missions.find(m=>m.id==='m1'),data);
+
+ // 1. Launcher stack tests
+ for(const id of ['kestrel','condor','roc','albatross']){
+   const vehicle=createLaunchVehicle(id);
+   for(const name of ['stage_lower','stage_upper','fairing_left','fairing_right','payload_adapter','upper_engine']){
+     check(Boolean(vehicle.getObjectByName(name)),id+' complete named stack: '+name);
+   }
+   const a=new THREE.Box3().setFromObject(vehicle.getObjectByName('stage_lower')),b=new THREE.Box3().setFromObject(vehicle.getObjectByName('stage_upper'));
+   check(a.max.y>=b.min.y,'Stages overlap inside interstage');
+   disposeObject(vehicle);
+ }
+
+ // 2. Solar wing geometry and material
+ const wing=await getModel('solar_wing_m');
+ check(new THREE.Box3().setFromObject(wing).min.x<=0,'Wing starts at mounting origin');
+ const cell=wing.getObjectByName('photovoltaic_front');
+ check(cell.material.map.image.width>=1024&&cell.material.map.image.height>=512,'Solar cell texture retains sufficient detail at the shared 1K budget');
+ check(cell.material.envMapIntensity<.2&&cell.material.color.b>.9,'Dark cells with controlled reflection');
+ disposeObject(wing);
+
+ // 3. Spacecraft assembly and mounting
+ const craft=new THREE.Group();root.add(craft);const assembly=createAssembly(craft);
+ await assembly.update(design,data);for(const m of assembly.instances.values())m.userData.born=-1000;
+ assembly.animate();root.updateMatrixWorld(true);
+ const busBox=new THREE.Box3().setFromObject(assembly.instances.get('bus'));
+ for(const pivot of assembly.instances.get('panel0').children){
+   const pos=pivot.getWorldPosition(new THREE.Vector3());
+   check(Math.abs(Math.abs(pos.x)-busBox.max.x)<.03,'Hinge touches bus edge');
+   check(pos.y>=busBox.min.y&&pos.y<=busBox.max.y,'Hinge on bus mounting face');
+ }
+ assembly.destroy();clear();
+
+ // 4. All four bus families
+ for(const busId of ['bus_micro','bus_small','bus_medium','bus_large']){
+   const g=new THREE.Group(),a=createAssembly(g);
+   await a.update({...design,busId,panelIds:['panel_m','panel_m'],instrumentIds:['optical_camera','weather_imager','spectrometer','neutron_detector']},data);
+   for(const m of a.instances.values())m.userData.born=-1000;
+   a.animate();g.updateMatrixWorld(true);
+   const bounds=new THREE.Box3().setFromObject(a.instances.get('bus'));
+   check(!!a.instances.get('bus').getObjectByName('enclosed_bus'),busId+' enclosed original bus without inherited arrays');
+   for(const k of ['panel0','panel1'])for(const pivot of a.instances.get(k).children){
+     const p=pivot.getWorldPosition(new THREE.Vector3());
+     check(Math.abs(Math.abs(p.x)-bounds.max.x)<.04,busId+' hinges attached');
+   }
+   for(let i=0;i<4;i++){
+     const m=a.instances.get('instrumentIds'+i);
+     const origin=m.position.clone().add(new THREE.Vector3(0,0,.1));
+     const ray=new THREE.Raycaster(origin,new THREE.Vector3(0,0,-1),0,.16);
+     const skins=[];a.instances.get('bus').traverse(mesh=>{if(mesh.isMesh&&mesh.userData.busSkin)skins.push(mesh);});
+     check(ray.intersectObjects(skins,false).length>0,busId+' instrument mount touches its structural face, excluding protruding radiator fins');
+   }
+   a.destroy();
+ }
+
+ // 5. Launch complex
+ const site=createLaunchSite();
+ check(site.userData.siteFeatures.includes('standby_launcher_1')&&site.userData.siteFeatures.includes('standby_launcher_2'),'Two additional parked launchers');
+ check(site.userData.siteFeatures.includes('access_road')&&site.userData.siteFeatures.includes('grass_tufts'),'Roads and vegetation present');
+ let draws=0;site.traverse(o=>{if(o.isMesh)draws++;});
+ check(draws<65,'Site uses bounded static batches');
+ disposeObject(site);
+
+ // 6. Deployment sequence & scrub regression test
+ async function deployment(launcherId='kestrel'){
+   clear();kit.controls.enabled=false;
+   const stage=await getModel(launcherId);root.add(stage);currentStage=stage;
+   const payload=new THREE.Group();stage.add(payload);currentPayload=payload;
+
+   // Mount at adapter top
+   stage.updateMatrixWorld(true);
+   const adapter=stage.getObjectByName('payload_adapter');
+   const worldBox=new THREE.Box3().setFromObject(adapter);
+   const localTop=stage.worldToLocal(new THREE.Vector3(0,worldBox.max.y,0));
+   payload.position.set(0,localTop.y,0);
+   payload.scale.setScalar(.26);
+
+   const parts=createAssembly(payload);
+   await parts.update(design,data);for(const m of parts.instances.values())m.userData.born=-1000;
+   parts.animate(1);
+   const horizon=addEarth(root,180);horizon.position.y=-185;currentHorizon=horizon;
+   kit.camera.position.set(20,12,30);const target=new THREE.Vector3(0,12,0);kit.camera.lookAt(target);
+   const before=kit.camera.position.clone(),world=payload.getWorldPosition(new THREE.Vector3());
+   cinematic=createLaunchSpace(kit,design,data,{craft:payload,assembly:parts,stage,horizon,target});
+   await Promise.resolve();
+   cinematic.update(0);
+   check(kit.camera.position.distanceTo(before)<1e-8,'Camera unchanged at handoff');
+   check(payload.getWorldPosition(new THREE.Vector3()).distanceTo(world)<1e-8,'Same spacecraft and position at handoff');
+
+   for(let i=0;i<=1000;i++){
+     cinematic.update(i/1000);
+     const center=horizon.getWorldPosition(new THREE.Vector3()),radius=180*horizon.scale.x;
+     const position=payload.getWorldPosition(new THREE.Vector3()),box=new THREE.Box3().setFromObject(payload);
+     check(position.distanceTo(center)>radius+box.getBoundingSphere(new THREE.Sphere()).radius,'Entire payload outside globe p='+i/1000);
+     check(kit.camera.position.distanceTo(center)>radius+.05,'Camera outside globe');
+     check(!segmentBlocked(kit.camera.position.clone().sub(center).toArray(),position.clone().sub(center).toArray(),radius),'Payload line of sight unobstructed');
+   }
+
+   cinematic.update(.9999);const near=kit.camera.position.clone();cinematic.update(1);
+   check(kit.camera.position.distanceTo(near)<.01,'Continuous pullback endpoint');
+   const point=orbitPoint(design.orbitId,INSERTION_ANGLE);
+   check(payload.position.distanceTo(point)<1e-8&&Math.abs(point.y)<point.length()*.5,'Insertion begins away from polar display');
+   cinematic.updateOperations(0,.016,0);
+   check(payload.position.distanceTo(point)<1e-8,'No new orbital view jump');
+   cinematic.update(0);document.querySelector('#progress').value=0;
+   updateTelemetry('Deployment sequence tested');
+ }
+
+ await deployment();
+
+ // --- Unified Deterministic Launch/Ascent/Fairing/Deployment Controller ---
+ let launchTrajectory = null;
+
+ async function getOrCreateLaunchTrajectory(launcherId, busId) {
+   if (launchTrajectory && kit.launchTrajectory === launchTrajectory &&
+       launchTrajectory.launcherId === launcherId && launchTrajectory.busId === busId &&
+       root.children.includes(launchTrajectory.rocket)) {
+     return launchTrajectory;
+   }
+   clear();
+   kit.controls.enabled = false;
+
+   const moduleBase = typeof process !== 'undefined' ? 'file:///' + process.cwd().replace(/\\/g, '/') + '/js/three/' : '../js/three/';
+   const {createLaunchMotion} = await import(moduleBase+'launchMotion.js');
+   const {createLaunchSpace: sharedSpace} = await import(moduleBase+'launchSpace.js');
+   const pad = createLaunchSite(); root.add(pad);
+   const rocket = await getModel(launcherId); root.add(rocket);
+   const payload = new THREE.Group(); rocket.add(payload); payload.scale.setScalar(0.26);
+   rocket.updateMatrixWorld(true);
+   const adapter = rocket.getObjectByName("payload_adapter");
+   let adapterY = 11.5;
+   if (adapter) {
+     const worldBox = new THREE.Box3().setFromObject(adapter);
+     adapterY = rocket.worldToLocal(new THREE.Vector3(0, worldBox.max.y, 0)).y;
+   }
+   payload.position.set(0, adapterY, 0);
+   const assembly = createAssembly(payload);
+   await assembly.update({ ...design, busId }, data);
+   for (const m of assembly.instances.values()) m.userData.born = -1000;
+   assembly.animate(1);
+
+   const height = new THREE.Box3().setFromObject(rocket).getSize(new THREE.Vector3()).y;
+   const motion=createLaunchMotion(rocket,root,payload,height);
+   const plume=new THREE.Sprite(new THREE.SpriteMaterial({map:loadOrbiterTexture('Exhaust.dds'),color:0xffe6b2,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false}));
+   root.add(plume);const fire=new THREE.PointLight(0xffa44b,0,25);root.add(fire);
+   const horizon=addEarth(root,180);horizon.position.set(0,-185,0);
+   // Capture the same end-of-ascent state used by gameplay, once. The shared
+   // deployment controller then samples it without accumulating transforms.
+   const endpoint=motion.sample(18);
+   kit.camera.position.copy(endpoint.camera);kit.camera.lookAt(endpoint.target);
+   const space=sharedSpace({...kit,scene:root},{...design,busId},data,{group:root,craft:payload,assembly,stage:rocket,horizon,target:endpoint.target,entryVelocity:motion.payloadVelocityAtInsertion()});
+   await Promise.resolve();
+   function seek(P){
+     P=Math.max(0,Math.min(1,P));const T=P*36;
+     if(P<=.5){
+       space.update(0);
+       rocket.add(payload);payload.position.set(0,adapterY,0);payload.scale.setScalar(.26);payload.quaternion.identity();
+       rocket.visible=true;horizon.position.set(0,-185,0);horizon.scale.setScalar(1);
+       const sampled=motion.sample(T),state=sampled.state;
+       horizon.visible=sampled.horizonVisible;pad.visible=sampled.padVisible;
+       plume.visible=state.ignition;fire.intensity=state.ignition?10:0;
+       const tail=new THREE.Vector3(-Math.sin(state.pitch),-Math.cos(state.pitch),0);
+       plume.position.copy(sampled.engine).addScaledVector(tail,height*.35);
+       plume.scale.set(height*.25,height*.85,1);plume.material.rotation=-state.pitch;fire.position.copy(sampled.engine);
+       assembly.animate(1);kit.camera.position.copy(sampled.camera);kit.camera.lookAt(sampled.target);kit.controls.target.copy(sampled.target);
+       updateTelemetry(state.phase+' | T='+T.toFixed(1)+' s');
+     }else{
+       root.attach(payload);motion.hideReleased();
+       pad.visible=false;plume.visible=false;fire.intensity=0;horizon.visible=true;
+       space.update((P-.5)*2);
+       kit.controls.target.copy(payload.position);
+       updateTelemetry(space.caption((P-.5)*2));
+     }
+   }
+
+   launchTrajectory = {
+     launcherId,
+     busId,
+     rocket,
+     payload,
+     horizon,
+     seek,
+     destroy: () => {
+       space.destroy();
+       horizon.userData.stopTexture?.();
+       if (kit.launchTrajectory === launchTrajectory) kit.launchTrajectory = null;
+       launchTrajectory = null;
+     }
+   };
+   kit.launchTrajectory = launchTrajectory;
+   return launchTrajectory;
+ }
+
+ // --- Interactive Named Bookmarks ---
+ async function applyBookmark(name){
+   const busId=document.querySelector("#bus-preview").value||bus||document.querySelector("#bus-preview").options[0].value||null;
+   const launcherId=document.querySelector("#launcher-select").value||launcher||document.querySelector("#launcher-select").options[0].value||null;
+
+   if(name==="pad_closed_vehicle"){
+     const t=await getOrCreateLaunchTrajectory(launcherId,busId);
+     document.querySelector("#progress").value=0.0;
+     document.querySelector("#scrub-label").textContent="P = 0.000";
+     t.seek(0.0);
+   }else if(name==="ascent"){
+     const t=await getOrCreateLaunchTrajectory(launcherId,busId);
+     document.querySelector("#progress").value=0.28;
+     document.querySelector("#scrub-label").textContent="P = 0.280";
+     t.seek(0.28);
+   }else if(name==="fairing_release"){
+     const t=await getOrCreateLaunchTrajectory(launcherId,busId);
+     document.querySelector("#progress").value=0.42;
+     document.querySelector("#scrub-label").textContent="P = 0.420";
+     t.seek(0.42);
+   }else if(name==="payload_separation"){
+     const t=await getOrCreateLaunchTrajectory(launcherId,busId);
+     document.querySelector("#progress").value=0.58;
+     document.querySelector("#scrub-label").textContent="P = 0.580";
+     t.seek(0.58);
+   }else if(name==="deployed_earth"){
+     const t=await getOrCreateLaunchTrajectory(launcherId,busId);
+     document.querySelector("#progress").value=1.0;
+     document.querySelector("#scrub-label").textContent="P = 1.000";
+     t.seek(1.0);
+   }else if(name==="builder_close_up"){
+     clear();
+     const craft=new THREE.Group();root.add(craft);
+     previewAssembly=createAssembly(craft);
+     const busObj=data.parts.find(p=>p.id===busId);
+     await previewAssembly.update({...design,busId:busObj.id,panelIds:["panel_l","panel_l"],instrumentIds:["optical_camera","weather_imager","spectrometer","neutron_detector"].slice(0,busObj.slots)},data);
+     for(const m of previewAssembly.instances.values())m.userData.born=-1000;
+     previewAssembly.animate();
+     kit.camera.position.set(4,2.5,5.5);
+     kit.controls.target.set(0,1,0);
+     kit.controls.update();
+     updateTelemetry("Bookmark: builder_close_up");
+   }else if(name==="lunar_operations"){
+     clear();
+     const moon=addWorldBody(root,"llo",4);
+     const craft=new THREE.Group();craft.scale.setScalar(0.38);root.add(craft);
+     const a=createAssembly(craft);previewAssembly=a;
+     await a.update({...design,busId,orbitId:"llo"},data);
+     for(const m of a.instances.values())m.userData.born=-1000;
+     a.animate();
+     craft.position.copy(operationPoint("llo",0,design.orbitElements));
+     kit.camera.position.fromArray(operationCamera("llo",design.orbitElements));
+     kit.controls.target.set(0,0,0);
+     kit.controls.update();
+     updateTelemetry("Bookmark: lunar_operations (LRO Moon CGI Kit)");
+   }else if(name==="narrow_viewport"){
+     clear();
+     const c=document.querySelector("#view-container");
+     c.style.width="390px";c.style.height="844px";
+     kit.renderer.setSize(390,844);
+     kit.camera.aspect=390/844;
+     kit.camera.updateProjectionMatrix();
+
+     const earth=addWorldBody(root,"sso",4);
+     earth.position.set(0,-4.5,0);
+     earth.rotation.y=-0.4;
+
+     const craft=new THREE.Group();
+     craft.scale.setScalar(0.42);
+     root.add(craft);
+     previewAssembly=createAssembly(craft);
+     await previewAssembly.update({...design,busId},data);
+     for(const m of previewAssembly.instances.values())m.userData.born=-1000;
+     previewAssembly.animate();
+
+     craft.position.set(0,0.8,0);
+     kit.camera.position.set(0,1.2,3.4);
+     kit.camera.lookAt(0,0.8,0);
+     kit.controls.target.set(0,0.8,0);
+     kit.controls.update();
+
+     let hud=document.querySelector("#mobile-hud");
+     if(!hud){
+       hud=document.createElement("div");
+       hud.id="mobile-hud";
+       hud.style.cssText="position:absolute;top:60px;left:10px;right:10px;pointer-events:none;z-index:10;font:11px monospace;color:#7ee787;background:rgba(3,9,19,0.85);padding:8px;border-radius:4px;border:1px solid #1f6feb;";
+       document.querySelector("#view").append(hud);
+     }
+     hud.innerHTML=`<div style="font-weight:bold;color:#fff;margin-bottom:4px;">MISSION CONTROL PREVIEW (MOCK) · 700 km SSO · 98.2°</div><div>◉ Ground link active · Delivered 0.188 GB · Recorder empty</div><div>Power: 600W · Battery: 100% (640 Wh) · Storage: 0.0/8.0 GB</div><div style="margin-top:4px;color:#a5d6ff;">[ SAFE ] [ DOWNLINK (ACTIVE) ] [ TRANSMIT ] [ PAUSE ]</div>`;
+     updateTelemetry("Bookmark: narrow_viewport (390×844 mobile preview layout · illustrative mock HUD)");
+   }
+ }
+
+ document.querySelector("#bookmark-select").onchange=e=>{if(e.target.value)applyBookmark(e.target.value);};
+ document.querySelector("#bus-preview").onchange=()=>{launchTrajectory=null;applyBookmark("builder_close_up");};
+ document.querySelector("#launcher-select").onchange=()=>{launchTrajectory=null;applyBookmark("pad_closed_vehicle");};
+
+ document.querySelector("#quality-toggle").onchange=e=>{
+   const high=e.target.value==="high";
+   if(kit.renderer){
+     kit.renderer.shadowMap.enabled=high;
+     kit.renderer.toneMappingExposure=high?1.15:1.0;
+   }
+   updateTelemetry(`Quality: ${high?"High":"Standard"}`);
+ };
+
+ document.querySelector("#sun-slider").oninput=e=>{
+   const deg=Number(e.target.value), rad=deg*Math.PI/180;
+   document.querySelector("#sun-angle-val").textContent=`${deg}°`;
+   if(kit.sun){
+     kit.sun.position.set(40*Math.cos(rad),0,40*Math.sin(rad));
+     kit.sun.target.position.set(0,0,0);
+   }
+   updateTelemetry(`Sun Angle: ${deg}°`);
+ };
+
+ document.querySelector("#progress").oninput=async e=>{
+   const val=Number(e.target.value);
+   document.querySelector("#scrub-label").textContent=`P = ${val.toFixed(3)}`;
+   const launcherId=document.querySelector("#launcher-select").value||launcher||document.querySelector("#launcher-select").options[0].value||null;
+   const busId=document.querySelector("#bus-preview").value||bus||document.querySelector("#bus-preview").options[0].value||null;
+   const t=await getOrCreateLaunchTrajectory(launcherId,busId);
+   t.seek(val);
+ };
+
+ document.querySelector("#play-pause").onclick=async ()=>{
+   playing=!playing;
+   document.querySelector("#play-pause").textContent=playing?"Pause":"Play";
+   if(playing){
+     const launcherId=document.querySelector("#launcher-select").value||launcher||document.querySelector("#launcher-select").options[0].value||null;
+     const busId=document.querySelector("#bus-preview").value||bus||document.querySelector("#bus-preview").options[0].value||null;
+     const t=await getOrCreateLaunchTrajectory(launcherId,busId);
+     let lastT=performance.now();
+     const step=now=>{
+       if(!playing)return;
+       const dt=(now-lastT)/1000;lastT=now;
+       let cur=Number(document.querySelector("#progress").value);
+       cur=Math.min(1,cur+dt/36);
+       document.querySelector("#progress").value=cur;
+       document.querySelector("#scrub-label").textContent=`P = ${cur.toFixed(3)}`;
+       t.seek(cur);
+       if(cur>=1){playing=false;document.querySelector("#play-pause").textContent="Play";return;}
+       animFrame=requestAnimationFrame(step);
+     };
+     animFrame=requestAnimationFrame(step);
+   }
+ };
+
+ document.querySelector("#reset-btn").onclick=async ()=>{
+   document.querySelector("#bookmark-select").value="";
+   document.querySelector("#progress").value=0;
+   document.querySelector("#scrub-label").textContent="P = 0.000";
+   document.querySelector("#sun-slider").value=0;
+   document.querySelector("#sun-angle-val").textContent="0°";
+   if(kit.sun){kit.sun.position.set(40,0,0);kit.sun.target.position.set(0,0,0);}
+   document.querySelector("#quality-toggle").value="standard";
+   if(kit.renderer){kit.renderer.shadowMap.enabled=false;kit.renderer.toneMappingExposure=1.0;}
+   const c=document.querySelector("#view-container");
+   c.style.width="100%";c.style.height="min(620px,65vh)";
+   kit.renderer.setSize(c.clientWidth,c.clientHeight);
+   kit.camera.aspect=c.clientWidth/c.clientHeight;
+   kit.camera.updateProjectionMatrix();
+   const hud=document.querySelector("#mobile-hud");if(hud)hud.remove();
+   const launcherId=document.querySelector("#launcher-select").value||launcher||document.querySelector("#launcher-select").options[0].value||null;
+   const busId=document.querySelector("#bus-preview").value||bus||document.querySelector("#bus-preview").options[0].value||null;
+   const t=await getOrCreateLaunchTrajectory(launcherId,busId);
+   t.seek(0);
+ };
+ document.querySelector('#result').textContent='PASS: '+assertions+' scene repair assertions';
+ const params=new URLSearchParams(window.location.search);
+ const bmark=params.get('bookmark'),bus=params.get('bus'),launcher=params.get('launcher');
+ if(bus)document.querySelector('#bus-preview').value=bus;
+ if(launcher)document.querySelector('#launcher-select').value=launcher;
+ if(bmark){
+   document.querySelector('#bookmark-select').value=bmark;
+   await applyBookmark(bmark);
+ }
+}catch(error){
+ document.querySelector('#result').textContent='FAIL: '+error.message;
+ console.error(error);
+}
+</script></html>

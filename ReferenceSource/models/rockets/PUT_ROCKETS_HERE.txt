@@ -1,0 +1,2 @@
+Put rocket .glb files here: kestrel.glb, condor.glb, albatross.glb, roc.glb
+See models/README.txt for the rules.

@@ -1,0 +1,81 @@
+/* Requested simplification: keep the mission result compact and useful. */
+.orbit-label-leaders { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; overflow:hidden; }
+.orbit-label-leaders line { stroke:#8bbdbb; stroke-width:1; opacity:.5; }
+.solar-body-label { z-index:2; }
+.guide-character .nova-avatar { padding:0; border:0; border-radius:0; background:none; overflow:visible; filter:drop-shadow(0 3px 5px #0007); }
+body:has(#app > [data-screen=report]) .guide-dialogue.speaking:not(.expanded):not(:hover):not(:focus-within) .guide-message { display:none; }
+#app [data-screen=report] { background:var(--orbital-bg); border:0; color:var(--orbital-text); font-family:var(--font-body); }
+#app [data-screen=report] .mission-panel { width:100%; max-width:1450px; margin:0 auto; padding:24px clamp(16px,3vw,40px) 30px; display:flex; flex-direction:column; gap:20px; }
+#app [data-screen=report] .report-summary-hero { display:flex; align-items:center; justify-content:space-between; gap:24px; padding:24px; margin:0; background:var(--orbital-surface); border:1px solid var(--orbital-border-strong); border-radius:8px; }
+#app [data-screen=report] .report-summary-hero > :first-child { flex:1; min-width:0; }
+#app [data-screen=report] .report-summary-hero .panel-title { font-size:25px; margin:0 0 8px; }
+#app [data-screen=report] .report-summary-hero .panel-description { margin:0; max-width:66ch; font-size:14px; line-height:1.6; }
+.report-hero-actions { display:flex; align-items:center; justify-content:flex-end; gap:24px; flex-shrink:0; }
+#app [data-screen=report] .report-stars-display { margin:0; text-align:right; }
+#app [data-screen=report] .report-total-stars { font:650 30px var(--font-telemetry); color:var(--orbital-warning); }
+#report-compare-actions > .btn { min-height:46px; background:var(--orbital-accent); color:var(--orbital-accent-ink); border-color:var(--orbital-accent); font-weight:650; white-space:nowrap; }
+#app [data-screen=report] .failure-replay-box { margin:0; padding:14px 18px; border-radius:6px; background:var(--orbital-surface); border-color:var(--orbital-border); }
+#app [data-screen=report] .campaign-panel-report { margin:0; padding:20px; border-radius:7px; }
+#app [data-screen=report] .campaign-panel-report table { font-size:12px; }
+#app [data-screen=report] .ops-report-summary { margin:0; padding:16px 20px; background:var(--orbital-surface); border:1px solid var(--orbital-border); border-radius:7px; }
+.flight-measured { padding:24px; background:var(--orbital-surface); border:1px solid var(--orbital-border); border-radius:8px; }
+.flight-measured > header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; margin-bottom:20px; }
+.flight-measured .orbital-eyebrow { margin:0 0 6px; font:10px var(--font-telemetry); color:var(--orbital-accent); letter-spacing:.14em; }
+.flight-measured h2 { font-size:24px; font-weight:600; margin:0; }
+.flight-result-count { padding:6px 10px; background:var(--orbital-surface-raised); border:1px solid var(--orbital-border); border-radius:5px; font-size:12px; color:var(--orbital-text-muted); }
+.flight-result-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+.flight-result-card { min-width:0; padding:18px; background:var(--orbital-bg); border:1px solid var(--orbital-border); border-radius:6px; }
+.flight-result-card > span { color:var(--orbital-text-muted); font-size:12px; }
+.flight-result-card strong { display:block; margin:12px 0; font:500 27px var(--font-telemetry); }
+.flight-result-card strong small { font:13px var(--font-body); color:var(--orbital-text-muted); }
+.flight-result-meter { height:4px; overflow:hidden; border-radius:4px; background:#293b49; }
+.flight-result-meter i { display:block; height:100%; background:var(--orbital-accent); }
+.flight-result-card.missed .flight-result-meter i { background:var(--orbital-warning); }
+.flight-result-card p { color:var(--orbital-text-muted); font-size:11px; line-height:1.6; margin:10px 0 0; }
+.flight-result-card b { color:var(--orbital-success); font-weight:500; }
+.flight-result-card.missed b { color:var(--orbital-warning); }
+.flight-resource-grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:16px; margin:22px 0; padding:18px 0; border-top:1px solid var(--orbital-border); border-bottom:1px solid var(--orbital-border); }
+.flight-resource-grid dt { color:var(--orbital-text-muted); font-size:11px; }
+.flight-resource-grid dd { margin:6px 0 0; font:15px var(--font-telemetry); }
+.flight-decisions summary,.flight-observation-detail summary { cursor:pointer; font-size:13px; padding:5px 0; }
+.flight-decisions summary span { font:10px var(--font-telemetry); color:var(--orbital-text-muted); margin-left:10px; }
+.flight-decisions ol { list-style:none; padding:0; margin:14px 0 0; max-height:300px; overflow:auto; }
+.flight-decisions li { display:grid; grid-template-columns:90px minmax(0,1fr); gap:12px; padding:10px 0; border-top:1px solid var(--orbital-border); font-size:12px; line-height:1.5; }
+.flight-decisions time { color:var(--orbital-accent); font-family:var(--font-telemetry); }
+
+#app .orbit-preview,.orbit-region { position:absolute; inset:0; }
+.orbit-region { display:grid; place-items:center; padding:14px 14px 54px; background:var(--orbital-bg); }
+.orbit-region[hidden],.orbit-preview[hidden],.transfer-encounter[hidden],.transfer-track-hidden { display:none; }
+.orbit-region svg { width:100%; height:100%; }
+.orbit-location,.transfer-encounter-label { position:absolute; left:16px; bottom:16px; padding:9px 13px; border:1px solid var(--orbital-border-strong); border-radius:5px; background:var(--orbital-bg); color:var(--orbital-text); font-size:13px; }
+.orbit-destination { display:grid; grid-template-columns:64px minmax(0,1fr); align-items:center; gap:12px; margin-bottom:12px; }
+.orbit-destination-art { height:64px; overflow:hidden; border-radius:5px; position:relative; background:var(--orbital-bg); }
+.orbit-destination-art :is(.transfer-art,.frontier-art,.mission-photo) { width:100%; height:100%; object-fit:cover; }
+.orbit-destination-art .transfer-art-tag { display:none; }
+#app .orbit-destination h2 { margin:3px 0; font-size:22px; }
+#app .orbit-destination p { margin:0; color:var(--orbital-text-muted); }
+.mission-route-summary { color:var(--orbital-accent); font-weight:600; }
+.transfer-location-strip { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px 20px; margin:0 0 12px; color:var(--orbital-text-muted); font-size:13px; }
+.transfer-location-strip strong { color:var(--orbital-accent); }
+.transfer-encounter { height:clamp(185px,30vh,410px); position:relative; overflow:hidden; border-radius:6px; background:var(--orbital-bg); }
+.transfer-encounter-model,.transfer-encounter-visual { position:absolute; inset:0; }
+.transfer-encounter-visual :is(.frontier-art,.mission-photo,.transfer-art) { height:100%; width:100%; object-fit:contain; }
+.transfer-encounter-label small { display:block; margin-top:4px; color:var(--orbital-text-muted); }
+.transfer-view-toggle { margin:10px 0 0; }
+.cruise-layout { margin:0; }
+.cruise-screen .cruise-telemetry > .program-panel-art { height:92px; }
+.cruise-screen .cruise-clocks { padding:10px 0; }
+body:has(#ops-canvas[data-primary-body=lagrange]) .control-orbit-label { position:absolute; top:80px; bottom:auto; left:10px; right:10px; padding:8px 12px; }
+body:has(#ops-canvas[data-primary-body=lagrange]) .control-orbit-label p { display:none; }
+@media(max-width:1100px){
+ #app [data-screen=report] .report-summary-hero { align-items:flex-start; }
+ .report-hero-actions { flex-direction:column; align-items:flex-end; gap:12px; }
+ .flight-result-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media(max-width:650px){
+ #app [data-screen=report] .report-summary-hero { flex-direction:column; }
+ .report-hero-actions { width:100%; flex-direction:row; justify-content:space-between; align-items:center; }
+ .flight-result-grid { grid-template-columns:100%; }
+ .flight-resource-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+ .flight-measured { padding:16px; }
+}

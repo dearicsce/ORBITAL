@@ -1,0 +1,19 @@
+{
+  "ascent": {
+    "file": null,
+    "skippable": true,
+    "credit": "User-supplied NASA GPM launch animation",
+    "caption": "NASA GPM launch animation · illustrative footage",
+    "referenceFile": "videos/ascent.mp4"
+  },
+  "deploy": {
+    "file": null,
+    "skippable": true
+  },
+  "moon": {
+    "file": "videos/moon-intro.mp4",
+    "skippable": true,
+    "credit": "User-supplied NASA Go Forward to the Moon video",
+    "caption": "NASA · Go Forward to the Moon"
+  }
+}

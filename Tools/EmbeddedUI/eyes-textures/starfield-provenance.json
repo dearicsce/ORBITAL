@@ -1,0 +1,11 @@
+{
+  "file": "milkyway-8k.jpg",
+  "width": 8192,
+  "height": 4096,
+  "source": "https://svs.gsfc.nasa.gov/3895/",
+  "download": "https://svs.gsfc.nasa.gov/vis/a000000/a003800/a003895/starmap_8k.jpg",
+  "credit": "NASA Scientific Visualization Studio / Ernie Wright, Deep Star Maps (2012)",
+  "sha256": "ec28e645863d55d4c0513a07fc846eaf06fc4f4b2246e4a6b10535f990309360",
+  "usage": "Offline equirectangular visual background; no navigation or scoring data",
+  "processing": "Original JPEG, unchanged"
+}

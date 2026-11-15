@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><base href="../"><title>Evidence regression checks</title>
+<link rel="stylesheet" href="../css/evidence.css">
+<script type="importmap">{"imports":{"three":"./vendor/three/three.module.js","three/addons/":"./vendor/three/addons/"}}</script>
+<h1>Evidence regression checks</h1><p id="results">Running…</p><div id="fixture"></div>
+<script type="module">
+import {renderEvidence} from '../js/ui/evidence.js';
+const host=document.querySelector('#fixture');
+const checks=[];
+function check(ok,label){checks.push({ok,label});if(!ok)throw new Error(label);}
+try {
+  renderEvidence(host);
+  const slider=host.querySelector('input[type="range"]');
+  check(slider?.getAttribute('aria-label')==='Comparison divider position','Slider has accessible name');
+  slider.value='75';slider.dispatchEvent(new Event('input'));
+  check(host.querySelector('#evidence-percent').textContent==='75%','Slider output updates');
+  check(host.querySelector('.evidence-comparison').style.getPropertyValue('--reveal')==='75%','Reveal matches slider output');
+  check(host.querySelector('a').href.includes('science.nasa.gov'),'Primary source link present');
+  host.querySelector('img').dispatchEvent(new Event('error'));
+  check(slider.disabled,'Missing image disables misleading comparison');
+  check(host.querySelector('[role="status"]')?.textContent.includes('unavailable'),'Missing image explains next action');
+  check([...host.querySelectorAll('img')].every(img=>img.hidden),'Broken comparison images hidden');
+  host.querySelectorAll('img')[1].dispatchEvent(new Event('error'));
+  check(host.querySelectorAll('[role="status"]').length===1,'Repeated image failures do not duplicate message');
+  host.querySelector('[data-story="1"]').click();
+  check(!host.querySelector('input').disabled,'Changing story restores fresh comparison control');
+  check(host.textContent.includes('1986')&&host.textContent.includes('2014'),'Iceland date labels present');
+  document.querySelector('#results').textContent=`PASS: ${checks.length} evidence assertions`;
+}catch(error){document.querySelector('#results').textContent='FAIL: '+error.message;console.error(error);}
+</script></html>

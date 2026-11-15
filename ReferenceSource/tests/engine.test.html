@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Engine Tests - Space Mission Design Game</title>
+    <style>
+      body {
+        background: #0f172a;
+        color: #e2e8f0;
+        font-family: monospace;
+        padding: 24px;
+        line-height: 1.6;
+      }
+      h1 {
+        font-size: 1.5rem;
+        margin-bottom: 16px;
+        color: #38bdf8;
+      }
+      .test-group {
+        margin-bottom: 24px;
+        background: #1e293b;
+        border-radius: 8px;
+        padding: 16px 20px;
+        border: 1px solid #334155;
+      }
+      .pass {
+        color: #4ade80;
+        font-weight: bold;
+      }
+      .fail {
+        color: #f87171;
+        font-weight: bold;
+      }
+      .summary {
+        font-size: 1.25rem;
+        margin-top: 24px;
+        padding: 16px;
+        border-radius: 8px;
+      }
+      .summary.all-pass {
+        background: #064e3b;
+        color: #6ee7b7;
+      }
+      .summary.has-fail {
+        background: #7f1d1d;
+        color: #fca5a5;
+      }
+      pre {
+        background: #0b0f19;
+        padding: 12px;
+        border-radius: 6px;
+        overflow-x: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Engine Specification Tests (RULES.md Section 13)</h1>
+    <div id="results">Running tests...</div>
+
+    <script type="module">
+      import { loadData } from '../js/data.js';
+      import { evaluateDesign, checkLaunchGate, rateDesign } from '../js/engine.js';
+
+      async function run() {
+        const resultsEl = document.getElementById('results');
+        resultsEl.innerHTML = '';
+
+        const data = await loadData('../');
+        let totalAssertions = 0;
+        let passedAssertions = 0;
+
+        function assert(title, actual, expected, compareFn = null) {
+          totalAssertions++;
+          const ok = compareFn ? compareFn(actual, expected) : actual === expected;
+          if (ok) passedAssertions++;
+          return {
+            title,
+            actual,
+            expected,
+            ok
+          };
+        }
+
+        function approx(a, b, delta = 0.005) {
+          return Math.abs(a - b) <= delta;
+        }
+
+        // --- TEST 1: Design A ---
+        // Micro bus, optical camera, panel M, battery S, basic computer, reaction wheels, X-band, fuel S, Kestrel, SSO, mission m1
+        const designA = {
+          missionId: 'm1',
+          busId: 'bus_micro',
+          panelIds: ['panel_m'],
+          batteryIds: ['battery_s'],
+          commsId: 'comms_x_band',
+          computerId: 'computer_basic',
+          pointingId: 'pointing_reaction_wheels',
+          fuelIds: ['fuel_s'],
+          instrumentIds: ['optical_camera'],
+          orbitId: 'sso',
+          launcherId: 'kestrel',
+          difficulty: 'normal'
+        };
+
+        const evalA = evaluateDesign(designA, data);
+        const gateA = checkLaunchGate(designA, data);
+        const ratingA = rateDesign(designA, data, []);
+
+        const testsA = [
+          assert('Design A - Launch mass', evalA.launchMass, 119),
+          assert('Design A - Capacity', evalA.capacity, 255),
+          assert('Design A - Load', evalA.averageLoad, 115),
+          assert('Design A - Power margin ~15.7%', evalA.margins.power, 0.15666, (a, e) => approx(a, 0.15666, 0.005)),
+          assert('Design A - Total cost', evalA.totalCost, 40),
+          assert('Design A - Science points', evalA.sciencePoints, 4),
+          assert('Design A - Launch gate all passed', gateA.every((c) => c.ok), true),
+          assert('Design A - Engineer stars', ratingA.engineer, 2),
+          assert('Design A - Scientist stars', ratingA.scientist, 1),
+          assert('Design A - Accountant stars', ratingA.accountant, 1.5),
+          assert('Design A - Total stars', ratingA.total, 4.5),
+          assert('Design A - Medal', ratingA.medal, 'Silver')
+        ];
+
+        // --- TEST 2: Design B ---
+        // Small bus, optical camera + thermal imager, panels M + S, battery S, basic computer, reaction wheels, X-band, fuel S, Kestrel, SSO
+        const designB = {
+          missionId: 'm1',
+          busId: 'bus_small',
+          panelIds: ['panel_m', 'panel_s'],
+          batteryIds: ['battery_s'],
+          commsId: 'comms_x_band',
+          computerId: 'computer_basic',
+          pointingId: 'pointing_reaction_wheels',
+          fuelIds: ['fuel_s'],
+          instrumentIds: ['optical_camera', 'thermal_imager'],
+          orbitId: 'sso',
+          launcherId: 'kestrel',
+          difficulty: 'normal'
+        };
+
+        const evalB = evaluateDesign(designB, data);
+        const gateB = checkLaunchGate(designB, data);
+        const budgetCheckB = gateB.find((c) => c.id === 'budget');
+
+        const testsB = [
+          assert('Design B - Total cost', evalB.totalCost, 51.5),
+          assert('Design B - Budget check failed', budgetCheckB ? budgetCheckB.ok : true, false),
+          assert('Design B - Launch gate overall blocked', gateB.every((c) => c.ok), false)
+        ];
+
+        function renderGroup(title, tests) {
+          const groupEl = document.createElement('div');
+          groupEl.className = 'test-group';
+          const h2 = document.createElement('h2');
+          h2.style.fontSize = '1.1rem';
+          h2.style.marginBottom = '10px';
+          h2.textContent = title;
+          groupEl.appendChild(h2);
+
+          tests.forEach((t) => {
+            const p = document.createElement('div');
+            p.innerHTML = `<span class="${t.ok ? 'pass' : 'fail'}">[${t.ok ? 'PASS' : 'FAIL'}]</span> ${t.title}: actual = ${JSON.stringify(t.actual)}, expected = ${JSON.stringify(t.expected)}`;
+            groupEl.appendChild(p);
+          });
+          return groupEl;
+        }
+
+        resultsEl.appendChild(renderGroup('Worked Example Design A (Section 13)', testsA));
+        resultsEl.appendChild(renderGroup('Worked Example Design B (Section 13)', testsB));
+
+        const summaryEl = document.createElement('div');
+        const allOk = passedAssertions === totalAssertions;
+        summaryEl.className = `summary ${allOk ? 'all-pass' : 'has-fail'}`;
+        summaryEl.id = 'test-summary';
+        summaryEl.textContent = allOk
+          ? `PASS: All ${totalAssertions} assertions passed successfully.`
+          : `FAIL: ${totalAssertions - passedAssertions} of ${totalAssertions} assertions failed.`;
+        resultsEl.appendChild(summaryEl);
+      }
+
+      run();
+    </script>
+  </body>
+</html>

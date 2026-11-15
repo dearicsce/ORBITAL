@@ -1,0 +1,14 @@
+[
+  [
+    "Failed launch persists",
+    true
+  ],
+  [
+    "Blocked storage does not crash",
+    true
+  ],
+  [
+    "Clear removes snapshot",
+    true
+  ]
+]

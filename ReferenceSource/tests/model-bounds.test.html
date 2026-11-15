@@ -1,0 +1,3 @@
+<!doctype html><html><head><title>Model bounds checks</title><script type="importmap">{"imports":{"three":"../vendor/three/three.module.js","three/addons/":"../vendor/three/addons/"}}</script></head><body><pre id="results">Loading supplied components…</pre><script type="module">
+import * as THREE from 'three';import {getModel} from '../js/three/models.js';import {disposeObject} from '../js/three/sceneKit.js';const output=document.querySelector('#results');output.textContent='';for(const id of ['bus_micro','bus_small','solar_wing_s','solar_wing_m','solar_wing_l']){const m=await getModel(id);const box=new THREE.Box3().setFromObject(m);output.textContent+=(!box.isEmpty()&&Number.isFinite(box.max.y)?'PASS ':'FAIL ')+id+'\n';disposeObject(m);}
+</script></body></html>

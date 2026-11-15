@@ -1,0 +1,5 @@
+# Preserve the exact bytes required by pinned input and asset checksums.
+* -text
+# Large 3D assets and video use Git LFS.
+*.glb filter=lfs diff=lfs merge=lfs -text
+*.mp4 filter=lfs diff=lfs merge=lfs -text

@@ -1,0 +1,19 @@
+{
+  "date": "2026-11-01",
+  "reportedBugChecks": {
+    "passed": 11,
+    "failed": 0
+  },
+  "originalRuleChecks": {
+    "engine": 15,
+    "state": 33,
+    "events": 23,
+    "failed": 0
+  },
+  "browserErrors": 0,
+  "visualPreview": "tests/orbit-after-fixes.png",
+  "limits": [
+    "Orbiter assets are imported, not the native renderer.",
+    "Launchpad detail, stage connections and Earth texture resolution still limit realism."
+  ]
+}

@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3D Models Visual Workbench & Manifest Tuner</title>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "../vendor/three/three.module.js",
+          "three/addons/": "../vendor/three/addons/"
+        }
+      }
+    </script>
+    <style>
+      :root {
+        --bg-deep: #050814;
+        --bg-panel: #0d1527;
+        --border-dim: #1e2e4f;
+        --accent-cyan: #38bdf8;
+        --accent-green: #34d399;
+        --text-primary: #f1f5f9;
+        --text-muted: #94a3b8;
+        --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body {
+        background: var(--bg-deep);
+        color: var(--text-primary);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        overflow: hidden;
+      }
+      header {
+        padding: 12px 20px;
+        background: var(--bg-panel);
+        border-bottom: 1px solid var(--border-dim);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .title-wrap h1 { font-size: 1.1rem; color: #fff; font-family: var(--font-mono); }
+      .title-wrap p { font-size: 0.75rem; color: var(--accent-cyan); }
+      .app-layout {
+        display: flex;
+        flex: 1;
+        overflow: hidden;
+      }
+      #viewport {
+        flex: 1;
+        position: relative;
+        background: radial-gradient(circle at center, #0a1128 0%, #030611 100%);
+      }
+      .sidebar {
+        width: 360px;
+        background: var(--bg-panel);
+        border-left: 1px solid var(--border-dim);
+        display: flex;
+        flex-direction: column;
+        padding: 18px;
+        gap: 14px;
+        overflow-y: auto;
+      }
+      .control-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .label {
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      select, button, textarea {
+        font-family: var(--font-mono);
+        border-radius: 4px;
+        font-size: 0.8125rem;
+      }
+      select {
+        background: #060c1b;
+        color: #fff;
+        border: 1px solid var(--border-dim);
+        padding: 8px 10px;
+      }
+      .btn-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      button {
+        background: rgba(56, 189, 248, 0.12);
+        color: var(--accent-cyan);
+        border: 1px solid rgba(56, 189, 248, 0.35);
+        padding: 8px 10px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+      }
+      button:hover {
+        background: var(--accent-cyan);
+        color: #050814;
+      }
+      textarea {
+        background: #040711;
+        border: 1px solid var(--border-dim);
+        color: var(--accent-green);
+        padding: 10px;
+        height: 160px;
+        resize: none;
+        font-size: 0.75rem;
+        line-height: 1.4;
+      }
+      .readout {
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        color: #cbd5e1;
+        background: rgba(0,0,0,0.3);
+        padding: 8px 10px;
+        border-radius: 4px;
+        border: 1px solid var(--border-dim);
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="title-wrap">
+        <h1>3D MODEL INSPECTOR // MANIFEST TUNER</h1>
+        <p>STEP 14 BENCHMARK & VERIFICATION</p>
+      </div>
+      <a href="../index.html" style="color: var(--accent-cyan); font-family: var(--font-mono); font-size: 0.8rem; text-decoration: none;">← Return to Game</a>
+    </header>
+
+    <div class="app-layout">
+      <div id="viewport"></div>
+
+      <aside class="sidebar">
+        <div class="control-group">
+          <label class="label" for="model-select">Select Asset ID</label>
+          <select id="model-select"></select>
+        </div>
+
+        <div class="control-group">
+          <span class="label">Telemetry & Bounds</span>
+          <div class="readout" id="bounds-readout">Target Height: 1.00 • Rotation: [0, 0, 0]</div>
+        </div>
+
+        <div class="control-group">
+          <span class="label">Rotate X Axis</span>
+          <div class="btn-row">
+            <button type="button" id="btn-rot-x-neg">-90° X</button>
+            <button type="button" id="btn-rot-x-pos">+90° X</button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <span class="label">Rotate Y Axis</span>
+          <div class="btn-row">
+            <button type="button" id="btn-rot-y-neg">-90° Y</button>
+            <button type="button" id="btn-rot-y-pos">+90° Y</button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <span class="label">Rotate Z Axis</span>
+          <div class="btn-row">
+            <button type="button" id="btn-rot-z-neg">-90° Z</button>
+            <button type="button" id="btn-rot-z-pos">+90° Z</button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <span class="label">Scale Target Height</span>
+          <div class="btn-row">
+            <button type="button" id="btn-scale-down">-10% Scale</button>
+            <button type="button" id="btn-scale-up">+10% Scale</button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="label" for="manifest-entry-json">models/manifest.json Entry</label>
+          <textarea id="manifest-entry-json" readonly></textarea>
+          <button type="button" id="btn-copy-json">📋 Copy JSON Entry</button>
+        </div>
+      </aside>
+    </div>
+
+    <script type="module" src="models.test.js"></script>
+  <pre id="model-nodes" style="white-space:pre-wrap"></pre></body>
+</html>

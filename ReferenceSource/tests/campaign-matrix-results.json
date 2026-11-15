@@ -1,0 +1,269 @@
+{
+  "scope": "Launch-gate solvability and pre-event scoring, not guaranteed outcomes after random events or hard-mode launch rolls",
+  "results": [
+    {
+      "mission": "m1",
+      "difficulty": "easy",
+      "passed": true,
+      "design": {
+        "missionId": "m1",
+        "difficulty": "easy",
+        "orbitId": "sso",
+        "launcherId": "kestrel",
+        "busId": "bus_micro",
+        "instrumentIds": [
+          "thermal_imager"
+        ],
+        "computerId": "computer_basic",
+        "pointingId": "pointing_reaction_wheels",
+        "commsId": "comms_s_band",
+        "panelIds": [
+          "panel_m"
+        ],
+        "batteryIds": [
+          "battery_s"
+        ],
+        "fuelIds": [
+          "fuel_s"
+        ]
+      },
+      "medal": "Bronze",
+      "preEventRating": 4
+    },
+    {
+      "mission": "m1",
+      "difficulty": "normal",
+      "passed": true,
+      "design": {
+        "missionId": "m1",
+        "difficulty": "normal",
+        "orbitId": "sso",
+        "launcherId": "kestrel",
+        "busId": "bus_micro",
+        "instrumentIds": [
+          "thermal_imager"
+        ],
+        "computerId": "computer_basic",
+        "pointingId": "pointing_reaction_wheels",
+        "commsId": "comms_s_band",
+        "panelIds": [
+          "panel_m"
+        ],
+        "batteryIds": [
+          "battery_s"
+        ],
+        "fuelIds": [
+          "fuel_s"
+        ]
+      },
+      "medal": "Bronze",
+      "preEventRating": 3.5
+    },
+    {
+      "mission": "m1",
+      "difficulty": "hard",
+      "passed": true,
+      "design": {
+        "missionId": "m1",
+        "difficulty": "hard",
+        "orbitId": "sso",
+        "launcherId": "kestrel",
+        "busId": "bus_micro",
+        "instrumentIds": [
+          "thermal_imager"
+        ],
+        "computerId": "computer_basic",
+        "pointingId": "pointing_reaction_wheels",
+        "commsId": "comms_s_band",
+        "panelIds": [
+          "panel_m"
+        ],
+        "batteryIds": [
+          "battery_s"
+        ],
+        "fuelIds": [
+          "fuel_s"
+        ]
+      },
+      "medal": "Bronze",
+      "preEventRating": 3.5
+    },
+    {
+      "mission": "m2",
+      "difficulty": "easy",
+      "passed": true,
+      "design": {
+        "missionId": "m2",
+        "difficulty": "easy",
+        "orbitId": "geo",
+        "launcherId": "condor",
+        "busId": "bus_micro",
+        "instrumentIds": [
+          "transponder_s"
+        ],
+        "computerId": "computer_basic",
+        "pointingId": "pointing_reaction_wheels",
+        "commsId": "comms_uhf",
+        "panelIds": [
+          "panel_m"
+        ],
+        "batteryIds": [
+          "battery_m"
+        ],
+        "fuelIds": [
+          "fuel_s",
+          "fuel_m"
+        ]
+      },
+      "medal": "Bronze",
+      "preEventRating": 4
+    },
+    {
+      "mission": "m2",
+      "difficulty": "normal",
+      "passed": true,
+      "design": {
+        "missionId": "m2",
+        "difficulty": "normal",
+        "orbitId": "geo",
+        "launcherId": "condor",
+        "busId": "bus_micro",
+        "instrumentIds": [
+          "transponder_s"
+        ],
+        "computerId": "computer_basic",
+        "pointingId": "pointing_reaction_wheels",
+        "commsId": "comms_uhf",
+        "panelIds": [
+          "panel_m"
+        ],
+        "batteryIds": [
+          "battery_m"
+        ],
+        "fuelIds": [
+          "fuel_s",
+          "fuel_m"
+        ]
+      },
+      "medal": "Bronze",
+      "preEventRating": 4
+    },
+    {
+      "mission": "m2",
+      "difficulty": "hard",
+      "passed": true,
+      "design": {
+        "missionId": "m2",
+        "difficulty": "hard",
+        "orbitId": "geo",
+        "launcherId": "condor",
+        "busId": "bus_micro",
+        "instrumentIds": [
+          "transponder_s"
+        ],
+        "computerId": "computer_basic",
+        "pointingId": "pointing_reaction_wheels",
+        "commsId": "comms_uhf",
+        "panelIds": [
+          "panel_m"
+        ],
+        "batteryIds": [
+          "battery_m"
+        ],
+        "fuelIds": [
+          "fuel_s",
+          "fuel_m"
+        ]
+      },
+      "medal": "Bronze",
+      "preEventRating": 4
+    },
+    {
+      "mission": "m3",
+      "difficulty": "easy",
+      "passed": true,
+      "design": {
+        "missionId": "m3",
+        "difficulty": "easy",
+        "orbitId": "llo",
+        "launcherId": "albatross",
+        "busId": "bus_micro",
+        "instrumentIds": [
+          "magnetometer"
+        ],
+        "computerId": "computer_basic",
+        "pointingId": "pointing_reaction_wheels",
+        "commsId": "comms_uhf",
+        "panelIds": [
+          "panel_s"
+        ],
+        "batteryIds": [
+          "battery_s"
+        ],
+        "fuelIds": [
+          "fuel_l"
+        ]
+      },
+      "medal": "Bronze",
+      "preEventRating": 3
+    },
+    {
+      "mission": "m3",
+      "difficulty": "normal",
+      "passed": true,
+      "design": {
+        "missionId": "m3",
+        "difficulty": "normal",
+        "orbitId": "llo",
+        "launcherId": "albatross",
+        "busId": "bus_micro",
+        "instrumentIds": [
+          "magnetometer"
+        ],
+        "computerId": "computer_basic",
+        "pointingId": "pointing_reaction_wheels",
+        "commsId": "comms_uhf",
+        "panelIds": [
+          "panel_s"
+        ],
+        "batteryIds": [
+          "battery_s"
+        ],
+        "fuelIds": [
+          "fuel_l"
+        ]
+      },
+      "medal": "Bronze",
+      "preEventRating": 3
+    },
+    {
+      "mission": "m3",
+      "difficulty": "hard",
+      "passed": true,
+      "design": {
+        "missionId": "m3",
+        "difficulty": "hard",
+        "orbitId": "llo",
+        "launcherId": "albatross",
+        "busId": "bus_micro",
+        "instrumentIds": [
+          "magnetometer"
+        ],
+        "computerId": "computer_basic",
+        "pointingId": "pointing_reaction_wheels",
+        "commsId": "comms_uhf",
+        "panelIds": [
+          "panel_s"
+        ],
+        "batteryIds": [
+          "battery_s"
+        ],
+        "fuelIds": [
+          "fuel_l"
+        ]
+      },
+      "medal": "Bronze",
+      "preEventRating": 3
+    }
+  ]
+}

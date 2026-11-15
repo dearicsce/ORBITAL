@@ -1,0 +1,52 @@
+{
+  "reviewed": "2026-11-02",
+  "compilation": "The Changing World",
+  "project": "https://github.com/Jskenpo/imagine-our-connected-earth",
+  "projectLicense": "No explicit project-wide license located in supplied archive",
+  "assets": [
+    {
+      "file": "GlacierA.jpg",
+      "observationDate": "2020-07-24",
+      "source": "https://science.nasa.gov/earth/earth-observatory/spalte-splits-147350/",
+      "credit": "NASA Earth Observatory / Landsat",
+      "bytes": 2596279,
+      "sha256": "CDEDD0CE90AB13D5A4899D23E51D5439D68544F5D343763D765D72D1BF189A7C",
+      "archive": "imagine-our-connected-earth-main.zip",
+      "archiveEntry": "imagine-our-connected-earth-main/space-app/public/assets/GlacierA.jpg",
+      "modified": false
+    },
+    {
+      "file": "GlacierB.jpg",
+      "observationDate": "1986-08-16",
+      "source": "https://science.nasa.gov/earth/earth-observatory/spalte-splits-147350/",
+      "credit": "NASA Earth Observatory / Landsat",
+      "bytes": 2491689,
+      "sha256": "7DFD470C2E9574F8A209114DBA11C2E1C3FA176C6AF4ACD948DE2643FBB9B7D8",
+      "archive": "imagine-our-connected-earth-main.zip",
+      "archiveEntry": "imagine-our-connected-earth-main/space-app/public/assets/GlacierB.jpg",
+      "modified": false
+    },
+    {
+      "file": "katlaA.jpg",
+      "observationDate": "1986-09-16",
+      "source": "https://science.nasa.gov/earth/earth-observatory/myrdalsjokull-then-and-now-84707/",
+      "credit": "NASA Earth Observatory images by Jesse Allen, using USGS Landsat data",
+      "bytes": 3749993,
+      "sha256": "AFFFAE1D7742C5562F037EA4C73721A95DF5CAE56C3CC4CB448C6D664DB4218C",
+      "archive": "imagine-our-connected-earth-main.zip",
+      "archiveEntry": "imagine-our-connected-earth-main/space-app/public/assets/katlaA.jpg",
+      "modified": false
+    },
+    {
+      "file": "katlaB.jpg",
+      "observationDate": "2014-09-20",
+      "source": "https://science.nasa.gov/earth/earth-observatory/myrdalsjokull-then-and-now-84707/",
+      "credit": "NASA Earth Observatory images by Jesse Allen, using USGS Landsat data",
+      "bytes": 3028720,
+      "sha256": "B49070B41D60B31DE1B278FE6926984D89CD3E91A1529FEF6F203142604CB99B",
+      "archive": "imagine-our-connected-earth-main.zip",
+      "archiveEntry": "imagine-our-connected-earth-main/space-app/public/assets/katlaB.jpg",
+      "modified": false
+    }
+  ]
+}

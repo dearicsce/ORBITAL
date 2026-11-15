@@ -1,0 +1,79 @@
+{
+  "credit": "ambientCG / Lennart Demes",
+  "licenseSource": "https://docs.ambientcg.com/license/",
+  "retrieved": "2026-11-02",
+  "assets": [
+    {
+      "id": "Grass004",
+      "source": "https://ambientcg.com/a/Grass004",
+      "download": "https://ambientcg.com/get?file=Grass004_2K-JPG.zip&download=1",
+      "archiveSha256": "d7d3f08e8bb1e59aed0c3dbb85ea0b46d5308481f89b6a3fd62c0ec9e862245b",
+      "license": "CC0-1.0",
+      "files": [
+        {
+          "path": "textures/launch/Grass004_2K-JPG_Color.jpg",
+          "bytes": 7644307,
+          "sha256": "735b141c8f1972e70a45879424f1238fea9f887324173097785f4ac36e67e9a3"
+        },
+        {
+          "path": "textures/launch/Grass004_2K-JPG_NormalGL.jpg",
+          "bytes": 10015079,
+          "sha256": "15ccad231764049d6581a52076d02bb6b627df77895cb0508e4017d8a4877fef"
+        },
+        {
+          "path": "textures/launch/Grass004_2K-JPG_Roughness.jpg",
+          "bytes": 3413801,
+          "sha256": "c449fdf1e779eb7be5a19c1d58ee28cc155ed0523a141b151f3cbc843c4ae2e3"
+        }
+      ]
+    },
+    {
+      "id": "Asphalt012",
+      "source": "https://ambientcg.com/a/Asphalt012",
+      "download": "https://ambientcg.com/get?file=Asphalt012_2K-JPG.zip&download=1",
+      "archiveSha256": "9a1265d8c1ab367560e378c2a8a9641bf4af84cd50bda6d13fb85c41abd48a92",
+      "license": "CC0-1.0",
+      "files": [
+        {
+          "path": "textures/launch/Asphalt012_2K-JPG_Color.jpg",
+          "bytes": 4104616,
+          "sha256": "40517abe931e321b0fe059314720b6be0166159437220592afab49d79244e9de"
+        },
+        {
+          "path": "textures/launch/Asphalt012_2K-JPG_NormalGL.jpg",
+          "bytes": 9575192,
+          "sha256": "bf87b1095ed1f994a6fd63a079536a7df2fce07a2732d2fefdb2af9af1c094ca"
+        },
+        {
+          "path": "textures/launch/Asphalt012_2K-JPG_Roughness.jpg",
+          "bytes": 3068647,
+          "sha256": "b7a6f2e17842ae0136f89424aacfa8b0f357cffafab99365a990d5d00927925c"
+        }
+      ]
+    },
+    {
+      "id": "Concrete030",
+      "source": "https://ambientcg.com/a/Concrete030",
+      "download": "https://ambientcg.com/get?file=Concrete030_2K-JPG.zip&download=1",
+      "archiveSha256": "cf129c209f714650e7ad6a9dcf34b1bc31e06192db1ccf3470b754c989a3993c",
+      "license": "CC0-1.0",
+      "files": [
+        {
+          "path": "textures/launch/Concrete030_2K-JPG_Color.jpg",
+          "bytes": 3535485,
+          "sha256": "dbd2447513aed53bc2dd3335274312ee5b545066dd1c7320ae3526a86fc806a1"
+        },
+        {
+          "path": "textures/launch/Concrete030_2K-JPG_NormalGL.jpg",
+          "bytes": 8137932,
+          "sha256": "e84b07e9cd2e01da883ae26dba303e1a8c855887df3082f92d843e7b58d831f4"
+        },
+        {
+          "path": "textures/launch/Concrete030_2K-JPG_Roughness.jpg",
+          "bytes": 2704947,
+          "sha256": "65880c731bf56d9409c499841fc4ce86ad32737535a39cce6da9e95b1476d033"
+        }
+      ]
+    }
+  ]
+}

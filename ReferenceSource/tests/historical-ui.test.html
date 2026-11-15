@@ -1,0 +1,28 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>Historical context UI checks</title>
+<link rel="stylesheet" href="../css/historical-context.css"><style>body{background:#09141d;color:white;font:15px system-ui;margin:24px}</style>
+<h1>Historical context UI checks</h1><p id="results">Running…</p><div id="fixture"></div>
+<script type="module">
+import {renderHistoricalContext} from '../js/ui/historicalContext.js';
+const originalFetch=window.fetch,host=document.querySelector('#fixture');
+let assertions=0;const check=(ok,message)=>{if(!ok)throw new Error(message);assertions++;};
+const until=async predicate=>{for(let i=0;i<200;i++){if(predicate())return;await new Promise(r=>setTimeout(r,25));}throw new Error('UI result timed out');};
+try{
+ const dataset=await originalFetch('../data/content/historical-context.json').then(r=>r.json());
+ let fail=true;window.fetch=async()=>fail?new Response('unavailable',{status:404}):new Response(JSON.stringify(dataset));
+ renderHistoricalContext(host);host.querySelector('details').open=true;
+ await until(()=>host.querySelector('button'));
+ check(host.textContent.includes('Core missions remain available'),'Failure keeps gameplay available');check(host.querySelector('button').textContent==='Retry reference','Actionable retry');
+ fail=false;host.querySelector('button').click();await until(()=>host.querySelector('table'));
+ check(host.textContent.includes('Publisher and count definitions remain unverified'),'Provenance visible');check(host.textContent.includes('inferred from filenames'),'Cutoff uncertainty visible');
+ check(host.querySelectorAll('tbody tr').length===69,'Full supplied rows');
+ check(host.querySelector('svg path[stroke-dasharray]')!==null,'Partial-year chart segment distinguished');
+ const partial=host.querySelector('#history-partial');partial.checked=false;partial.dispatchEvent(new Event('change'));
+ check(host.querySelectorAll('tbody tr').length===68,'Partial-year filter applies to table');check(!host.querySelector('svg path[stroke-dasharray]'),'Partial-year filter applies to chart');
+ const series=host.querySelector('#history-series');series.value='payloadToLaunchRatios_2025-10-02';series.dispatchEvent(new Event('change'));
+ check(host.querySelector('caption').textContent.includes('Payloads per launch'),'Ratio table label');check(host.querySelectorAll('tbody tr').length===68,'Filter preserved across series');
+ const last=host.querySelector('tbody').lastElementChild;
+ check(last.cells[0].textContent==='2024'&&last.cells[1].textContent==='10.27','Original ratio retained exactly');
+ check(host.querySelector('svg').getAttribute('aria-label').includes('equivalent values'),'Chart references accessible table');
+ document.querySelector('#results').textContent='PASS: '+assertions+' historical UI assertions';
+}catch(error){document.querySelector('#results').textContent='FAIL: '+error.message;console.error(error);}finally{window.fetch=originalFetch;}
+</script></html>

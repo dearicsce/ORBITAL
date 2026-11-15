@@ -1,0 +1,1253 @@
+{
+  "launchers": [
+    {
+      "id": "kestrel",
+      "name": "Falcon 9",
+      "cost": 12,
+      "capacity": {
+        "leo": 300,
+        "gto": 0,
+        "tli": 0
+      },
+      "reliability": 0.9,
+      "unlock": "start"
+    },
+    {
+      "id": "condor",
+      "name": "Atlas V",
+      "cost": 45,
+      "capacity": {
+        "leo": 1500,
+        "gto": 600,
+        "tli": 0
+      },
+      "reliability": 0.93,
+      "unlock": "after_m1"
+    },
+    {
+      "id": "albatross",
+      "name": "Ares I",
+      "cost": 110,
+      "capacity": {
+        "leo": 6000,
+        "gto": 2500,
+        "tli": 1200
+      },
+      "reliability": 0.95,
+      "unlock": "after_m2"
+    },
+    {
+      "id": "roc",
+      "name": "Atlas V (extended scenario)",
+      "cost": 250,
+      "capacity": {
+        "leo": 18000,
+        "gto": 8000,
+        "tli": 5000
+      },
+      "reliability": 0.96,
+      "unlock": "after_w2m1"
+    }
+  ],
+  "orbits": [
+    {
+      "id": "leo",
+      "name": "Low Earth orbit (LEO, 500 km, inclined)",
+      "launcherClass": "LEO",
+      "capacityFactor": 1,
+      "extraLaunchCost": 0,
+      "eclipseHours": 0.6,
+      "contactHours": 0.8,
+      "distanceFactor": 1,
+      "insertionFuel": 0,
+      "yearlyBurn": 3,
+      "highRadiation": false,
+      "opsCostPerYear": 2,
+      "unlock": "start",
+      "tip": "Standard inclined low Earth orbit with moderate eclipse and frequent ground station passes."
+    },
+    {
+      "id": "sso",
+      "name": "Sun-synchronous polar orbit (SSO, 700 km)",
+      "launcherClass": "LEO",
+      "capacityFactor": 0.85,
+      "extraLaunchCost": 3,
+      "eclipseHours": 0.2,
+      "contactHours": 1.3,
+      "distanceFactor": 1,
+      "insertionFuel": 0,
+      "yearlyBurn": 3,
+      "highRadiation": false,
+      "opsCostPerYear": 2,
+      "unlock": "start",
+      "tip": "Polar launches fight against Earth's rotation, so they lift less mass. A dawn-dusk SSO is almost always in sunlight, needing a tiny battery."
+    },
+    {
+      "id": "geo",
+      "name": "Geostationary orbit (GEO)",
+      "launcherClass": "GTO",
+      "capacityFactor": 1,
+      "extraLaunchCost": 0,
+      "eclipseHours": 1.2,
+      "contactHours": 24,
+      "distanceFactor": 0.3,
+      "insertionFuel": 20,
+      "yearlyBurn": 4,
+      "highRadiation": true,
+      "opsCostPerYear": 4,
+      "unlock": "start",
+      "tip": "GEO is far away: great ground contact, weak signal. Beyond low Earth orbit, radiation is stronger because Earth's magnetic field no longer shields the spacecraft."
+    },
+    {
+      "id": "llo",
+      "name": "Low lunar orbit (LLO, 100 km)",
+      "launcherClass": "TLI",
+      "capacityFactor": 1,
+      "extraLaunchCost": 0,
+      "eclipseHours": 0.9,
+      "contactHours": 8,
+      "distanceFactor": 0.1,
+      "insertionFuel": 40,
+      "yearlyBurn": 6,
+      "highRadiation": true,
+      "opsCostPerYear": 4,
+      "unlock": "start",
+      "tip": "Lunar orbit requires trans-lunar injection and significant insertion fuel. Signal strength is low and radiation is high."
+    },
+    {
+      "id": "lagrange",
+      "name": "Lagrange point",
+      "launcherClass": "TLI",
+      "capacityFactor": 0.9,
+      "extraLaunchCost": 0,
+      "eclipseHours": 0,
+      "contactHours": 6,
+      "distanceFactor": 0.1,
+      "insertionFuel": 25,
+      "yearlyBurn": 1,
+      "highRadiation": true,
+      "opsCostPerYear": 4,
+      "unlock": "after_m3",
+      "tip": "A Lagrange point is a gravity balance spot with no eclipse and very little fuel use, but it takes a long trip to reach."
+    }
+  ],
+  "parts": [
+    {
+      "id": "bus_micro",
+      "name": "Micro bus",
+      "type": "bus",
+      "mass": 40,
+      "baseLoad": 20,
+      "powerDraw": 20,
+      "slots": 1,
+      "cost": 4,
+      "unlock": "start",
+      "schemaVersion": 2,
+      "visualId": "bus_micro",
+      "units": {
+        "mass": "kg",
+        "cost": "million USD",
+        "power": "W",
+        "capacityWh": "Wh",
+        "maxDataGbDay": "decimal GB/day",
+        "baseDownlinkGbDay": "decimal GB/day",
+        "fuelKg": "kg"
+      },
+      "balanceStatus": "Authored educational balance; not measured flight hardware"
+    },
+    {
+      "id": "bus_small",
+      "name": "Small bus",
+      "type": "bus",
+      "mass": 120,
+      "baseLoad": 50,
+      "powerDraw": 50,
+      "slots": 2,
+      "cost": 10,
+      "unlock": "start",
+      "schemaVersion": 2,
+      "visualId": "bus_small",
+      "units": {
+        "mass": "kg",
+        "cost": "million USD",
+        "power": "W",
+        "capacityWh": "Wh",
+        "maxDataGbDay": "decimal GB/day",
+        "baseDownlinkGbDay": "decimal GB/day",
+        "fuelKg": "kg"
+      },
+      "balanceStatus": "Authored educational balance; not measured flight hardware"
+    },
+    {
+      "id": "bus_medium",
+      "name": "Medium bus",
+      "type": "bus",
+      "mass": 300,
+      "baseLoad": 120,
+      "powerDraw": 120,
+      "slots": 3,
+      "cost": 25,
+      "unlock": "after_m1",
+      "schemaVersion": 2,
+      "visualId": "bus_medium",
+      "units": {
+        "mass": "kg",
+        "cost": "million USD",
+        "power": "W",
+        "capacityWh": "Wh",
+        "maxDataGbDay": "decimal GB/day",
+        "baseDownlinkGbDay": "decimal GB/day",
+        "fuelKg": "kg"
+      },
+      "balanceStatus": "Authored educational balance; not measured flight hardware"
+    },
+    {
+      "id": "bus_large",
+      "name": "Large bus",
+      "type": "bus",
+      "mass": 700,
+      "baseLoad": 250,
+      "powerDraw": 250,
+      "slots": 4,
+      "cost": 60,
+      "unlock": "after_m3",
+      "schemaVersion": 2,
+      "visualId": "bus_large",
+      "units": {
+        "mass": "kg",
+        "cost": "million USD",
+        "power": "W",
+        "capacityWh": "Wh",
+        "maxDataGbDay": "decimal GB/day",
+        "baseDownlinkGbDay": "decimal GB/day",
+        "fuelKg": "kg"
+      },
+      "balanceStatus": "Authored educational balance; not measured flight hardware"
+    },
+    {
+      "id": "panel_s",
+      "name": "Solar panel S",
+      "type": "panel",
+      "mass": 8,
+      "power": 60,
+      "powerGen": 60,
+      "cost": 1.5,
+      "unlock": "start",
+      "schemaVersion": 2,
+      "visualId": "solar_wing_s",
+      "units": {
+        "mass": "kg",
+        "cost": "million USD",
+        "power": "W",
+        "capacityWh": "Wh",
+        "maxDataGbDay": "decimal GB/day",
+        "baseDownlinkGbDay": "decimal GB/day",
+        "fuelKg": "kg"
+      },
+      "balanceStatus": "Authored educational balance; not measured flight hardware"
+    },
+    {
+      "id": "panel_m",
+      "name": "Solar panel M",
+      "type": "panel",
+      "mass": 18,
+      "power": 150,
+      "powerGen": 150,
+      "cost": 3,
+      "unlock": "start",
+      "schemaVersion": 2,
+      "visualId": "solar_wing_m",
+      "units": {
+        "mass": "kg",
+        "cost": "million USD",
+        "power": "W",
+        "capacityWh": "Wh",
+        "maxDataGbDay": "decimal GB/day",
+        "baseDownlinkGbDay": "decimal GB/day",
+        "fuelKg": "kg"
+      },
+      "balanceStatus": "Authored educational balance; not measured flight hardware"
+    },
+    {
+      "id": "panel_l",
+      "name": "Solar panel L",
+      "type": "panel",
+      "mass": 30,
+      "power": 300,
+      "powerGen": 300,
+      "cost": 7,
+      "unlock": "after_m1",
+      "schemaVersion": 2,
+      "visualId": "solar_wing_l",
+      "units": {
+        "mass": "kg",
+        "cost": "million USD",
+        "power": "W",
+        "capacityWh": "Wh",
+        "maxDataGbDay": "decimal GB/day",
+        "baseDownlinkGbDay": "decimal GB/day",
+        "fuelKg": "kg"
+      },
+      "balanceStatus": "Authored educational balance; not measured flight hardware"
+    },
+    {
+      "id": "battery_s",
+      "name": "Battery pack S",
+      "type": "battery",
+      "mass": 5,
+      "capacityWh": 100,
+      "cost": 1,
+      "unlock": "start",
+      "schemaVersion": 2,
+      "visualId": "battery_s",
+      "units": {
+        "mass": "kg",
+        "cost": "million USD",
+        "power": "W",
+        "capacityWh": "Wh",
+        "maxDataGbDay": "decimal GB/day",
+        "baseDownlinkGbDay": "decimal GB/day",
+        "fuelKg": "kg"
+      },
+      "balanceStatus": "Authored educational balance; not measured flight hardware"
+    },
+    {
+      "id": "battery_m",
+      "name": "Battery pack M",
+      "type": "battery",
+      "mass": 14,
+      "capacityWh": 300,
+      "cost": 2.5,
+      "unlock": "start",
+      "schemaVersion": 2,
+      "visualId": "battery_m",
+      "units": {
+        "mass": "kg",
+        "cost": "million USD",
+        "power": "W",
+        "capacityWh": "Wh",
+        "maxDataGbDay": "decimal GB/day",
+        "baseDownlinkGbDay": "decimal GB/day",
+        "fuelKg": "kg"
+      },
+      "balanceStatus": "Authored educational balance; not measured flight hardware"
+    },
+    {
+      "id": "battery_l",
+      "name": "Battery pack L",
+      "type": "battery",
+      "mass": 35,
+      "capacityWh": 800,
+      "cost": 6,
+      "unlock": "after_m1",
+      "schemaVersion": 2,
+      "visualId": "battery_l",
+      "units": {
+        "mass": "kg",
+        "cost": "million USD",
+        "power": "W",
+        "capacityWh": "Wh",
+        "maxDataGbDay": "decimal GB/day",
+        "baseDownlinkGbDay": "decimal GB/day",
+        "fuelKg": "kg"
+      },
+      "balanceStatus": "Authored educational balance; not measured flight hardware"
+    },
+    {
+      "id": "comms_uhf",
+      "name": "UHF radio",
+      "type": "comms",
+      "mass": 1,
+      "power": 5,
+      "powerDraw": 5,
+      "cost": 0.5,
+      "baseDownlinkGbDay": 2,
+      "unlock": "start",
+      "schemaVersion": 2,
+      "visualId": "comms_uhf",
+      "units": {
+        "mass": "kg",
+        "cost": "million USD",
+        "power": "W",
+        "capacityWh": "Wh",
+        "maxDataGbDay": "decimal GB/day",
+        "baseDownlinkGbDay": "decimal GB/day",
+        "fuelKg": "kg"
+      },
+      "transmitPowerW": 5,
+      "standbyPowerW": 1.25,
+      "balanceStatus": "Authored educational balance; not measured flight hardware"
+    },
+    {
+      "id": "comms_s_band",
+      "name": "S-band radio",
+      "type": "comms",
+      "mass": 3,
+      "power": 15,
+      "powerDraw": 15,
+      "cost": 1,
+      "baseDownlinkGbDay": 10,
+      "unlock": "start",
+      "schemaVersion": 2,
+      "visualId": "comms_s_band",
+      "units": {
+        "mass": "kg",
+        "cost": "million USD",
+        "power": "W",
+        "capacityWh": "Wh",
+        "maxDataGbDay": "decimal GB/day",
+        "baseDownlinkGbDay": "decimal GB/day",
+        "fuelKg": "kg"
+      },
+      "transmitPowerW": 15,
+      "standbyPowerW": 3.75,
+      "balanceStatus": "Authored educational balance; not measured flight hardware"
+    },
+    {
+      "id": "comms_x_band",
+      "name": "X-band radio",
+      "type": "comms",
+      "mass": 8,
+      "power": 40,
+      "powerDraw": 40,
+      "cost": 3,
+      "baseDownlinkGbDay": 60,
+      "unlock": "start",
+      "schemaVersion": 2,
+      "visualId": "comms_x_band",
+      "units": {
+        "mass": "kg",
+        "cost": "million USD",
+        "power": "W",
+        "capacityWh": "Wh",
+        "maxDataGbDay": "decimal GB/day",
+        "baseDownlinkGbDay": "decimal GB/day",
+        "fuelKg": "kg"
+      },
+      "transmitPowerW": 40,
+      "standbyPowerW": 10,
+      "balanceStatus": "Authored educational balance; not measured flight hardware"
+    },
+    {
+      "id": "comms_ka_band",
+      "name": "Ka-band dish",
+      "type": "comms",
+      "mass": 20,
+      "power": 80,
+      "powerDraw": 80,
+      "cost": 8,
+      "baseDownlinkGbDay": 250,
+      "unlock": "after_m2",
+      "schemaVersion": 2,
+      "visualId": "comms_ka_band",
+      "units": {
+        "mass": "kg",
+        "cost": "million USD",
+        "power": "W",
+        "capacityWh": "Wh",
+        "maxDataGbDay": "decimal GB/day",
+        "baseDownlinkGbDay": "decimal GB/day",
+        "fuelKg": "kg"
+      },
+      "transmitPowerW": 80,
+      "standbyPowerW": 20,
+      "balanceStatus": "Authored educational balance; not measured flight hardware"
+    },
+    {
+      "id": "comms_dish_m",
+      "name": "Ka-band dish",
+      "type": "comms",
+      "mass": 20,
+      "power": 80,
+      "powerDraw": 80,
+      "cost": 8,
+      "baseDownlinkGbDay": 250,
+      "unlock": "after_m2",
+      "schemaVersion": 2,
+      "visualId": "comms_dish_m",
+      "units": {
+        "mass": "kg",
+        "cost": "million USD",
+        "power": "W",
+        "capacityWh": "Wh",
+        "maxDataGbDay": "decimal GB/day",
+        "baseDownlinkGbDay": "decimal GB/day",
+        "fuelKg": "kg"
+      },
+      "transmitPowerW": 80,
+      "standbyPowerW": 20,
+      "balanceStatus": "Authored educational balance; not measured flight hardware"
+    },
+    {
+      "id": "computer_basic",
+      "name": "Basic computer",
+      "type": "computer",
+      "mass": 2,
+      "power": 5,
+      "powerDraw": 5,
+      "cost": 1,
+      "maxDataGbDay": 40,
+      "maxDataPerDay": 40,
+      "radTolerant": false,
+      "unlock": "start",
+      "schemaVersion": 2,
+      "visualId": "computer_basic",
+      "units": {
+        "mass": "kg",
+        "cost": "million USD",
+        "power": "W",
+        "capacityWh": "Wh",
+        "maxDataGbDay": "decimal GB/day",
+        "baseDownlinkGbDay": "decimal GB/day",
+        "fuelKg": "kg"
+      },
+      "recorderCapacityGb": 8,
+      "balanceStatus": "Authored educational balance; not measured flight hardware"
+    },
+    {
+      "id": "computer_advanced",
+      "name": "Advanced computer",
+      "type": "computer",
+      "mass": 4,
+      "power": 12,
+      "powerDraw": 12,
+      "cost": 3,
+      "maxDataGbDay": 120,
+      "maxDataPerDay": 120,
+      "radTolerant": false,
+      "unlock": "after_m1",
+      "schemaVersion": 2,
+      "visualId": "computer_advanced",
+      "units": {
+        "mass": "kg",
+        "cost": "million USD",
+        "power": "W",
+        "capacityWh": "Wh",
+        "maxDataGbDay": "decimal GB/day",
+        "baseDownlinkGbDay": "decimal GB/day",
+        "fuelKg": "kg"
+      },
+      "recorderCapacityGb": 24,
+      "balanceStatus": "Authored educational balance; not measured flight hardware"
+    },
+    {
+      "id": "computer_rad_hard",
+      "name": "Radiation-hardened computer",
+      "type": "computer",
+      "mass": 6,
+      "power": 15,
+      "powerDraw": 15,
+      "cost": 6,
+      "maxDataGbDay": 60,
+      "maxDataPerDay": 60,
+      "radTolerant": true,
+      "unlock": "after_m1",
+      "schemaVersion": 2,
+      "visualId": "computer_rad_hard",
+      "units": {
+        "mass": "kg",
+        "cost": "million USD",
+        "power": "W",
+        "capacityWh": "Wh",
+        "maxDataGbDay": "decimal GB/day",
+        "baseDownlinkGbDay": "decimal GB/day",
+        "fuelKg": "kg"
+      },
+      "recorderCapacityGb": 12,
+      "balanceStatus": "Authored educational balance; not measured flight hardware"
+    },
+    {
+      "id": "pointing_magnetorquers",
+      "name": "Magnetorquers",
+      "type": "pointing",
+      "mass": 1,
+      "power": 2,
+      "powerDraw": 2,
+      "cost": 0.5,
+      "quality": "coarse",
+      "unlock": "start",
+      "schemaVersion": 2,
+      "visualId": "pointing_magnetorquers",
+      "units": {
+        "mass": "kg",
+        "cost": "million USD",
+        "power": "W",
+        "capacityWh": "Wh",
+        "maxDataGbDay": "decimal GB/day",
+        "baseDownlinkGbDay": "decimal GB/day",
+        "fuelKg": "kg"
+      },
+      "balanceStatus": "Authored educational balance; not measured flight hardware"
+    },
+    {
+      "id": "pointing_reaction_wheels",
+      "name": "Reaction wheels",
+      "type": "pointing",
+      "mass": 4,
+      "power": 10,
+      "powerDraw": 10,
+      "cost": 2,
+      "quality": "fine",
+      "unlock": "start",
+      "schemaVersion": 2,
+      "visualId": "pointing_reaction_wheels",
+      "units": {
+        "mass": "kg",
+        "cost": "million USD",
+        "power": "W",
+        "capacityWh": "Wh",
+        "maxDataGbDay": "decimal GB/day",
+        "baseDownlinkGbDay": "decimal GB/day",
+        "fuelKg": "kg"
+      },
+      "balanceStatus": "Authored educational balance; not measured flight hardware"
+    },
+    {
+      "id": "pointing_star_tracker",
+      "name": "Star tracker + wheels",
+      "type": "pointing",
+      "mass": 7,
+      "power": 15,
+      "powerDraw": 15,
+      "cost": 4,
+      "quality": "precision",
+      "unlock": "after_m1",
+      "schemaVersion": 2,
+      "visualId": "pointing_star_tracker",
+      "units": {
+        "mass": "kg",
+        "cost": "million USD",
+        "power": "W",
+        "capacityWh": "Wh",
+        "maxDataGbDay": "decimal GB/day",
+        "baseDownlinkGbDay": "decimal GB/day",
+        "fuelKg": "kg"
+      },
+      "balanceStatus": "Authored educational balance; not measured flight hardware"
+    },
+    {
+      "id": "fuel_s",
+      "name": "Fuel pack S",
+      "type": "fuel",
+      "fuelKg": 10,
+      "mass": 12,
+      "cost": 1,
+      "unlock": "start",
+      "schemaVersion": 2,
+      "visualId": "fuel_s",
+      "units": {
+        "mass": "kg",
+        "cost": "million USD",
+        "power": "W",
+        "capacityWh": "Wh",
+        "maxDataGbDay": "decimal GB/day",
+        "baseDownlinkGbDay": "decimal GB/day",
+        "fuelKg": "kg"
+      },
+      "balanceStatus": "Authored educational balance; not measured flight hardware"
+    },
+    {
+      "id": "fuel_m",
+      "name": "Fuel pack M",
+      "type": "fuel",
+      "fuelKg": 25,
+      "mass": 30,
+      "cost": 2.2,
+      "unlock": "start",
+      "schemaVersion": 2,
+      "visualId": "fuel_m",
+      "units": {
+        "mass": "kg",
+        "cost": "million USD",
+        "power": "W",
+        "capacityWh": "Wh",
+        "maxDataGbDay": "decimal GB/day",
+        "baseDownlinkGbDay": "decimal GB/day",
+        "fuelKg": "kg"
+      },
+      "balanceStatus": "Authored educational balance; not measured flight hardware"
+    },
+    {
+      "id": "fuel_l",
+      "name": "Fuel pack L",
+      "type": "fuel",
+      "fuelKg": 60,
+      "mass": 70,
+      "cost": 4.5,
+      "unlock": "after_m2",
+      "schemaVersion": 2,
+      "visualId": "fuel_l",
+      "units": {
+        "mass": "kg",
+        "cost": "million USD",
+        "power": "W",
+        "capacityWh": "Wh",
+        "maxDataGbDay": "decimal GB/day",
+        "baseDownlinkGbDay": "decimal GB/day",
+        "fuelKg": "kg"
+      },
+      "balanceStatus": "Authored educational balance; not measured flight hardware"
+    }
+  ],
+  "instruments": [
+    {
+      "id": "magnetometer",
+      "name": "Magnetometer",
+      "kind": "payload",
+      "mass": 2,
+      "power": 2,
+      "cost": 1,
+      "dataPerDay": 0.2,
+      "value": 1,
+      "pointing": "coarse",
+      "unlock": "start",
+      "schemaVersion": 2,
+      "visualId": "magnetometer",
+      "units": {
+        "mass": "kg",
+        "cost": "million USD",
+        "power": "W",
+        "dataPerDay": "decimal GB/day",
+        "value": "game science points"
+      },
+      "balanceStatus": "Authored educational balance"
+    },
+    {
+      "id": "thermal_imager",
+      "name": "Thermal infrared imager",
+      "kind": "payload",
+      "mass": 20,
+      "power": 20,
+      "cost": 4,
+      "dataPerDay": 10,
+      "value": 3,
+      "pointing": "fine",
+      "unlock": "start",
+      "schemaVersion": 2,
+      "visualId": "thermal_imager",
+      "units": {
+        "mass": "kg",
+        "cost": "million USD",
+        "power": "W",
+        "dataPerDay": "decimal GB/day",
+        "value": "game science points"
+      },
+      "balanceStatus": "Authored educational balance"
+    },
+    {
+      "id": "weather_imager",
+      "name": "Weather imager",
+      "kind": "payload",
+      "mass": 25,
+      "power": 30,
+      "cost": 5,
+      "dataPerDay": 20,
+      "value": 3,
+      "pointing": "fine",
+      "unlock": "start",
+      "schemaVersion": 2,
+      "visualId": "weather_imager",
+      "units": {
+        "mass": "kg",
+        "cost": "million USD",
+        "power": "W",
+        "dataPerDay": "decimal GB/day",
+        "value": "game science points"
+      },
+      "balanceStatus": "Authored educational balance"
+    },
+    {
+      "id": "optical_camera",
+      "name": "Optical camera",
+      "kind": "payload",
+      "mass": 30,
+      "power": 40,
+      "cost": 6,
+      "dataPerDay": 30,
+      "value": 4,
+      "pointing": "fine",
+      "unlock": "start",
+      "schemaVersion": 2,
+      "visualId": "optical_camera",
+      "units": {
+        "mass": "kg",
+        "cost": "million USD",
+        "power": "W",
+        "dataPerDay": "decimal GB/day",
+        "value": "game science points"
+      },
+      "balanceStatus": "Authored educational balance"
+    },
+    {
+      "id": "radar_imager",
+      "name": "Radar imager (SAR)",
+      "kind": "payload",
+      "mass": 60,
+      "power": 150,
+      "cost": 14,
+      "dataPerDay": 60,
+      "value": 5,
+      "pointing": "fine",
+      "unlock": "after_m1",
+      "schemaVersion": 2,
+      "visualId": "radar_imager",
+      "units": {
+        "mass": "kg",
+        "cost": "million USD",
+        "power": "W",
+        "dataPerDay": "decimal GB/day",
+        "value": "game science points"
+      },
+      "balanceStatus": "Authored educational balance"
+    },
+    {
+      "id": "spectrometer",
+      "name": "Spectrometer",
+      "kind": "payload",
+      "mass": 15,
+      "power": 25,
+      "cost": 9,
+      "dataPerDay": 8,
+      "value": 5,
+      "pointing": "precision",
+      "unlock": "after_m2",
+      "schemaVersion": 2,
+      "visualId": "spectrometer",
+      "units": {
+        "mass": "kg",
+        "cost": "million USD",
+        "power": "W",
+        "dataPerDay": "decimal GB/day",
+        "value": "game science points"
+      },
+      "balanceStatus": "Authored educational balance"
+    },
+    {
+      "id": "laser_altimeter",
+      "name": "Laser altimeter",
+      "kind": "payload",
+      "mass": 20,
+      "power": 30,
+      "cost": 8,
+      "dataPerDay": 5,
+      "value": 4,
+      "pointing": "precision",
+      "unlock": "after_m2",
+      "schemaVersion": 2,
+      "visualId": "laser_altimeter",
+      "units": {
+        "mass": "kg",
+        "cost": "million USD",
+        "power": "W",
+        "dataPerDay": "decimal GB/day",
+        "value": "game science points"
+      },
+      "balanceStatus": "Authored educational balance"
+    },
+    {
+      "id": "neutron_detector",
+      "name": "Neutron and gamma detector",
+      "kind": "payload",
+      "mass": 12,
+      "power": 15,
+      "cost": 7,
+      "dataPerDay": 3,
+      "value": 4,
+      "pointing": "coarse",
+      "unlock": "after_m2",
+      "schemaVersion": 2,
+      "visualId": "neutron_detector",
+      "units": {
+        "mass": "kg",
+        "cost": "million USD",
+        "power": "W",
+        "dataPerDay": "decimal GB/day",
+        "value": "game science points"
+      },
+      "balanceStatus": "Authored educational balance"
+    },
+    {
+      "id": "transponder_s",
+      "name": "Transponder S (relay payload)",
+      "kind": "relay",
+      "mass": 25,
+      "power": 80,
+      "cost": 9,
+      "dataPerDay": 0,
+      "value": 3,
+      "pointing": "fine",
+      "unlock": "after_m1",
+      "schemaVersion": 2,
+      "visualId": "transponder_s",
+      "units": {
+        "mass": "kg",
+        "cost": "million USD",
+        "power": "W",
+        "dataPerDay": "decimal GB/day",
+        "value": "game science points"
+      },
+      "balanceStatus": "Authored educational balance"
+    },
+    {
+      "id": "transponder_m",
+      "name": "Transponder M (relay payload)",
+      "kind": "relay",
+      "mass": 40,
+      "power": 150,
+      "cost": 15,
+      "dataPerDay": 0,
+      "value": 5,
+      "pointing": "fine",
+      "unlock": "after_m1",
+      "schemaVersion": 2,
+      "visualId": "transponder_m",
+      "units": {
+        "mass": "kg",
+        "cost": "million USD",
+        "power": "W",
+        "dataPerDay": "decimal GB/day",
+        "value": "game science points"
+      },
+      "balanceStatus": "Authored educational balance"
+    },
+    {
+      "id": "transponder_l",
+      "name": "Transponder L (relay payload)",
+      "kind": "relay",
+      "mass": 70,
+      "power": 300,
+      "cost": 26,
+      "dataPerDay": 0,
+      "value": 8,
+      "pointing": "fine",
+      "unlock": "after_m2",
+      "schemaVersion": 2,
+      "visualId": "transponder_l",
+      "units": {
+        "mass": "kg",
+        "cost": "million USD",
+        "power": "W",
+        "dataPerDay": "decimal GB/day",
+        "value": "game science points"
+      },
+      "balanceStatus": "Authored educational balance"
+    }
+  ],
+  "missions": [
+    {
+      "id": "tutorial",
+      "name": "Weather watcher",
+      "brief": "A guided mission to a low Earth orbit. Each step introduces one idea with locked parts.",
+      "budget": 50,
+      "targetLifetime": 1,
+      "launchers": [
+        "kestrel"
+      ],
+      "relevance": {
+        "optical_camera": 1,
+        "weather_imager": 1,
+        "thermal_imager": 0.5,
+        "magnetometer": 0.5
+      },
+      "orbitFit": {
+        "leo": 1,
+        "sso": 1
+      },
+      "starThresholds": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "fixedEvents": [],
+      "missionDifficulty": 1
+    },
+    {
+      "id": "m1",
+      "name": "Flood watch",
+      "brief": "Monitor monsoon floods over India for 2 years.",
+      "budget": 50,
+      "targetLifetime": 2,
+      "launchers": [
+        "kestrel"
+      ],
+      "relevance": {
+        "optical_camera": 1,
+        "radar_imager": 1,
+        "thermal_imager": 0.5,
+        "weather_imager": 0.5
+      },
+      "orbitFit": {
+        "sso": 1,
+        "leo": 0.8,
+        "geo": 0.4
+      },
+      "starThresholds": [
+        2.5,
+        4,
+        5.5,
+        7
+      ],
+      "fixedEvents": [
+        "antenna_fault"
+      ],
+      "image": "images/missions/m1.jpg",
+      "tag": "Disaster watch",
+      "missionDifficulty": 1
+    },
+    {
+      "id": "m2",
+      "name": "Remote links",
+      "brief": "A relay satellite to keep remote mountain villages connected for 3 years.",
+      "budget": 140,
+      "targetLifetime": 3,
+      "launchers": [
+        "kestrel",
+        "condor"
+      ],
+      "relevance": {
+        "transponder_s": 1,
+        "transponder_m": 1,
+        "transponder_l": 1
+      },
+      "orbitFit": {
+        "geo": 1,
+        "leo": 0.3
+      },
+      "starThresholds": [
+        1.5,
+        3,
+        5,
+        8
+      ],
+      "fixedEvents": [
+        "solar_flare",
+        "battery_fade"
+      ],
+      "image": "images/missions/m2.jpg",
+      "tag": "Mountain connections",
+      "missionDifficulty": 2
+    },
+    {
+      "id": "m3",
+      "name": "Moon ice hunt",
+      "brief": "Search for water ice from lunar orbit for 1.5 years.",
+      "budget": 210,
+      "targetLifetime": 1.5,
+      "launchers": [
+        "albatross"
+      ],
+      "relevance": {
+        "spectrometer": 1,
+        "laser_altimeter": 1,
+        "neutron_detector": 1,
+        "magnetometer": 0.5,
+        "optical_camera": 0.5,
+        "thermal_imager": 0.5
+      },
+      "orbitFit": {
+        "llo": 1
+      },
+      "starThresholds": [
+        3,
+        6,
+        9,
+        12
+      ],
+      "fixedEvents": [
+        "solar_flare",
+        "debris_warning"
+      ],
+      "image": "images/missions/m3.jpg",
+      "tag": "Lunar discovery",
+      "missionDifficulty": 3
+    }
+  ],
+  "settings": {
+    "batteryUsableFraction": 0.8,
+    "powerMargin": 1.1,
+    "passStars": 3,
+    "engineerTiers": [
+      {
+        "minMargin": 0.15,
+        "stars": 2
+      },
+      {
+        "minMargin": 0.1,
+        "stars": 1.5
+      },
+      {
+        "minMargin": 0.05,
+        "stars": 1
+      },
+      {
+        "minMargin": 0,
+        "stars": 0.5
+      }
+    ],
+    "accountantTiers": [
+      {
+        "maxBudgetFraction": 0.7,
+        "stars": 2
+      },
+      {
+        "maxBudgetFraction": 0.8,
+        "stars": 1.5
+      },
+      {
+        "maxBudgetFraction": 0.9,
+        "stars": 1
+      },
+      {
+        "maxBudgetFraction": 1,
+        "stars": 0.5
+      }
+    ],
+    "medals": [
+      {
+        "name": "Bronze",
+        "minStars": 3,
+        "maxStars": 4
+      },
+      {
+        "name": "Silver",
+        "minStars": 4.5,
+        "maxStars": 5
+      },
+      {
+        "name": "Gold",
+        "minStars": 5.5,
+        "maxStars": 6
+      }
+    ]
+  },
+  "events": [
+    {
+      "id": "solar_flare",
+      "name": "Solar flare",
+      "effect": "The computer resets. Science -30% unless shielded or radiation-tolerant.",
+      "survivedIf": "LEO or SSO (Earth's magnetic field protects), or a radiation-tolerant computer.",
+      "params": {
+        "scienceLoss": 0.3
+      }
+    },
+    {
+      "id": "antenna_fault",
+      "name": "Antenna fault",
+      "effect": "Downlink halves for 30 days. Science loss proportional to shortfall.",
+      "survivedIf": "Downlink margin is 50% or more.",
+      "params": {
+        "minDownlinkMargin": 0.5
+      }
+    },
+    {
+      "id": "battery_fade",
+      "name": "Battery fade",
+      "effect": "Battery capacity -20%. Instruments switch off in eclipse, science -15% if unshielded.",
+      "survivedIf": "Eclipse battery margin is 25% or more.",
+      "params": {
+        "minBatteryMargin": 0.25,
+        "scienceLoss": 0.15
+      }
+    },
+    {
+      "id": "budget_cut",
+      "name": "Budget cut",
+      "effect": "Operations budget -20%. Lifetime -20% if unbuffered.",
+      "survivedIf": "Budget used is 80% or less.",
+      "params": {
+        "maxBudgetUsed": 0.8,
+        "lifetimeLoss": 0.2
+      }
+    },
+    {
+      "id": "debris_warning",
+      "name": "Debris warning",
+      "effect": "An avoidance burn costs 3 kg fuel. Lifetime -25% if fuel shortfall.",
+      "survivedIf": "Fuel margin is at least 3 kg.",
+      "params": {
+        "fuelBurnKg": 3,
+        "lifetimeLoss": 0.25
+      }
+    }
+  ],
+  "difficulty": {
+    "easy": {
+      "budgetMultiplier": 1.3,
+      "randomEvents": "off",
+      "launchFailure": false,
+      "hints": "always",
+      "partsAutomation": "auto"
+    },
+    "normal": {
+      "budgetMultiplier": 1,
+      "randomEvents": "fixed_1_to_2",
+      "launchFailure": false,
+      "hints": "on_request",
+      "partsAutomation": "manual"
+    },
+    "hard": {
+      "budgetMultiplier": 0.9,
+      "randomEvents": "random_2_to_3",
+      "eventCount": [
+        2,
+        3
+      ],
+      "launchFailure": true,
+      "hints": "off",
+      "partsAutomation": "manual"
+    }
+  },
+  "tutorial": {
+    "allowedParts": [
+      "bus_micro",
+      "panel_s",
+      "panel_m",
+      "battery_s",
+      "comms_x_band",
+      "computer_basic",
+      "pointing_magnetorquers",
+      "pointing_reaction_wheels",
+      "fuel_s",
+      "optical_camera",
+      "weather_imager"
+    ],
+    "allowedOrbits": [
+      "leo",
+      "sso"
+    ],
+    "steps": [
+      {
+        "id": "orbit",
+        "title": "Choose an orbit",
+        "instruction": "Select LEO and SSO. Compare sunlight and ground contact, then confirm.",
+        "highlight": "#orbit-info"
+      },
+      {
+        "id": "mass",
+        "title": "Mass and lift",
+        "instruction": "Equip the Micro bus, then Fuel pack S. Watch the Mass row.",
+        "highlight": "[data-bar=\"mass\"]"
+      },
+      {
+        "id": "power",
+        "title": "Balance your power",
+        "instruction": "Install the Optical camera, then Solar panel M. Generation must cover your equipment.",
+        "highlight": "[data-bar=\"power\"]"
+      },
+      {
+        "id": "budget",
+        "title": "Stay within budget",
+        "instruction": "Equip X-band communications. Check your total mission cost against the budget.",
+        "highlight": "[data-bar=\"budget\"]"
+      },
+      {
+        "id": "launch",
+        "title": "Ready for flight",
+        "instruction": "Add Battery S, the Basic computer and Reaction wheels. Pass all launch checks, then continue to advisory.",
+        "highlight": "#btn-design-review"
+      }
+    ]
+  },
+  "schemaVersion": 2
+}

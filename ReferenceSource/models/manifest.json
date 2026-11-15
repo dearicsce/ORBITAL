@@ -1,0 +1,1427 @@
+{
+  "kestrel": {
+    "file": null,
+    "targetHeight": 14,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "credit": "Original ORBITAL procedural educational vehicle visual (js/three/launchVehicle.js)",
+    "defer": true,
+    "procedural": "complete_launch_vehicle"
+  },
+  "condor": {
+    "file": null,
+    "targetHeight": 14,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "credit": "Original ORBITAL procedural educational vehicle visual (js/three/launchVehicle.js)",
+    "includeChildren": true,
+    "defer": true,
+    "procedural": "complete_launch_vehicle"
+  },
+  "albatross": {
+    "file": null,
+    "targetHeight": 12,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "credit": "Original ORBITAL procedural educational vehicle visual (js/three/launchVehicle.js)",
+    "includeChildren": true,
+    "procedural": "complete_launch_vehicle"
+  },
+  "roc": {
+    "file": null,
+    "targetHeight": 17,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "credit": "Original ORBITAL procedural educational vehicle visual (js/three/launchVehicle.js)",
+    "includeChildren": true,
+    "defer": true,
+    "procedural": "complete_launch_vehicle"
+  },
+  "launch_tower": {
+    "file": "models/supplied/mobile-launcher.glb",
+    "targetHeight": 15,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "credit": "User-supplied mobile-launcher model; source/license verification pending"
+  },
+  "bus_micro": {
+    "file": null,
+    "targetHeight": 1.1,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "credit": "Original ORBITAL procedural educational geometry; not a historical spacecraft replica",
+    "preservedReference": {
+      "file": "models/supplied/cygnss.glb",
+      "targetHeight": 1.1,
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "credit": "User-supplied cygnss model; source/license verification pending",
+      "hardpoints": {
+        "panelPairs": [
+          {
+            "pos": [
+              0.6485082464409465,
+              0.7150000000000001,
+              -0.15736436705264759
+            ],
+            "dir": [
+              1,
+              0,
+              0
+            ]
+          },
+          {
+            "pos": [
+              0.6485082464409465,
+              0.33,
+              0.15736436705264759
+            ],
+            "dir": [
+              1,
+              0,
+              0
+            ]
+          }
+        ],
+        "comms": {
+          "pos": [
+            0,
+            1.1,
+            0
+          ],
+          "dir": [
+            0,
+            1,
+            0
+          ]
+        },
+        "instruments": [
+          {
+            "pos": [
+              0,
+              0.55,
+              0.262273945087746
+            ],
+            "dir": [
+              0,
+              0,
+              1
+            ]
+          }
+        ],
+        "fuel": [
+          {
+            "pos": [
+              -0.25,
+              -0.2,
+              0
+            ]
+          },
+          {
+            "pos": [
+              0.25,
+              -0.2,
+              0
+            ]
+          }
+        ],
+        "batteries": [
+          {
+            "pos": [
+              0,
+              0.33,
+              -0.262273945087746
+            ]
+          },
+          {
+            "pos": [
+              0,
+              0.77,
+              -0.262273945087746
+            ]
+          }
+        ]
+      },
+      "nodes": [
+        "BUS"
+      ],
+      "excludeNodes": [
+        "antenna_screws",
+        "array_left1",
+        "array_right1",
+        "hinges_left1_right",
+        "hinges_right1_left"
+      ]
+    },
+    "procedural": "modular_enclosed_bus"
+  },
+  "bus_small": {
+    "file": null,
+    "targetHeight": 1.4,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "credit": "Original ORBITAL procedural educational geometry; not a historical spacecraft replica",
+    "preservedReference": {
+      "file": "models/supplied/cloudsat.glb",
+      "targetHeight": 1.4,
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "credit": "User-supplied cloudsat model; source/license verification pending",
+      "hardpoints": {
+        "panelPairs": [
+          {
+            "pos": [
+              0.5229285912207491,
+              0.9099999999999999,
+              -0.2577628354702707
+            ],
+            "dir": [
+              1,
+              0,
+              0
+            ]
+          },
+          {
+            "pos": [
+              0.5229285912207491,
+              0.42,
+              0.2577628354702707
+            ],
+            "dir": [
+              1,
+              0,
+              0
+            ]
+          }
+        ],
+        "comms": {
+          "pos": [
+            0,
+            1.4,
+            0
+          ],
+          "dir": [
+            0,
+            1,
+            0
+          ]
+        },
+        "instruments": [
+          {
+            "pos": [
+              -0.15,
+              0.7,
+              0.42960472578378445
+            ],
+            "dir": [
+              0,
+              0,
+              1
+            ]
+          },
+          {
+            "pos": [
+              0.15,
+              0.7,
+              0.42960472578378445
+            ],
+            "dir": [
+              0,
+              0,
+              1
+            ]
+          }
+        ],
+        "fuel": [
+          {
+            "pos": [
+              -0.25,
+              -0.2,
+              0
+            ]
+          },
+          {
+            "pos": [
+              0.25,
+              -0.2,
+              0
+            ]
+          }
+        ],
+        "batteries": [
+          {
+            "pos": [
+              0,
+              0.42,
+              -0.42960472578378445
+            ]
+          },
+          {
+            "pos": [
+              0,
+              0.9799999999999999,
+              -0.42960472578378445
+            ]
+          }
+        ]
+      },
+      "nodes": [
+        "BUS"
+      ],
+      "excludeNodes": [
+        "AO",
+        "foil_gold",
+        "foil_silver",
+        "metal",
+        "shiny_panel",
+        "tex_01"
+      ]
+    },
+    "procedural": "modular_enclosed_bus"
+  },
+  "bus_medium": {
+    "file": null,
+    "targetHeight": 1.8,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "credit": "Original ORBITAL procedural educational geometry; not a historical spacecraft replica",
+    "preservedReference": {
+      "file": "models/supplied/cloudsat.glb",
+      "targetHeight": 1.8,
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "credit": "User-supplied cloudsat model; source/license verification pending",
+      "hardpoints": {
+        "panelPairs": [
+          {
+            "pos": [
+              0.6723367601409631,
+              1.1700000000000002,
+              -0.33140935989034803
+            ],
+            "dir": [
+              1,
+              0,
+              0
+            ]
+          },
+          {
+            "pos": [
+              0.6723367601409631,
+              0.54,
+              0.33140935989034803
+            ],
+            "dir": [
+              1,
+              0,
+              0
+            ]
+          }
+        ],
+        "comms": {
+          "pos": [
+            0,
+            1.8,
+            0
+          ],
+          "dir": [
+            0,
+            1,
+            0
+          ]
+        },
+        "instruments": [
+          {
+            "pos": [
+              -0.3,
+              0.9,
+              0.5523489331505801
+            ],
+            "dir": [
+              0,
+              0,
+              1
+            ]
+          },
+          {
+            "pos": [
+              0,
+              0.9,
+              0.5523489331505801
+            ],
+            "dir": [
+              0,
+              0,
+              1
+            ]
+          },
+          {
+            "pos": [
+              0.3,
+              0.9,
+              0.5523489331505801
+            ],
+            "dir": [
+              0,
+              0,
+              1
+            ]
+          }
+        ],
+        "fuel": [
+          {
+            "pos": [
+              -0.25,
+              -0.2,
+              0
+            ]
+          },
+          {
+            "pos": [
+              0.25,
+              -0.2,
+              0
+            ]
+          }
+        ],
+        "batteries": [
+          {
+            "pos": [
+              0,
+              0.54,
+              -0.5523489331505801
+            ]
+          },
+          {
+            "pos": [
+              0,
+              1.26,
+              -0.5523489331505801
+            ]
+          }
+        ]
+      },
+      "nodes": [
+        "BUS"
+      ],
+      "excludeNodes": [
+        "AO",
+        "foil_gold",
+        "foil_silver",
+        "metal",
+        "shiny_panel",
+        "tex_01"
+      ]
+    },
+    "procedural": "modular_enclosed_bus"
+  },
+  "bus_large": {
+    "file": null,
+    "targetHeight": 2.4,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "credit": "Original ORBITAL procedural educational geometry; not a historical spacecraft replica",
+    "preservedReference": {
+      "file": "models/supplied/cloudsat.glb",
+      "targetHeight": 2.4,
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "credit": "User-supplied cloudsat model; source/license verification pending",
+      "hardpoints": {
+        "panelPairs": [
+          {
+            "pos": [
+              0.8964490135212841,
+              1.56,
+              -0.44187914652046406
+            ],
+            "dir": [
+              1,
+              0,
+              0
+            ]
+          },
+          {
+            "pos": [
+              0.8964490135212841,
+              0.72,
+              0.44187914652046406
+            ],
+            "dir": [
+              1,
+              0,
+              0
+            ]
+          }
+        ],
+        "comms": {
+          "pos": [
+            0,
+            2.4,
+            0
+          ],
+          "dir": [
+            0,
+            1,
+            0
+          ]
+        },
+        "instruments": [
+          {
+            "pos": [
+              -0.44999999999999996,
+              1.2,
+              0.7364652442007734
+            ],
+            "dir": [
+              0,
+              0,
+              1
+            ]
+          },
+          {
+            "pos": [
+              -0.15,
+              1.2,
+              0.7364652442007734
+            ],
+            "dir": [
+              0,
+              0,
+              1
+            ]
+          },
+          {
+            "pos": [
+              0.15,
+              1.2,
+              0.7364652442007734
+            ],
+            "dir": [
+              0,
+              0,
+              1
+            ]
+          },
+          {
+            "pos": [
+              0.44999999999999996,
+              1.2,
+              0.7364652442007734
+            ],
+            "dir": [
+              0,
+              0,
+              1
+            ]
+          }
+        ],
+        "fuel": [
+          {
+            "pos": [
+              -0.25,
+              -0.2,
+              0
+            ]
+          },
+          {
+            "pos": [
+              0.25,
+              -0.2,
+              0
+            ]
+          }
+        ],
+        "batteries": [
+          {
+            "pos": [
+              0,
+              0.72,
+              -0.7364652442007734
+            ]
+          },
+          {
+            "pos": [
+              0,
+              1.68,
+              -0.7364652442007734
+            ]
+          }
+        ]
+      },
+      "nodes": [
+        "BUS"
+      ],
+      "excludeNodes": [
+        "AO",
+        "foil_gold",
+        "foil_silver",
+        "metal",
+        "shiny_panel",
+        "tex_01"
+      ]
+    },
+    "procedural": "modular_enclosed_bus"
+  },
+  "solar_wing_s": {
+    "file": null,
+    "targetHeight": 0.41800000000000004,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "credit": "Original ORBITAL hinged solar wing with 2048 x 1024 photovoltaic pattern",
+    "procedural": "hinged_solar_wing",
+    "mountOrigin": [
+      0,
+      0,
+      0
+    ],
+    "dimensions": {
+      "span": 1.1,
+      "height": 0.41800000000000004,
+      "unit": "illustrative scene units"
+    }
+  },
+  "solar_wing_m": {
+    "file": null,
+    "targetHeight": 0.627,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "credit": "Original ORBITAL hinged solar wing with 2048 x 1024 photovoltaic pattern",
+    "procedural": "hinged_solar_wing",
+    "mountOrigin": [
+      0,
+      0,
+      0
+    ],
+    "dimensions": {
+      "span": 1.65,
+      "height": 0.627,
+      "unit": "illustrative scene units"
+    }
+  },
+  "solar_wing_l": {
+    "file": null,
+    "targetHeight": 0.8360000000000001,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "credit": "Original ORBITAL hinged solar wing with 2048 x 1024 photovoltaic pattern",
+    "procedural": "hinged_solar_wing",
+    "mountOrigin": [
+      0,
+      0,
+      0
+    ],
+    "dimensions": {
+      "span": 2.2,
+      "height": 0.8360000000000001,
+      "unit": "illustrative scene units"
+    }
+  },
+  "comms_uhf": {
+    "file": null,
+    "targetHeight": 0.15,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "credit": "Original ORBITAL procedural educational geometry; not a historical spacecraft replica",
+    "preservedReference": {
+      "file": "models/supplied/cassini.glb",
+      "targetHeight": 0.15,
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "credit": "User-supplied cassini model; source/license verification pending",
+      "nodes": [
+        "dish"
+      ],
+      "excludeNodes": []
+    },
+    "procedural": "modular_surface_equipment"
+  },
+  "comms_s_band": {
+    "file": null,
+    "targetHeight": 0.15,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "credit": "Original ORBITAL procedural educational geometry; not a historical spacecraft replica",
+    "preservedReference": {
+      "file": "models/supplied/cassini.glb",
+      "targetHeight": 0.15,
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "credit": "User-supplied cassini model; source/license verification pending",
+      "nodes": [
+        "dish"
+      ],
+      "excludeNodes": []
+    },
+    "procedural": "modular_surface_equipment"
+  },
+  "comms_x_band": {
+    "file": null,
+    "targetHeight": 0.15,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "credit": "Original ORBITAL procedural educational geometry; not a historical spacecraft replica",
+    "preservedReference": {
+      "file": "models/supplied/cassini.glb",
+      "targetHeight": 0.15,
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "credit": "User-supplied cassini model; source/license verification pending",
+      "nodes": [
+        "dish"
+      ],
+      "excludeNodes": []
+    },
+    "procedural": "modular_surface_equipment"
+  },
+  "comms_ka_band": {
+    "file": null,
+    "targetHeight": 0.9,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "credit": "Original ORBITAL procedural educational geometry; not a historical spacecraft replica",
+    "preservedReference": {
+      "file": "models/satellite/comms_ka_band.glb",
+      "targetHeight": 0.9,
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "credit": "Original Space Mission Game model, generated by tools/build-models.mjs"
+    },
+    "procedural": "modular_surface_equipment"
+  },
+  "fuel_s": {
+    "file": "models/satellite/fuel_s.glb",
+    "targetHeight": 0.4,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "credit": "Original Space Mission Game model, generated by tools/build-models.mjs"
+  },
+  "fuel_m": {
+    "file": "models/satellite/fuel_m.glb",
+    "targetHeight": 0.6,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "credit": "Original Space Mission Game model, generated by tools/build-models.mjs"
+  },
+  "fuel_l": {
+    "file": "models/satellite/fuel_l.glb",
+    "targetHeight": 0.8,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "credit": "Original Space Mission Game model, generated by tools/build-models.mjs"
+  },
+  "battery_s": {
+    "file": "models/satellite/battery_s.glb",
+    "targetHeight": 0.25,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "credit": "Original Space Mission Game model, generated by tools/build-models.mjs"
+  },
+  "battery_m": {
+    "file": "models/satellite/battery_m.glb",
+    "targetHeight": 0.35,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "credit": "Original Space Mission Game model, generated by tools/build-models.mjs"
+  },
+  "battery_l": {
+    "file": "models/satellite/battery_l.glb",
+    "targetHeight": 0.5,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "credit": "Original Space Mission Game model, generated by tools/build-models.mjs"
+  },
+  "magnetometer": {
+    "file": null,
+    "targetHeight": 0.9,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "credit": "Original ORBITAL procedural educational geometry; not a historical spacecraft replica",
+    "preservedReference": {
+      "file": "models/satellite/magnetometer.glb",
+      "targetHeight": 0.9,
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "credit": "Original Space Mission Game model, generated by tools/build-models.mjs"
+    },
+    "procedural": "modular_surface_equipment"
+  },
+  "thermal_imager": {
+    "file": null,
+    "targetHeight": 0.3,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "credit": "Original ORBITAL procedural educational geometry; not a historical spacecraft replica",
+    "preservedReference": {
+      "file": "models/satellite/thermal_imager.glb",
+      "targetHeight": 0.3,
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "credit": "Original Space Mission Game model, generated by tools/build-models.mjs"
+    },
+    "procedural": "modular_surface_equipment"
+  },
+  "weather_imager": {
+    "file": null,
+    "targetHeight": 0.35,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "credit": "Original ORBITAL procedural educational geometry; not a historical spacecraft replica",
+    "preservedReference": {
+      "file": "models/satellite/weather_imager.glb",
+      "targetHeight": 0.35,
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "credit": "Original Space Mission Game model, generated by tools/build-models.mjs"
+    },
+    "procedural": "modular_surface_equipment"
+  },
+  "optical_camera": {
+    "file": null,
+    "targetHeight": 0.4,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "credit": "Original ORBITAL procedural educational geometry; not a historical spacecraft replica",
+    "preservedReference": {
+      "file": "models/satellite/optical_camera.glb",
+      "targetHeight": 0.4,
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "credit": "Original Space Mission Game model, generated by tools/build-models.mjs"
+    },
+    "procedural": "modular_surface_equipment"
+  },
+  "radar_imager": {
+    "file": null,
+    "targetHeight": 0.6,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "credit": "Original ORBITAL procedural educational geometry; not a historical spacecraft replica",
+    "preservedReference": {
+      "file": "models/satellite/radar_imager.glb",
+      "targetHeight": 0.6,
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "credit": "Original Space Mission Game model, generated by tools/build-models.mjs"
+    },
+    "procedural": "modular_surface_equipment"
+  },
+  "spectrometer": {
+    "file": null,
+    "targetHeight": 0.35,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "credit": "Original ORBITAL procedural educational geometry; not a historical spacecraft replica",
+    "preservedReference": {
+      "file": "models/satellite/spectrometer.glb",
+      "targetHeight": 0.35,
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "credit": "Original Space Mission Game model, generated by tools/build-models.mjs"
+    },
+    "procedural": "modular_surface_equipment"
+  },
+  "laser_altimeter": {
+    "file": null,
+    "targetHeight": 0.35,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "credit": "Original ORBITAL procedural educational geometry; not a historical spacecraft replica",
+    "preservedReference": {
+      "file": "models/satellite/laser_altimeter.glb",
+      "targetHeight": 0.35,
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "credit": "Original Space Mission Game model, generated by tools/build-models.mjs"
+    },
+    "procedural": "modular_surface_equipment"
+  },
+  "neutron_detector": {
+    "file": null,
+    "targetHeight": 0.3,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "credit": "Original ORBITAL procedural educational geometry; not a historical spacecraft replica",
+    "preservedReference": {
+      "file": "models/satellite/neutron_detector.glb",
+      "targetHeight": 0.3,
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "credit": "Original Space Mission Game model, generated by tools/build-models.mjs"
+    },
+    "procedural": "modular_surface_equipment"
+  },
+  "transponder_s": {
+    "file": null,
+    "targetHeight": 0.4,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "credit": "Original ORBITAL procedural educational geometry; not a historical spacecraft replica",
+    "preservedReference": {
+      "file": "models/satellite/transponder_s.glb",
+      "targetHeight": 0.4,
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "credit": "Original Space Mission Game model, generated by tools/build-models.mjs"
+    },
+    "procedural": "modular_surface_equipment"
+  },
+  "transponder_m": {
+    "file": null,
+    "targetHeight": 0.5,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "credit": "Original ORBITAL procedural educational geometry; not a historical spacecraft replica",
+    "preservedReference": {
+      "file": "models/satellite/transponder_m.glb",
+      "targetHeight": 0.5,
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "credit": "Original Space Mission Game model, generated by tools/build-models.mjs"
+    },
+    "procedural": "modular_surface_equipment"
+  },
+  "transponder_l": {
+    "file": null,
+    "targetHeight": 0.6,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "credit": "Original ORBITAL procedural educational geometry; not a historical spacecraft replica",
+    "preservedReference": {
+      "file": "models/satellite/transponder_l.glb",
+      "targetHeight": 0.6,
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "credit": "Original Space Mission Game model, generated by tools/build-models.mjs"
+    },
+    "procedural": "modular_surface_equipment"
+  },
+  "observatory": {
+    "file": null,
+    "targetHeight": 3,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "credit": "Original procedural scenery"
+  },
+  "ground_station": {
+    "file": null,
+    "targetHeight": 1.5,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "credit": "Original procedural scenery"
+  },
+  "falcon_lower": {
+    "file": "models/runtime/falcon-lower.glb",
+    "targetHeight": 10.5,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "defer": true,
+    "credit": "User-supplied model; runtime geometry and texture optimization"
+  },
+  "falcon_upper": {
+    "file": null,
+    "targetHeight": 3.4,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "defer": true,
+    "credit": "Original ORBITAL procedural educational vehicle visual (js/three/launchVehicle.js)",
+    "procedural": "complete_launch_vehicle"
+  },
+  "falcon_adapter": {
+    "file": "models/runtime/falcon-adapter.glb",
+    "targetHeight": 0.5,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "defer": true,
+    "credit": "User-supplied model; runtime geometry and texture optimization"
+  },
+  "atlas_lower": {
+    "file": "models/runtime/atlas-lower.glb",
+    "targetHeight": 10,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "defer": true,
+    "credit": "User-supplied model; runtime geometry and texture optimization"
+  },
+  "atlas_upper": {
+    "file": null,
+    "targetHeight": 4,
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "defer": true,
+    "credit": "Original ORBITAL procedural educational vehicle visual (js/three/launchVehicle.js)",
+    "procedural": "complete_launch_vehicle"
+  }
+}

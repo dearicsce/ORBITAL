@@ -1,0 +1,66 @@
+@import "./screen-layout.css";
+
+/* ==========================================================================
+   ORBITAL — Unified Design System Semantic Tokens
+   Art Direction: Navy Mission-Control Hardware, Pale Teal Accent
+   ========================================================================== */
+
+:root {
+  /* Core Palette */
+  --orbital-bg: #0B121B;
+  --orbital-surface: #121D29;
+  --orbital-surface-raised: #1A2937;
+  --orbital-surface-hover: #213746;
+  --orbital-border: #32485A;
+  --orbital-border-strong: #526D81;
+  --orbital-text: #E8F0F4;
+  --orbital-text-muted: #A7B7C4;
+  --orbital-text-dim: #8193A2;
+  --orbital-accent: #9ADBD8;
+  --orbital-accent-hover: #B5E8E4;
+  --orbital-accent-ink: #09282D;
+  --orbital-focus: #54C7C2;
+  --orbital-success: #86CFAA;
+  --orbital-warning: #E4B96B;
+  --orbital-danger: #ED8D89;
+  --orbital-chart-series-1: #9ADBD8;
+  --orbital-chart-series-2: #F5D186;
+  --orbital-chart-series-3: #8AB8ED;
+  --orbital-radius-control: 5px;
+  --orbital-radius-panel: 7px;
+
+  /* Typography */
+  --font-body: "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  --font-heading: "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  --font-telemetry: "Consolas", "SF Mono", "Liberation Mono", Menlo, Courier, monospace;
+
+  /* Spacing Scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* Legacy & Semantic Variable Mappings */
+  --bg-deep: var(--orbital-bg);
+  --bg-panel: var(--orbital-surface);
+  --bg-panel-alt: var(--orbital-surface-raised);
+  --bg-plate-deep: var(--orbital-bg);
+  --bg-plate-surface: var(--orbital-surface);
+  --bg-plate-raised: var(--orbital-surface-raised);
+  --border-structural: var(--orbital-border);
+  --border-dim: var(--orbital-border);
+  --text-primary: var(--orbital-text);
+  --text-muted: var(--orbital-text-muted);
+  --text-dim: var(--orbital-text-dim);
+  --accent-cyan: var(--orbital-accent);
+  --accent-green: var(--orbital-success);
+  --accent-amber: var(--orbital-warning);
+  --accent-red: var(--orbital-danger);
+  --status-passed: var(--orbital-accent);
+  --status-success: var(--orbital-success);
+  --status-warning: var(--orbital-warning);
+  --status-blocked: var(--orbital-danger);
+  --radius: var(--orbital-radius-panel);
+}

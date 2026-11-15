@@ -1,0 +1,274 @@
+/* Spacecraft CAD Studio - Parts Menu, Manifest & Advice (Step 13a) */
+@import "./designHud.css";
+
+/* 3-Column Studio Grid */
+.design-studio-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 16px;
+  min-height: 380px;
+}
+
+.studio-col {
+  background: var(--bg-deep);
+  border: 1px solid var(--border-dim);
+  border-radius: 8px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow: hidden;
+}
+
+/* Tabs & Parts Menu */
+.parts-tabs-bar {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--border-dim);
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.tab-btn:hover {
+  color: var(--text-primary);
+}
+
+.tab-btn.active {
+  background: rgba(56, 189, 248, 0.15);
+  color: var(--accent-cyan);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+.parts-scroll-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+  max-height: 360px;
+  padding-right: 4px;
+}
+
+.part-card {
+  background: rgba(13, 21, 39, 0.7);
+  border: 1px solid var(--border-dim);
+  border-radius: 6px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.part-card.part-unlocked:hover {
+  border-color: var(--accent-cyan);
+  background: rgba(13, 21, 39, 0.95);
+}
+
+.part-card.part-selected {
+  border-color: var(--accent-cyan);
+  background: rgba(56, 189, 248, 0.08);
+}
+
+.part-card.part-locked {
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-style: dashed;
+}
+
+.part-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.part-title-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.part-name {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.info-icon {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1px solid var(--text-muted);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.part-cost {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent-green);
+}
+
+.part-specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.part-card-footer {
+  display: flex;
+  justify-content: flex-end;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+.select-badge {
+  color: var(--accent-cyan);
+  font-weight: 600;
+}
+
+.lock-label {
+  color: var(--accent-red);
+}
+
+/* Manifest Box */
+.box-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-dim);
+}
+
+.btn-xs {
+  font-size: 0.75rem;
+  padding: 3px 8px;
+}
+
+.manifest-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow-y: auto;
+  max-height: 360px;
+}
+
+.manifest-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(13, 21, 39, 0.6);
+  border: 1px solid var(--border-dim);
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 0.75rem;
+}
+
+.manifest-name {
+  color: #ffffff;
+  display: block;
+  font-weight: 500;
+}
+
+.manifest-sub {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.btn-remove {
+  background: none;
+  border: none;
+  color: var(--accent-red);
+  cursor: pointer;
+  font-size: 0.875rem;
+  padding: 2px 6px;
+}
+
+.manifest-empty {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 20px 0;
+}
+
+.manifest-section-title {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent-cyan);
+  letter-spacing: 0.08em;
+  padding: 6px 0 2px 0;
+}
+
+/* Advice Panel */
+.status-tag {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 3px;
+}
+
+.tag-ready {
+  background: rgba(52, 211, 153, 0.15);
+  color: var(--accent-green);
+  border: 1px solid rgba(52, 211, 153, 0.4);
+}
+
+.tag-blocked {
+  background: rgba(248, 113, 113, 0.15);
+  color: var(--accent-red);
+  border: 1px solid rgba(248, 113, 113, 0.4);
+}
+
+.advice-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  max-height: 280px;
+}
+
+.advice-block {
+  border-radius: 6px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.8125rem;
+}
+
+.advice-success { background: rgba(52, 211, 153, 0.08); border: 1px solid rgba(52, 211, 153, 0.3); }
+.advice-success .advice-title { color: var(--accent-green); font-weight: 600; }
+.advice-info { background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.25); }
+.advice-info .advice-title { color: var(--accent-cyan); font-weight: 600; }
+.advice-warning { background: rgba(248, 113, 113, 0.08); border: 1px solid rgba(248, 113, 113, 0.3); }
+.advice-warning .advice-title { color: var(--accent-red); font-weight: 600; }
+.advice-text { color: var(--text-muted); line-height: 1.4; font-size: 0.75rem; }
+
+@media (max-width: 900px) {
+  .design-studio-grid {
+    grid-template-columns: 1fr;
+  }
+}

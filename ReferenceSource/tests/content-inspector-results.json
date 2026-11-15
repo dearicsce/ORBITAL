@@ -1,0 +1,14 @@
+{
+  "date": "2026-11-03",
+  "assertions": 204,
+  "catalogEntries": 45,
+  "previews": 15,
+  "verifiedLocalSources": 42,
+  "unavailableExternalSources": 3,
+  "unavailableSourceAudit": "BLOCKED_MISSING_ORIGINAL_ON_NEW_PC",
+  "unavailableSources": [
+    "additional-0",
+    "additional-1",
+    "additional-2"
+  ]
+}

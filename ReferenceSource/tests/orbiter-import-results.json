@@ -1,0 +1,14 @@
+[
+  [
+    "Orbiter pad groups",
+    true
+  ],
+  [
+    "Finite geometry bounds",
+    true
+  ],
+  [
+    "Valid triangle indices",
+    true
+  ]
+]

@@ -1,0 +1,26 @@
+[
+  [
+    "Countdown",
+    true
+  ],
+  [
+    "Ignition precedes liftoff",
+    true
+  ],
+  [
+    "Monotonic climb",
+    true
+  ],
+  [
+    "Space reached",
+    true
+  ],
+  [
+    "Failure cannot reach space",
+    true
+  ],
+  [
+    "Failure completes",
+    true
+  ]
+]

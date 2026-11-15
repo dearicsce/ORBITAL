@@ -1,0 +1,42 @@
+[
+  {
+    "file": "aquarius.glb",
+    "meshes": 10,
+    "triangles": 10362
+  },
+  {
+    "file": "ares-1.glb",
+    "meshes": 20,
+    "triangles": 4664
+  },
+  {
+    "file": "cassini.glb",
+    "meshes": 11,
+    "triangles": 25736
+  },
+  {
+    "file": "cloudsat.glb",
+    "meshes": 7,
+    "triangles": 11204
+  },
+  {
+    "file": "cygnss.glb",
+    "meshes": 28,
+    "triangles": 7338
+  },
+  {
+    "file": "jupiter-c.glb",
+    "meshes": 31,
+    "triangles": 8933
+  },
+  {
+    "file": "mobile-launcher.glb",
+    "meshes": 2,
+    "triangles": 19296
+  },
+  {
+    "file": "mro.glb",
+    "meshes": 7,
+    "triangles": 14753
+  }
+]

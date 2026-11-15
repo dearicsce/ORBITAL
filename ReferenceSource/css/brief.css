@@ -1,0 +1,13 @@
+.briefing { position:relative; padding:24px 4vw; overflow:hidden; }
+.brief-backdrop { position:absolute; inset:0; opacity:.22; pointer-events:none; }
+.brief-backdrop:after { content:''; position:absolute; inset:0; background:linear-gradient(90deg,#07121d,transparent); }
+.briefing > :not(.brief-backdrop) { position:relative; }
+.brief-layout { display:grid; grid-template-columns:1.1fr 1fr; gap:8vw; align-items:center; flex:1; padding:24px 4vw 110px; }
+.commander-stage { max-width:580px; }
+.commander-stage h1 { margin:24px 0 16px; font-size:clamp(28px,4vw,54px); }
+.commander-stage p { color:#c2d4e1; font-size:18px; line-height:1.6; }
+.brief-tiles { display:grid; gap:16px; }
+.brief-tiles article { padding:24px; }
+.brief-tiles h2 { font-size:14px; font-weight:400; color:#b3c6d8; margin-bottom:12px; }
+.brief-tiles strong { font-size:32px; font-weight:500; }
+@media(max-width:700px) { .brief-layout { grid-template-columns:1fr; padding:24px 0 140px; gap:24px; } .commander-stage > svg { width:100px; height:100px; } }

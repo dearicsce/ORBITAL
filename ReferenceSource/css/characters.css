@@ -1,0 +1,295 @@
+/* Character Avatars, Animations & Dialogue Speech Bubble (Step 16) */
+
+/* Avatar SVG Styling & Idle Animations */
+.character-avatar {
+  display: block;
+  flex-shrink: 0;
+  border-radius: 8px;
+  overflow: visible;
+}
+
+.avatar-head {
+  transform-origin: 50% 60%;
+  animation: avatar-head-bob 3.2s infinite ease-in-out;
+}
+
+.avatar-eyes {
+  transform-origin: 50% 46%;
+  animation: avatar-blink 4.5s infinite ease-in-out;
+}
+
+.avatar-beacon {
+  transform-origin: 50% 14px;
+  animation: beacon-pulse 2s infinite ease-in-out;
+}
+
+/* Talking Animation: mouth and eyes pulse when .talking is active */
+.speech-avatar-wrap.talking .avatar-mouth,
+.character-avatar.talking .avatar-mouth,
+.talking .avatar-mouth {
+  transform-origin: 50% 60%;
+  animation: mouth-pulse 0.28s infinite ease-in-out;
+}
+
+.speech-avatar-wrap.talking .avatar-beacon,
+.character-avatar.talking .avatar-beacon,
+.talking .avatar-beacon {
+  animation: beacon-pulse 0.4s infinite ease-in-out;
+}
+
+.speech-avatar-wrap.talking .avatar-eyes,
+.character-avatar.talking .avatar-eyes,
+.talking .avatar-eyes {
+  animation: eyes-pulse 0.35s infinite ease-in-out;
+}
+
+.speech-avatar-wrap.talking .avatar-nova .avatar-eyes ellipse,
+.character-avatar.avatar-nova.talking .avatar-eyes ellipse,
+.talking .avatar-nova .avatar-eyes ellipse {
+  filter: drop-shadow(0 0 5px #38bdf8);
+}
+
+@keyframes avatar-head-bob {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-1.5px);
+  }
+}
+
+@keyframes avatar-blink {
+  0%, 92%, 100% {
+    transform: scaleY(1);
+  }
+  96% {
+    transform: scaleY(0.1);
+  }
+}
+
+@keyframes mouth-pulse {
+  0%, 100% {
+    transform: scaleY(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scaleY(1.8) translateY(-0.5px);
+    opacity: 1;
+  }
+}
+
+@keyframes eyes-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+}
+
+@keyframes beacon-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+}
+
+/* Glass-style Speech Bubble Card at Bottom Left */
+.speech-bubble-card {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  max-width: 480px;
+  width: calc(100vw - 48px);
+  z-index: 950;
+  background: rgba(13, 21, 39, 0.94);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-glow);
+  border-radius: 10px;
+  padding: 14px 16px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7), 0 0 16px rgba(30, 64, 175, 0.25);
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  animation: bubble-slide-up 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes bubble-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.speech-avatar-wrap {
+  width: 52px;
+  height: 52px;
+  border-radius: 8px;
+  background: rgba(7, 11, 20, 0.7);
+  border: 1px solid var(--border-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.speech-content-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.speech-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.speech-speaker-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.speech-speaker-name {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.speech-speaker-role {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.speech-controls-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-speech-ctrl {
+  background: rgba(30, 46, 79, 0.5);
+  border: 1px solid var(--border-dim);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  width: 26px;
+  height: 26px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  padding: 0;
+}
+
+.btn-speech-ctrl:hover {
+  background: var(--accent-cyan);
+  color: var(--bg-deep);
+  border-color: var(--accent-cyan);
+}
+
+.speech-subtitles-text {
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: var(--text-primary);
+  word-break: break-word;
+}
+
+/* Visual Target Pointer (Glowing ring & arrow) */
+.speech-pointer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 850;
+}
+
+.speech-target-ring {
+  position: fixed;
+  border: 2px solid var(--accent-cyan);
+  border-radius: 6px;
+  box-shadow: 0 0 16px var(--accent-cyan-glow), inset 0 0 8px var(--accent-cyan-glow);
+  pointer-events: none;
+  animation: target-ring-pulse 1.4s infinite ease-in-out;
+  transition: all 0.2s ease;
+}
+
+.speech-target-arrow {
+  position: fixed;
+  color: var(--accent-cyan);
+  font-size: 1.25rem;
+  pointer-events: none;
+  text-shadow: 0 0 8px var(--accent-cyan);
+  animation: target-arrow-bounce 0.8s infinite alternate ease-in-out;
+  transition: all 0.2s ease;
+}
+
+@keyframes target-ring-pulse {
+  0%, 100% {
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 14px var(--accent-cyan-glow);
+    transform: scale(1);
+  }
+  50% {
+    border-color: var(--accent-green);
+    box-shadow: 0 0 22px var(--accent-green-glow);
+    transform: scale(1.02);
+  }
+}
+
+@keyframes target-arrow-bounce {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(6px);
+  }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .avatar-head,
+  .avatar-eyes,
+  .avatar-beacon,
+  .speech-avatar-wrap.talking .avatar-mouth,
+  .character-avatar.talking .avatar-mouth,
+  .talking .avatar-mouth,
+  .speech-avatar-wrap.talking .avatar-eyes,
+  .character-avatar.talking .avatar-eyes,
+  .talking .avatar-eyes,
+  .speech-bubble-card,
+  .speech-target-ring,
+  .speech-target-arrow {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .speech-bubble-card {
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+    width: calc(100vw - 24px);
+    max-width: none;
+  }
+}

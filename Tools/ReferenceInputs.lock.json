@@ -1,0 +1,1725 @@
+{
+  "schemaVersion": 1,
+  "files": [
+    {
+      "file": "index.html",
+      "bytes": 2012,
+      "sha256": "0a4cc90c55bc9de5c06ae6a4d2d69112055cccb79454d7fc0a708abdc08fb009"
+    },
+    {
+      "file": "assets/imported/connected-earth/GlacierA.jpg",
+      "bytes": 2596279,
+      "sha256": "cdedd0ce90ab13d5a4899d23e51d5439d68544f5d343763d765d72d1bf189a7c"
+    },
+    {
+      "file": "assets/imported/connected-earth/GlacierB.jpg",
+      "bytes": 2491689,
+      "sha256": "7dfd470c2e9574f8a209114dba11c2e1c3fa176c6af4acd948de2643fbb9b7d8"
+    },
+    {
+      "file": "assets/imported/connected-earth/katlaA.jpg",
+      "bytes": 3749993,
+      "sha256": "afffae1d7742c5562f037ea4c73721a95df5cae56c3cc4cb448c6d664db4218c"
+    },
+    {
+      "file": "assets/imported/connected-earth/katlaB.jpg",
+      "bytes": 3028720,
+      "sha256": "b49070b41d60b31de1b278fe6926984d89cd3e91a1529fef6f203142604cb99b"
+    },
+    {
+      "file": "assets/imported/connected-earth/manifest.json",
+      "bytes": 2417,
+      "sha256": "f62817f3d755928c390e9bfbe02331e9546e8a316b2cecf91af11c17167354e1"
+    },
+    {
+      "file": "assets/orbital-icon.svg",
+      "bytes": 284,
+      "sha256": "d1651daf7740c7ae22c54f665401f8061635ba3e9fdd34351164018b56ecafe4"
+    },
+    {
+      "file": "css/academy.css",
+      "bytes": 717,
+      "sha256": "9861bf83fd6576c1682fa20271c4d89094e44fb7c1da677ff030e2fb87c1048e"
+    },
+    {
+      "file": "css/asset-library.css",
+      "bytes": 2442,
+      "sha256": "d2f831c09958948bb6911e638c851bea3924e8bc7beac1584c04a857931eef28"
+    },
+    {
+      "file": "css/brief.css",
+      "bytes": 1023,
+      "sha256": "496b51c3278380378ccfa7b19d1c0eaa62ede5b69aa4f43eab44518b6a203a07"
+    },
+    {
+      "file": "css/builder.css",
+      "bytes": 3303,
+      "sha256": "c03628a229cd01899c6b4110dcce4dd10c98330510afc19d47f7372eee99cc55"
+    },
+    {
+      "file": "css/campaign-map.css",
+      "bytes": 11634,
+      "sha256": "7dd8176ae37d23a080c21099993a97bed3e7b5bee7b08e6f790950b8142e7e21"
+    },
+    {
+      "file": "css/characters.css",
+      "bytes": 5990,
+      "sha256": "754c89b7c6779d0fac00659f76e2e71330994537595fe5360853a56f9f43e7bd"
+    },
+    {
+      "file": "css/design.css",
+      "bytes": 5300,
+      "sha256": "424fc309ea488d62d45f6af1cc8565d49c7d93c76328f1e29830f5ae903397bd"
+    },
+    {
+      "file": "css/designHud.css",
+      "bytes": 2528,
+      "sha256": "43b52b7ce6b51f34ee46130eae49e2166d8759cc0dbb0f875d2ae9e161686773"
+    },
+    {
+      "file": "css/designView.css",
+      "bytes": 815,
+      "sha256": "dca8f0cd6106c009aff668f01ed16504cfbe197b844e8d6dac2467f80b0f57e3"
+    },
+    {
+      "file": "css/evidence.css",
+      "bytes": 2863,
+      "sha256": "6cb3e445bca6e90636d5677b397c4a24eaf8df4184eed2cd2448a4f3ada7b0c5"
+    },
+    {
+      "file": "css/flight-deck.css",
+      "bytes": 11903,
+      "sha256": "5ef2d2215d713a4954aff2b70e624ee18c48d3b3f3e7ba1ef6e5bb1ff6b25cf3"
+    },
+    {
+      "file": "css/graphics.css",
+      "bytes": 1143,
+      "sha256": "e8ba1bd8fe4ee12ceb0636583ec98125b5ab044565670ce8512a9ba194e73c66"
+    },
+    {
+      "file": "css/guide.css",
+      "bytes": 2363,
+      "sha256": "a092ebb37a044468a88f0a9f60ee7e579b381abf5b70c40ef970b441591d5b95"
+    },
+    {
+      "file": "css/historical-context.css",
+      "bytes": 1594,
+      "sha256": "8b4aac305196c2f297d9d56b381e069ff31a526d74ff59a3b84e40aea70c1413"
+    },
+    {
+      "file": "css/layout-fixes.css",
+      "bytes": 2437,
+      "sha256": "48c75e1cf8c6231a4b4b96d5af99d344bc9fb9d65833bb23796f9de7655489a0"
+    },
+    {
+      "file": "css/menu.css",
+      "bytes": 5174,
+      "sha256": "83c124f6c90893168160d1d127ca8bcae51b7817a0149e90dc66123ba2f9de0e"
+    },
+    {
+      "file": "css/mission-control.css",
+      "bytes": 11472,
+      "sha256": "6e84586e4060536a99d92eff8b5cb6aa807068176018787e3335b69064cca4ec"
+    },
+    {
+      "file": "css/missions.css",
+      "bytes": 1377,
+      "sha256": "e5a44fb554d255fc235faa6a71d29942e1a9446b8d3b439284f2ae83e4ac9ec4"
+    },
+    {
+      "file": "css/orbital.css",
+      "bytes": 18989,
+      "sha256": "e81e4882b276822dd5488426480577f323afe9415382ef53b9fee9b4fd08a962"
+    },
+    {
+      "file": "css/report.css",
+      "bytes": 1550,
+      "sha256": "3301ec6f53ec6d761926f0190dcde24356208445a3a6884a32541c2e9a7bea74"
+    },
+    {
+      "file": "css/review.css",
+      "bytes": 7325,
+      "sha256": "db7bfb0dc8aacc36754ec428400dda7fd410eaffdeec75f48433e7e81a050f96"
+    },
+    {
+      "file": "css/rocket-workshop.css",
+      "bytes": 3870,
+      "sha256": "40e9326485485a4c9d274a15514cddf054a91390821535ba8779a86e68ab6589"
+    },
+    {
+      "file": "css/simulation.css",
+      "bytes": 6058,
+      "sha256": "d2655cc7b61ca803de9303f0006bf0de53b2e08fed1326047a362899e62112d1"
+    },
+    {
+      "file": "css/style.css",
+      "bytes": 6039,
+      "sha256": "b25a617bc104614afb8031e71d950092fe580c47fdbb902c87eb78ed40f4cd55"
+    },
+    {
+      "file": "css/theme.css",
+      "bytes": 6092,
+      "sha256": "e593cbc00651300525ab46547aeb62744f19e87c78a7eeb96135ae6e41971068"
+    },
+    {
+      "file": "css/transfer.css",
+      "bytes": 2289,
+      "sha256": "071ce8ea410dce49f8e874339e76d8298808e80797a141411fd040d50a03ade8"
+    },
+    {
+      "file": "css/tutorial.css",
+      "bytes": 5882,
+      "sha256": "0ff492bb55180da67d8273cda0b79d3b0826c283a2275d661feb5defdf46495e"
+    },
+    {
+      "file": "css/workshop.css",
+      "bytes": 6040,
+      "sha256": "738e0e4e2b8a301e3380a1314d66c239e21334b85fefdbf5381c5fb56953ccdc"
+    },
+    {
+      "file": "data/build-identity.json",
+      "bytes": 95,
+      "sha256": "6a58b293b19ccc1de9359166ba21d079cd58efe8c3be16630a4262374cfca0ef"
+    },
+    {
+      "file": "data/campaign-contracts.json",
+      "bytes": 10957,
+      "sha256": "6f6b5a28737856564ad9df54a388a47d0db72e3d3db7d0033ae9b1191dc2cc3e"
+    },
+    {
+      "file": "data/characters.json",
+      "bytes": 1856,
+      "sha256": "028becb283f544435d6653d94e5ebc34f6b4f8521d83096a81afc4e2a3471b6f"
+    },
+    {
+      "file": "data/content/content-supplements.json",
+      "bytes": 1014,
+      "sha256": "0d6c929f4df117ff60d98eee8d2332bc6fa753f3c736d8b3cc73ad51f79c313e"
+    },
+    {
+      "file": "data/content/historical-context.json",
+      "bytes": 69174,
+      "sha256": "a6c4f912ac97778fd93f11d14e6328bdf159b7680ebe49dea987decd133e3a56"
+    },
+    {
+      "file": "data/content/horizons-atlas-reference.json",
+      "bytes": 1450,
+      "sha256": "9cd97b2e88ba67738c883547bb698f659d6cb21ae5ec2c76340b49e01b298bc2"
+    },
+    {
+      "file": "data/content/orbital-sources.json",
+      "bytes": 2506,
+      "sha256": "edc8a2af04dbb3a5afa024cbbe3800b715c099031e9a09bd6c6ae28c526768bc"
+    },
+    {
+      "file": "data/content/source-registry.json",
+      "bytes": 65547,
+      "sha256": "a052349a7bc9368297eb2703301d8381bf0fb53315505a8902358a4ecac8d80a"
+    },
+    {
+      "file": "data/world1.json",
+      "bytes": 31872,
+      "sha256": "e652a7f1180dcb87119f5f5f4b0dae3b2ea31c7414583b9f60b505b55f344305"
+    },
+    {
+      "file": "images/builder-checkpoint.png",
+      "bytes": 65411,
+      "sha256": "04845944d2b08d888e51c030349dfc104eddadef91263b9edf20c1ca4cc0fbc2"
+    },
+    {
+      "file": "images/characters/accountant.jpg",
+      "bytes": 27275,
+      "sha256": "3f51623ec74b739f1b332e4b58cd6aa108244c77a5aa31b2763624b13c15c9d8"
+    },
+    {
+      "file": "images/characters/engineer.jpg",
+      "bytes": 68419,
+      "sha256": "32b241bcae674a493ef6966ec6ea022c5d16d449d2728e5bf9754137af5c43d3"
+    },
+    {
+      "file": "images/characters/nova.png",
+      "bytes": 2435792,
+      "sha256": "a38e5eda08fdfaeac57f0ad989d36c93f3f05d25a08c5b9b8e7c7b9a460694bf"
+    },
+    {
+      "file": "images/characters/scientist.jpg",
+      "bytes": 13363,
+      "sha256": "f7b16d01100a5319d4465344670c14b27ec0c972a6ee40527f8bb4d04fce98cf"
+    },
+    {
+      "file": "images/completion-checks.png",
+      "bytes": 73279,
+      "sha256": "675f2734d36fd10c80c39ff72740b852502292ddc62491bdc163aaee9a403f72"
+    },
+    {
+      "file": "images/falcon-orbiter-graphics.png",
+      "bytes": 70989,
+      "sha256": "161e71314a8f6f447476a975f2365ae045fb3cf39fd61b7268f09ff2b1ea48b6"
+    },
+    {
+      "file": "images/missions/m1.jpg",
+      "bytes": 6590,
+      "sha256": "4c633fe2cca6563b334928b8429a441c386cfa4580607ed26f3ff2536b9404c8"
+    },
+    {
+      "file": "images/missions/m2.jpg",
+      "bytes": 37574,
+      "sha256": "bf1e17332e70690f21b983c5df05eaa147cf5c14079ec5cdbf2e743e0a334d07"
+    },
+    {
+      "file": "images/missions/m3.jpg",
+      "bytes": 101502,
+      "sha256": "04d8affde49e47631554fa2c919bb88629d6abbd1ed18759a39ea675fa817e1f"
+    },
+    {
+      "file": "images/missions/PUT_MISSION_PICTURES_HERE.txt",
+      "bytes": 205,
+      "sha256": "c5f7c1833c67138ece05822256b63ec831ca415a697d7013b66d4abb64d0a897"
+    },
+    {
+      "file": "images/preview-rocket.png",
+      "bytes": 19652,
+      "sha256": "73823e74c5450de8d2ab5c70c7bcb024ddca1910dfb56e5f3d19f427fd8e7030"
+    },
+    {
+      "file": "js/academy.js",
+      "bytes": 4966,
+      "sha256": "793281ba508a85c5eb47c32946b87f474651fb88fe4f04adc00307b7d259b0cb"
+    },
+    {
+      "file": "js/audio/flightAudio.js",
+      "bytes": 2853,
+      "sha256": "1286ca3b01804d30ba514950e963220175f1a41e05da7479befd29f5a02b4972"
+    },
+    {
+      "file": "js/campaign.js",
+      "bytes": 3751,
+      "sha256": "d87978d921dea42df787632134f3a770f1eb6b9aa316c8d60521fe3cdfed195f"
+    },
+    {
+      "file": "js/campaignAtlas.js",
+      "bytes": 4092,
+      "sha256": "94a252283c962cab03ab6f2b99df214009bd7632a46992984b550b6af03f2923"
+    },
+    {
+      "file": "js/campaignContent.js",
+      "bytes": 11049,
+      "sha256": "7fb52e8a996a77b99e6634eee5dac087c337093b832cc204b22b35c09aa4f56a"
+    },
+    {
+      "file": "js/characters.js",
+      "bytes": 1629,
+      "sha256": "5bdc94c6577bae85f906daaafda2e5386b420c0855b64e91490b0c26e363d65e"
+    },
+    {
+      "file": "js/content/agencyMedia.js",
+      "bytes": 3921,
+      "sha256": "fa969a76e9e65383bdc165f5cef4927df135d3ecd49db5fb6bc184b34d2e0e10"
+    },
+    {
+      "file": "js/content/atlasTextures.js",
+      "bytes": 2035,
+      "sha256": "8aecac091eeaf05d10f370cdb42f705c05f1ac40f4a6bfcd362c3e1f639852a5"
+    },
+    {
+      "file": "js/content/historical.js",
+      "bytes": 4502,
+      "sha256": "19ab15cf54d36567893db3ef2acbc5400defd6eaec525adde5f89c89c66d0cfd"
+    },
+    {
+      "file": "js/content/inspectAsset.js",
+      "bytes": 5203,
+      "sha256": "fe99f986e62f5f96c18afc6d5b9588a87b068949c6a6d41d95bcffb1d58f6d07"
+    },
+    {
+      "file": "js/contracts/missionRun.js",
+      "bytes": 12994,
+      "sha256": "e321845f31068020e98b4e37e751522da113b5b425f69f79f210a7b4c8048b41"
+    },
+    {
+      "file": "js/contracts/serializable.js",
+      "bytes": 571,
+      "sha256": "6a2507d11577de13644ebdbf6dfaca0336599e0b95229fc064ccda11856fdcf6"
+    },
+    {
+      "file": "js/contracts/units.js",
+      "bytes": 713,
+      "sha256": "5089302f661e803f08757d409b09c5cc8b4b8ce0403f4057e238fb3ec3e5b85d"
+    },
+    {
+      "file": "js/contracts/validate.js",
+      "bytes": 11392,
+      "sha256": "18efc1bd588da322a44ff8384f14495b3c7fae553c969913bb6aa8223cfc5e11"
+    },
+    {
+      "file": "js/contracts/world.js",
+      "bytes": 4811,
+      "sha256": "8b12b3239c4c50802c2942b3b34d8173c74592f6fb8a9a6615343cea7e7ec4f9"
+    },
+    {
+      "file": "js/data.js",
+      "bytes": 696,
+      "sha256": "90e706857ca0e4e48915cf30a638b7aa44fc13d8ebd375d049eb482571c8dc53"
+    },
+    {
+      "file": "js/designSanitizer.js",
+      "bytes": 1470,
+      "sha256": "da69becb1e4071d63b2e95c70202852c14c27678480c8ac41ca3f46bb09eee94"
+    },
+    {
+      "file": "js/engine/ascent.js",
+      "bytes": 15574,
+      "sha256": "5bfaee2f95a5518c3901415ec5124404576b3a3c54c76884a60a62dd97f82593"
+    },
+    {
+      "file": "js/engine/evaluate.js",
+      "bytes": 8605,
+      "sha256": "1d56ff50da5b5e939c00929477ed40c6a7d33a1829ab80de98027d4f8a03d377"
+    },
+    {
+      "file": "js/engine/flightClock.js",
+      "bytes": 608,
+      "sha256": "8264085216a46fd5f2f1c9f597747d21ef38c36102197426ccc607efeb58c559"
+    },
+    {
+      "file": "js/engine/gate.js",
+      "bytes": 9652,
+      "sha256": "449423e5130cfac8c794351ea4d33e5f6062e1162a1adab66576c00b1eacefb6"
+    },
+    {
+      "file": "js/engine/lagrange.js",
+      "bytes": 1051,
+      "sha256": "26be2f2d579887721ab2b77bc8c92fb02cec65a74acc17d1a281aaf5e5907399"
+    },
+    {
+      "file": "js/engine/operations.js",
+      "bytes": 12253,
+      "sha256": "c153167e32c631744e2c6156cf05b0d47e9ad5ff3490882b558a5f53950b1672"
+    },
+    {
+      "file": "js/engine/orbitalGeometry.js",
+      "bytes": 7976,
+      "sha256": "65a614e899acac5cdd7d7d55c8e180641fc041296350a47a5dad4059c139506e"
+    },
+    {
+      "file": "js/engine/rating.js",
+      "bytes": 4719,
+      "sha256": "73bdc04c0e1e43482a6e73db65db8e17dbb038559b4c0b986ce1e25aa68d2b69"
+    },
+    {
+      "file": "js/engine/trajectoryPreview.js",
+      "bytes": 1994,
+      "sha256": "f330fd14dcdb67aa3af72e7d4fe24e45fe2deb135d9dca7a4334be0e10c7e96d"
+    },
+    {
+      "file": "js/engine/unlocks.js",
+      "bytes": 1262,
+      "sha256": "f73bb45581c0f3bd2ca8711c96433d4b74a6792a5798dbdeb3979a8eed629cc7"
+    },
+    {
+      "file": "js/engine.js",
+      "bytes": 295,
+      "sha256": "459493c0f0b2e58d0325207b613b71fb4991da9a82549ac6c17e309b772b9268"
+    },
+    {
+      "file": "js/events.js",
+      "bytes": 8000,
+      "sha256": "75701d34942ccd2547322376b5128f1fa3510e4f8b52e480b3914d0258e88253"
+    },
+    {
+      "file": "js/flightCompletion.js",
+      "bytes": 965,
+      "sha256": "8eb36ba2184c162e69fc1c8304ff9c01e0fda2dbcaf05a028696a259c44d7f38"
+    },
+    {
+      "file": "js/flightConfiguration.js",
+      "bytes": 624,
+      "sha256": "115aed2cb1fc760c25889f44c88897f92a8adeaf1c759f72516af6d5fc470cef"
+    },
+    {
+      "file": "js/flightOutcome.js",
+      "bytes": 1520,
+      "sha256": "d4665b1e7b104ad3247008435e842339a5ae720823cc7da4c796ed2df75fbe19"
+    },
+    {
+      "file": "js/flightSession.js",
+      "bytes": 1426,
+      "sha256": "067a62ba8c4e94bc179c1c13559ff20c77f0ddf006137829f0e67d0b99b2c538"
+    },
+    {
+      "file": "js/main.js",
+      "bytes": 1542,
+      "sha256": "0e85d094587bbaf2523115e7e2940ec0a92c9a67e6f8dd48808d620281f13e8e"
+    },
+    {
+      "file": "js/media/cutscene.js",
+      "bytes": 1547,
+      "sha256": "a4a2f366a1e93ee980391818ec5dc21cd6e37621ae47a0c6580432101b8d0552"
+    },
+    {
+      "file": "js/rocket/catalogue.js",
+      "bytes": 5042,
+      "sha256": "9651ca3e87c830326f7adf648886481cbd0d860e924344eae7aa13b174e88b8c"
+    },
+    {
+      "file": "js/rocket/engineering.js",
+      "bytes": 6992,
+      "sha256": "d234aa4d5d1e78bc1d38c7153e78a4ac2a389cb8d4b257005512da33a9081225"
+    },
+    {
+      "file": "js/rocket/library.js",
+      "bytes": 747,
+      "sha256": "4fe2b1a21b01bdbe57046110d23942953256d71ca965a0c60160f09c9904b97b"
+    },
+    {
+      "file": "js/rocket/reference.js",
+      "bytes": 1397,
+      "sha256": "92923710f87f32a9dc4f64a6c89760a0740673a8db8c846a7bd1967a98581894"
+    },
+    {
+      "file": "js/state.js",
+      "bytes": 5546,
+      "sha256": "4743a5134d56aad182263b6573f4236ef7bb5ec766b639a3dabd5d3feebf46b7"
+    },
+    {
+      "file": "js/three/atlasGlobe.js",
+      "bytes": 3117,
+      "sha256": "8e956246aa7159c626f8f0d929ed1db42574d42b73063cef42560494ce4e2d9f"
+    },
+    {
+      "file": "js/three/catchTower.js",
+      "bytes": 3156,
+      "sha256": "95817c7a53c79e60de79b7b497e04bde14d02a18c23a5c171964684db1c294f2"
+    },
+    {
+      "file": "js/three/customVehicle.js",
+      "bytes": 1428,
+      "sha256": "e822c50e991892be6996990c30d3f7d85e4ea56532477f4d622161658032bc6b"
+    },
+    {
+      "file": "js/three/earth.js",
+      "bytes": 4367,
+      "sha256": "64c96f6efbe5e1166857528d1af10b3a7f9c6c450d5bf5579eadf681cd4ffc0f"
+    },
+    {
+      "file": "js/three/earthMaterial.js",
+      "bytes": 3122,
+      "sha256": "da452033762275e661f43dd78eeac970286367db7b53a6119364c891b2bf9d9f"
+    },
+    {
+      "file": "js/three/flightCameraInput.js",
+      "bytes": 1286,
+      "sha256": "b5f9f10593751e611c1df31dd17d4c3eec01490c799a198ef6cf607a4ae71df3"
+    },
+    {
+      "file": "js/three/flightFrame.js",
+      "bytes": 2477,
+      "sha256": "913e16c70d57a992a887acb801ef0ca7305950abebdc44c15e3dbea6f40fa69f"
+    },
+    {
+      "file": "js/three/hdMaterials.js",
+      "bytes": 4001,
+      "sha256": "098a0fe75fbed96b4ea56440ea7458ad742c4d02cd2a1b9c387a88ea26b58d71"
+    },
+    {
+      "file": "js/three/launchEnvironment.js",
+      "bytes": 1205,
+      "sha256": "cc7158e51f779dc13d92e86a8d6f85bda245275e12ce5e4fe2c18b2f79847366"
+    },
+    {
+      "file": "js/three/launchExhaust.js",
+      "bytes": 5015,
+      "sha256": "e66eeb6ce8c4ec8e5291420ef05e8d1eabc0669fca823b793eeaa843111e8281"
+    },
+    {
+      "file": "js/three/launchMotion.js",
+      "bytes": 4920,
+      "sha256": "3c678a7cd27cd7dff895afc1aa560e958af5a82d1cc318a94d22939594e7e47f"
+    },
+    {
+      "file": "js/three/launchScene.js",
+      "bytes": 8030,
+      "sha256": "2a6fdb6187333a80c2925cbc5bb9981b25afb90992e6be7766dc9c75a082a9a1"
+    },
+    {
+      "file": "js/three/launchSite.js",
+      "bytes": 10777,
+      "sha256": "55abe17f2ca2351c92ca14a8491d77c4ee18fa6e66bf1814b1387ff2e4de45f9"
+    },
+    {
+      "file": "js/three/launchSpace.js",
+      "bytes": 9418,
+      "sha256": "8e59522d0a18be679336335acbce81735ccf28f5d4d61cd4b8bf1e2f427d7784"
+    },
+    {
+      "file": "js/three/launchTimeline.js",
+      "bytes": 1507,
+      "sha256": "80bc2495427f6cc60c92fca8f1050a90eee9ebe19a25c533cd620550744364e8"
+    },
+    {
+      "file": "js/three/launchVehicle.js",
+      "bytes": 3339,
+      "sha256": "324ed5c8140ce70ac6896f9949cfb7f21ddf292faf2210aba5cd3585b00a8cf6"
+    },
+    {
+      "file": "js/three/localTexture.js",
+      "bytes": 414,
+      "sha256": "1aede1eb382b85e78106bfa8535a478f9cb3f78452a373535a7d6add5f0c7a27"
+    },
+    {
+      "file": "js/three/modelFallbacks.js",
+      "bytes": 9390,
+      "sha256": "29bb2c42ccc156d762b151a5f53f183851b1f2f41513350b0fee9ba821e7b6fd"
+    },
+    {
+      "file": "js/three/models.js",
+      "bytes": 9574,
+      "sha256": "ce443a0dc5ba2eec2cc8fa9d6b414524dbea42f23ec99520c043366c04230fa7"
+    },
+    {
+      "file": "js/three/modularBus.js",
+      "bytes": 5321,
+      "sha256": "e2908e5c8d8aa83127ccc2af1fad491f5df3ed08c7e911374a1c8ee2a64763c4"
+    },
+    {
+      "file": "js/three/numericalLaunch.js",
+      "bytes": 18276,
+      "sha256": "9c93d967133eae8c48d272c9a55280aa0ca12cda2394ff38d43fd017fe510739"
+    },
+    {
+      "file": "js/three/orbit.js",
+      "bytes": 333,
+      "sha256": "8437761d38b2f7967b1147b5fc583958ad65ec039d416d3769eada332347ff6f"
+    },
+    {
+      "file": "js/three/orbitalEventFX.js",
+      "bytes": 1492,
+      "sha256": "8a240cd877af29532524c324a1381313501c32c22a4b52a0a061b3a95f4d47cb"
+    },
+    {
+      "file": "js/three/orbiterAssets.js",
+      "bytes": 2410,
+      "sha256": "ccac6ef79bf6fd9cf387b3d32114046918d8413690d13574a7fc7dde3b60f262"
+    },
+    {
+      "file": "js/three/orbitGlobe.js",
+      "bytes": 2364,
+      "sha256": "6b3a12d4e117c64fa90fe91ab9fefdd1509f006b2786e5a4ce307f3b778bf325"
+    },
+    {
+      "file": "js/three/orbitOps.js",
+      "bytes": 1891,
+      "sha256": "9757d17c1b1a6610edbaca9a36d9c583ad699be6e6fb066efa8b0481cf0c00d1"
+    },
+    {
+      "file": "js/three/orbitPresentation.js",
+      "bytes": 2103,
+      "sha256": "b6cec5820a807abda96ffcb2dba7c7229dfad2fe047ca52213465ecc889e6345"
+    },
+    {
+      "file": "js/three/orbitViewer.js",
+      "bytes": 1800,
+      "sha256": "c6f9f8ca8bc4b7948d73dcd6bf833c8ccdd96fe7ead07231d4c5a0f9f1754387"
+    },
+    {
+      "file": "js/three/payloadFit.js",
+      "bytes": 1444,
+      "sha256": "c50f03a1837821b3fa34e53e181546fff531e6dceea32f864247d75912b844b7"
+    },
+    {
+      "file": "js/three/rocketCarousel.js",
+      "bytes": 2285,
+      "sha256": "720c2b3afbc92b014755ddb9f39685a0b4ebee58784c61485003cdc31818a130"
+    },
+    {
+      "file": "js/three/rocketWorkshopView.js",
+      "bytes": 2238,
+      "sha256": "390d67722bb2b39010a54ee7a865c81138d43810f11c050321ff8d2901f4f210"
+    },
+    {
+      "file": "js/three/sceneKit.js",
+      "bytes": 6089,
+      "sha256": "0781cba225189313b8d80d454a35a7572d35e7dd8da18efbee7f26e6c4ebea69"
+    },
+    {
+      "file": "js/three/scenery.js",
+      "bytes": 767,
+      "sha256": "ba910d5f828f1dc1246d7c1951cd238165dcccdc938744e64faf8123daed72d8"
+    },
+    {
+      "file": "js/three/solarWing.js",
+      "bytes": 2490,
+      "sha256": "78055d1203ca0672931f976d53de9324597f4aa2b2c499a45609d98da4cffad0"
+    },
+    {
+      "file": "js/three/spacecraft.js",
+      "bytes": 2413,
+      "sha256": "ae10dfea6101e549663001b9b3a18c3eea47256120a006f4d097f2d0223a9b45"
+    },
+    {
+      "file": "js/three/spacecraftInteract.js",
+      "bytes": 1941,
+      "sha256": "a0ce538676f244499c0ad888148f3b8bb4bb0787e7802fbc1b294d334c601808"
+    },
+    {
+      "file": "js/three/spacecraftParts.js",
+      "bytes": 4814,
+      "sha256": "575dff194056270d6d51c37a6c0549086d562563fcc84326f5e88ea8f38d1ff1"
+    },
+    {
+      "file": "js/three/workshopAssembly.js",
+      "bytes": 5308,
+      "sha256": "e8b1d2319102569ba7e50570e9f0b29a3f460ffc099fededa37b7555e8a45d20"
+    },
+    {
+      "file": "js/three/workshopHangar.js",
+      "bytes": 4154,
+      "sha256": "07dafa12544374d2278042295164057f0ebb93829f692a48a11cc7804b21c5df"
+    },
+    {
+      "file": "js/three/workshopView.js",
+      "bytes": 11558,
+      "sha256": "ec45612a00aa4932d078fa27e59f0ad7cc9ac9939197b1a116115c46ab6b38f1"
+    },
+    {
+      "file": "js/three/worldBody.js",
+      "bytes": 1073,
+      "sha256": "89b97ec69dfd86cdb01bde510cb7c4eee21664a7d6fd4109c2a8ca8a658aea24"
+    },
+    {
+      "file": "js/transfer/catalogue.js",
+      "bytes": 6665,
+      "sha256": "3c066a0223847028d476a605157a2df2d607efb41c9b818edfe140ab41fb80bc"
+    },
+    {
+      "file": "js/transfer/cruise.js",
+      "bytes": 9326,
+      "sha256": "551b556b0a0d1b0c9da991c5d34af2a41829c1aed7ad1d1d561edf3419fe75c8"
+    },
+    {
+      "file": "js/transfer/library.js",
+      "bytes": 611,
+      "sha256": "c99ff63d79dfe609248c4d37964cc2b484aa46c42601b44cfea26fe518cdd07e"
+    },
+    {
+      "file": "js/transfer/planning.js",
+      "bytes": 11509,
+      "sha256": "943242a5a86335d38841c378f4631a100b70299a6f3da541312371ff1a175b66"
+    },
+    {
+      "file": "js/tutorialGoals.js",
+      "bytes": 693,
+      "sha256": "7399ae06e83de69639bf5c21df85f63618cdf065bf348ebf757f59531fba66f0"
+    },
+    {
+      "file": "js/ui/academy.js",
+      "bytes": 6242,
+      "sha256": "903f18460bc32f9cf308a03da00ecf648d84105916eb2647ec88068bad13df14"
+    },
+    {
+      "file": "js/ui/academyGuide.js",
+      "bytes": 1554,
+      "sha256": "60123fdb3199878cbb95c5816e88c54ee205c67bb9e46272993547eda40d00c0"
+    },
+    {
+      "file": "js/ui/advisory.js",
+      "bytes": 2298,
+      "sha256": "64f1edaceb789ae02a6dc3309fb7cfae46e45db260c5dd88225382230f2c9b71"
+    },
+    {
+      "file": "js/ui/agencyMedia.js",
+      "bytes": 4104,
+      "sha256": "b313c675b26cb7eadfcece94a64d975b62ae036e10e354c299317135981ae6ce"
+    },
+    {
+      "file": "js/ui/assetLibrary.js",
+      "bytes": 8046,
+      "sha256": "601b8669049629aa37132325fedeadaa4467128ce7f422c6a93c501cbdb46073"
+    },
+    {
+      "file": "js/ui/brief.js",
+      "bytes": 4322,
+      "sha256": "917ed88a75702563d8007308c0d65462c5a73861aeadb82c9c170ecc08c66877"
+    },
+    {
+      "file": "js/ui/celestialDiagram.js",
+      "bytes": 4551,
+      "sha256": "3e6d6fd695f4375573332c08931107f4aecad4cb446ff8b2655203be29a85851"
+    },
+    {
+      "file": "js/ui/cruise.js",
+      "bytes": 10232,
+      "sha256": "f5234fd7ce5534bfb84f4bf886a4083f2ca3630ca1a9fa05d59d76eb35fa7b29"
+    },
+    {
+      "file": "js/ui/design.js",
+      "bytes": 5031,
+      "sha256": "4df5e18d19d1925c25163cb218e78829153f1ecdfa8895997964c67800739c3a"
+    },
+    {
+      "file": "js/ui/designAdvice.js",
+      "bytes": 1439,
+      "sha256": "896633434b9c050fac240c99eb11bedb7c90b6f2c95af91fab09475e502270ec"
+    },
+    {
+      "file": "js/ui/designBars.js",
+      "bytes": 2954,
+      "sha256": "cfc890b056123a470aad4277f5ab20ac38d786e5b134536633f33fe73508402c"
+    },
+    {
+      "file": "js/ui/designPartsMenu.js",
+      "bytes": 7325,
+      "sha256": "06209c2bac06a474f3f2903d357b050965f8ad5c419a0225eb957effff4a001f"
+    },
+    {
+      "file": "js/ui/designTooltips.js",
+      "bytes": 4055,
+      "sha256": "4e8b0a81c0d0b8e0fb8d8649b300ecdc96e6e06204462ea70fe85c849d08eaee"
+    },
+    {
+      "file": "js/ui/designTutorialHooks.js",
+      "bytes": 1121,
+      "sha256": "906211defbc5631d09bbb7402ca0d0e54253fe80875573ee0bf69b0bd9eecaf7"
+    },
+    {
+      "file": "js/ui/designView.js",
+      "bytes": 393,
+      "sha256": "190199eebc6d3c58bb3573c51c727257214d24227980ebe93e5d635157d86cdd"
+    },
+    {
+      "file": "js/ui/designWarnings.js",
+      "bytes": 1067,
+      "sha256": "f2f7786d991e731c52d9354156ccc5124de9966bd03baea40097f27e7ad60603"
+    },
+    {
+      "file": "js/ui/evidence.js",
+      "bytes": 7030,
+      "sha256": "0a37da229193fdb325ae7f49867f0b700b44ba6f15937ef49cf00d2bd47c685c"
+    },
+    {
+      "file": "js/ui/flightCamera.js",
+      "bytes": 1002,
+      "sha256": "a3a56d84edcbd58f1dd25fdce67c55cd4856aa18987a7fa7631f690e38d76205"
+    },
+    {
+      "file": "js/ui/flightPlan.js",
+      "bytes": 8420,
+      "sha256": "c2065851f135638e9c75943ab2f4358c11f7ee2a74130f86dea0f1b0ff53ff3c"
+    },
+    {
+      "file": "js/ui/groundTrack.js",
+      "bytes": 3090,
+      "sha256": "a46ae65590759f92167c1170fc0f55454a4a38b57cd7128268098ab036afcca9"
+    },
+    {
+      "file": "js/ui/historicalContext.js",
+      "bytes": 5081,
+      "sha256": "f7bd3fb1e00e896ffc2ac7d2d70df4750078f0a229d1b0bf373108d3075892df"
+    },
+    {
+      "file": "js/ui/html.js",
+      "bytes": 146,
+      "sha256": "1bc415ad33d83bf1e7919a654d8bef819736ca910a48c8126ddd2d3217909c5e"
+    },
+    {
+      "file": "js/ui/lagrangeChart.js",
+      "bytes": 3688,
+      "sha256": "637c5ed14e450db0cfb2f5fa18b4f8bcb5731332e5b54c3f0e5b5492b2697dd6"
+    },
+    {
+      "file": "js/ui/launchChecks.js",
+      "bytes": 424,
+      "sha256": "b2f1c34693f33a1fd486e10eb63d57d0076ccc594204afc8cd7c52f86d7800fb"
+    },
+    {
+      "file": "js/ui/learnTexts.js",
+      "bytes": 13062,
+      "sha256": "135c53938ce982dc674ef7ede990258017978d517eaf5dce8fc9a5a8ea882f91"
+    },
+    {
+      "file": "js/ui/menu.js",
+      "bytes": 5985,
+      "sha256": "5dba572812b470415a159b0a4f28bb84266416db6a90209b38d425680d39bf5d"
+    },
+    {
+      "file": "js/ui/missionArt.js",
+      "bytes": 4417,
+      "sha256": "1fc0d902e5813888d8d41a01462fe543312316aa7dce8453c90a93783a5d685f"
+    },
+    {
+      "file": "js/ui/missionControl.js",
+      "bytes": 16292,
+      "sha256": "1ccced0223e823a5e8cf41db0613d7289aa7ecccc305addd9f40022c18c8b16b"
+    },
+    {
+      "file": "js/ui/missionMapLayout.js",
+      "bytes": 1434,
+      "sha256": "454605f8c5d90a7659b1679ceabdec5afe4c4707dc0edc984712c2801f3f0f4e"
+    },
+    {
+      "file": "js/ui/missionSelect.js",
+      "bytes": 18799,
+      "sha256": "4c507ce5c96879504cd52d386e27b8bdf9cbe4a3fff2fb3f60c3d956861eaeca"
+    },
+    {
+      "file": "js/ui/numericalAscent.js",
+      "bytes": 9174,
+      "sha256": "fe8b83cc536adddd7eb290e367c072bdd42da5c5ad831c36255508aacc566c52"
+    },
+    {
+      "file": "js/ui/operations.js",
+      "bytes": 3952,
+      "sha256": "22962f8ea92af6cf740699100b4defd7a24b0bbf3a38d570d5e85be889f1c0f7"
+    },
+    {
+      "file": "js/ui/orbitSelect.js",
+      "bytes": 7999,
+      "sha256": "2c40ee758f76be7e099cd6c1bcdde1520a2ec734326396f8969e5da3d8febe3e"
+    },
+    {
+      "file": "js/ui/report.js",
+      "bytes": 15173,
+      "sha256": "c09f912bab153f93b32af10d000fe53b3e9a0fa55dbacbb17dab3b7496c91626"
+    },
+    {
+      "file": "js/ui/reportAnimation.js",
+      "bytes": 911,
+      "sha256": "6a1977f3d3e3714f9f11ca72d6d52f88491a32e31e90382ace1f9771857cc921"
+    },
+    {
+      "file": "js/ui/reportJudges.js",
+      "bytes": 1654,
+      "sha256": "171cfff69fa5fa1ccaf98ab7c8c86cc1c6185ca04991a07dba2f89bf165c663b"
+    },
+    {
+      "file": "js/ui/reportTutorial.js",
+      "bytes": 1105,
+      "sha256": "be58a04e438a2e5565abb17a6b6771a11bfb36efd1ec70904d6ce2ee254a291b"
+    },
+    {
+      "file": "js/ui/resourceTable.js",
+      "bytes": 1349,
+      "sha256": "9fcf815547e886eff76e9fc94e67437549dc8c0fae9918ab7b120c645cf80868"
+    },
+    {
+      "file": "js/ui/review.js",
+      "bytes": 2865,
+      "sha256": "effbc8407392f7dae0ba0473025a869192d3e81ca6ee546b56723fc4b8d989d2"
+    },
+    {
+      "file": "js/ui/rocketSelect.js",
+      "bytes": 3101,
+      "sha256": "7aeee1fa1671ac83226de016afdc5b7c43e0a4f2394cc9f2a8f61bc8a85eac88"
+    },
+    {
+      "file": "js/ui/rocketWorkshop.js",
+      "bytes": 10244,
+      "sha256": "283285f00312e8fee74f97cff80f6955329f07d2e83e1fbad346e9b1f2fa478f"
+    },
+    {
+      "file": "js/ui/router.js",
+      "bytes": 4571,
+      "sha256": "fe627a215b7dfb61ef32622673ea25b35e09a87085853cf180146447999e3481"
+    },
+    {
+      "file": "js/ui/simulation.js",
+      "bytes": 6502,
+      "sha256": "faf94ab9adbebc7b67c53c050553625a94c5981889309726158a4d88431b7155"
+    },
+    {
+      "file": "js/ui/speech.js",
+      "bytes": 3197,
+      "sha256": "83c666c89858c5d077d4f74a3fadf3a7501bc3199ccd8609e5be279e434a2332"
+    },
+    {
+      "file": "js/ui/tutorial.js",
+      "bytes": 1590,
+      "sha256": "468b5ce4b25124835df727b272f7ecad24a0ddb12e06842f2f9e20fa05532d36"
+    },
+    {
+      "file": "js/ui/warningTexts.js",
+      "bytes": 355,
+      "sha256": "458f8605a0bd1530885942bfb3cf49db28adaba65dfc350a60dc53dcf9be7771"
+    },
+    {
+      "file": "js/ui/workshop.js",
+      "bytes": 42174,
+      "sha256": "c51031778b42088d1e6b4ec92d1f14c401cbb19d11bab49e983990ea6d73bf0a"
+    },
+    {
+      "file": "js/voice.js",
+      "bytes": 5401,
+      "sha256": "d94ffdeaf092a11719d94d175288f3ec37f48e05ac2e3bce07a81eb60181584c"
+    },
+    {
+      "file": "js/workshop/advancedCatalogue.js",
+      "bytes": 4891,
+      "sha256": "6d8f70762b6010745a89f6aea4c6f84afc41a97d41827ff82ae81453acbae02f"
+    },
+    {
+      "file": "js/workshop/blueprint.js",
+      "bytes": 10278,
+      "sha256": "6e87ffe9e09299249022a52f5384cbdab82e993b5094f0b13e5c9d86bc909efe"
+    },
+    {
+      "file": "js/workshop/catalogue.js",
+      "bytes": 6650,
+      "sha256": "c90bcecff17d58aea1c6ab797611fdbb4fc223e593ffebc1a434a622d3660ec8"
+    },
+    {
+      "file": "js/workshop/collision.js",
+      "bytes": 4458,
+      "sha256": "d45d1691387d06605021ebb926a7c191706f6942769116d23e834107863f56a3"
+    },
+    {
+      "file": "js/workshop/compatibility.js",
+      "bytes": 1404,
+      "sha256": "fa43f29159671d2960bafcfc7e64e87eee35c8e7111472552bd8b8308133c3d8"
+    },
+    {
+      "file": "js/workshop/economy.js",
+      "bytes": 2876,
+      "sha256": "cbec0f2abacf19f3f648e1a903d4b9444fb1906ae0f7ab8afbb90140ce185b90"
+    },
+    {
+      "file": "js/workshop/history.js",
+      "bytes": 622,
+      "sha256": "be52bc62c8df5c73f360edb9b4e45ede4d7649e2e4cda54149eb52782eb2633d"
+    },
+    {
+      "file": "js/workshop/library.js",
+      "bytes": 1422,
+      "sha256": "aad8d0e6b36a70015fd61471b0950e0058aed6174b77679878e1257a01c547c3"
+    },
+    {
+      "file": "js/workshop/librarySummary.js",
+      "bytes": 1281,
+      "sha256": "fe10b063dfdb3268bb4027e4b756350a8921a0f38bc4f0d26a150b4bdd99b48d"
+    },
+    {
+      "file": "js/workshop/structure.js",
+      "bytes": 3811,
+      "sha256": "9afbd44dbed273ae0624b041a4ac7d43b8146cff7cddc49c247368913c21f240"
+    },
+    {
+      "file": "models/CREDITS.txt",
+      "bytes": 1345,
+      "sha256": "48b4fe3f24241d17d622b3644da21803ab55f28c949dc3ed8c64cffa36c01571"
+    },
+    {
+      "file": "models/environment/PUT_SCENERY_HERE.txt",
+      "bytes": 105,
+      "sha256": "140de20387e48087cd7b9f916c2cc664e70a95034329dc30b8f50efd57ee0f83"
+    },
+    {
+      "file": "models/manifest.json",
+      "bytes": 28689,
+      "sha256": "0bbed80ad58373a3e37cbd88fd15ae5ee756f99bbf7de66a805ee69507f99fd6"
+    },
+    {
+      "file": "models/orbiter-source/KLC39B.msh",
+      "bytes": 394853,
+      "sha256": "09314ceb9e6ad7f4c81864ef167ecbc0b05daff2aa7abb9b8da6cde0d486af8e"
+    },
+    {
+      "file": "models/orbiter-source/KLC39Bground.msh",
+      "bytes": 2221,
+      "sha256": "1cbc3460f92745f2e30d8b1992c7cf180e075aabe7517d2386de2d36eb8ec937"
+    },
+    {
+      "file": "models/orbiter-source/LICENSE",
+      "bytes": 1078,
+      "sha256": "5d85bca87014aa81e9f29639b0f84740ca926a82a4611709b299ed656c2bf976"
+    },
+    {
+      "file": "models/orbiter-source/Textures/cloud1.dds",
+      "bytes": 1048704,
+      "sha256": "59260d9b649df7424780965fdd70d559723701dab747228703b066c231ec8aef"
+    },
+    {
+      "file": "models/orbiter-source/Textures/Concrete.dds",
+      "bytes": 32896,
+      "sha256": "d3fb6a91e782ec156f084bd856bbd247cd29b0d9aff8cdcb8a0f40c5d53fa49e"
+    },
+    {
+      "file": "models/orbiter-source/Textures/Exhaust.dds",
+      "bytes": 87536,
+      "sha256": "31f30dc4b9079d73e7b9017dc10604954a57053be4aeb38465a92edb656a8d1b"
+    },
+    {
+      "file": "models/orbiter-source/Textures/generic/concrete1.dds",
+      "bytes": 16512,
+      "sha256": "d7f3d04d289e7517a8580137ab998f65a81c2948ed758182960c51969861cd03"
+    },
+    {
+      "file": "models/orbiter-source/Textures/generic/concrete2a.dds",
+      "bytes": 11064,
+      "sha256": "35d72a42c27ddc8ad53a743c7748c88f99324739b20bfc362604cca8c83abee7"
+    },
+    {
+      "file": "models/orbiter-source/Textures/generic/concrete3.dds",
+      "bytes": 8320,
+      "sha256": "32654e718c044795b981b5d162468f005e58f1008aa09fd3e382081dc89a9e93"
+    },
+    {
+      "file": "models/orbiter-source/Textures/generic/metal_plates1.dds",
+      "bytes": 8320,
+      "sha256": "41de3ba5c506424aa3e2ec306c2765e39895f65821b74c8405996474544d5a90"
+    },
+    {
+      "file": "models/orbiter-source/Textures/generic/railings1.dds",
+      "bytes": 8320,
+      "sha256": "6aef547c5a60025bbc8a8e60056f3fe67d5aa4546f5534f942490565a7f1827f"
+    },
+    {
+      "file": "models/orbiter-source/Textures/generic/stripes.dds",
+      "bytes": 2176,
+      "sha256": "948ca9b7708e035ccc3b05e2fb5721d241b1c43498f7694572f6dc3698959335"
+    },
+    {
+      "file": "models/orbiter-source/Textures/generic/tiles1.dds",
+      "bytes": 8320,
+      "sha256": "ed85522e937a3b07799f44ff5a45bf5f5cca945f9c5e112413dbd8075af7a286"
+    },
+    {
+      "file": "models/orbiter-source/Textures/KSC/KLC39B.dds",
+      "bytes": 131200,
+      "sha256": "185696f45d4f77d8cdf61f1a5a23704ee5cc8fee30382c4f53f99a833716559b"
+    },
+    {
+      "file": "models/orbiter-source/Textures/KSC/MLP.dds",
+      "bytes": 131200,
+      "sha256": "af3dc2f2b9dcce4fda59732cbff110f8affda4fef704ecc9a8125e83cf6cc7d6"
+    },
+    {
+      "file": "models/orbiter-source/Textures/KSC/RSS39B.dds",
+      "bytes": 131200,
+      "sha256": "efe41c5f1e09580345b7666e72e9ade0ff95daf5c4f2ec8039bb1d117e96793a"
+    },
+    {
+      "file": "models/orbiter-source/Textures/LCC_DRS.dds",
+      "bytes": 640,
+      "sha256": "bab09fe7fa2958a1d53c7329439c08949f89ca189e8711637097f09974a7a70b"
+    },
+    {
+      "file": "models/orbiter-source/Textures/LCC_WNDS.dds",
+      "bytes": 1152,
+      "sha256": "6401c529847c956e6559e17cd928211277f4af96fbb771a91914f703faacf4eb"
+    },
+    {
+      "file": "models/orbiter-source/Textures/VAB_BK01.dds",
+      "bytes": 32896,
+      "sha256": "a617d36daad67f11c47b67314623661bcabfc4bb1caef143f26036d4343c1c36"
+    },
+    {
+      "file": "models/orbiter-source/Textures/VAB_FR01.dds",
+      "bytes": 43832,
+      "sha256": "07407088c1424e30ac79d795a25b775e21127ecbfa7be48eb1fd763df1a59392"
+    },
+    {
+      "file": "models/orbiter-source/Textures/VAB_FR02.dds",
+      "bytes": 4224,
+      "sha256": "a5d281e4f0ac22180506a84782cbb6ecf0d5ae31b0723e786358522c4396a07d"
+    },
+    {
+      "file": "models/orbiter-source/Textures/VAB_TL1.dds",
+      "bytes": 1152,
+      "sha256": "77085260e1e281e1618da5d03187a4fcddfae253eda97a6c47a7b67e7fa77b57"
+    },
+    {
+      "file": "models/orbiter-source/Textures/VAB_TL2.dds",
+      "bytes": 1152,
+      "sha256": "52ec2661f5c6da9d183017dfae88adb92a2eaad0647f63f7e6863175f04479eb"
+    },
+    {
+      "file": "models/orbiter-source/Vab.msh",
+      "bytes": 185454,
+      "sha256": "ce75a46a19577af58d31b78fb229ccacafb26fdcfb00abe319d9a1ef8e989d9f"
+    },
+    {
+      "file": "models/pad/PUT_TOWER_HERE.txt",
+      "bytes": 62,
+      "sha256": "cdd133111b6cdef020f45dc04bc1bf5e60a92c00fcd0a3a89cbf01f7c6380ffa"
+    },
+    {
+      "file": "models/README.txt",
+      "bytes": 1051,
+      "sha256": "9c4528498e6c8bcfb3d0ba4d3a422533f02f5fdeee3b76dd70e5c4c2dd7fd249"
+    },
+    {
+      "file": "models/rockets/albatross.glb",
+      "bytes": 592068,
+      "sha256": "6423761317aa695026ca0d23b56691eff3eb137d4738f23d4628a4b8245d2698"
+    },
+    {
+      "file": "models/rockets/condor.glb",
+      "bytes": 427256,
+      "sha256": "b7809f1ff78a85f890f982e2d2dea0d01750cf3e89948fa1957d5c937147827b"
+    },
+    {
+      "file": "models/rockets/kestrel.glb",
+      "bytes": 262440,
+      "sha256": "24acd27e3392ba1009b174137589ff746df8b140e69f5f34dab1f3912e42e6e1"
+    },
+    {
+      "file": "models/rockets/PUT_ROCKETS_HERE.txt",
+      "bytes": 113,
+      "sha256": "50c8e40e41fd5da0910e8d13588a4802d02638be042db397fd3076d194209944"
+    },
+    {
+      "file": "models/rockets/roc.glb",
+      "bytes": 756940,
+      "sha256": "f4410cf8a0c12b354fe4f53c7a6d5979437d2cb68e17c2e82b2b6d559708ea0f"
+    },
+    {
+      "file": "models/runtime/atlas-lower.glb",
+      "bytes": 8515448,
+      "sha256": "36020535c3aa7a8d27e71b3e72e0e5ed35eab25e203b83b301f7625d861d7162"
+    },
+    {
+      "file": "models/runtime/atlas-upper.glb",
+      "bytes": 17272832,
+      "sha256": "e5309b08019c9c42e3b9648c82599537f89e414ff82cb2d0b2afa8f2439ad1f9"
+    },
+    {
+      "file": "models/runtime/falcon-adapter.glb",
+      "bytes": 10421992,
+      "sha256": "f94756b236e60348a9cbe674eb3fbe615801ac842a088ec2a014216898c5f0c5"
+    },
+    {
+      "file": "models/runtime/falcon-lower.glb",
+      "bytes": 6812740,
+      "sha256": "bde874f300718a4653002abaa5a699b2311a0c3603728adc1f65b84e09a5c4b8"
+    },
+    {
+      "file": "models/runtime/falcon-upper.glb",
+      "bytes": 7260012,
+      "sha256": "a8aaefce45fb32dc6bd68eec2ab31873f46b7c1a57d5811048b6ace8c3c3da8f"
+    },
+    {
+      "file": "models/runtime/textures/atlas-lower-0.jpg",
+      "bytes": 823262,
+      "sha256": "7f05a6f2b13339daa18e8ff8593de449bbcf21bbd3444d9f5357a799336cb113"
+    },
+    {
+      "file": "models/runtime/textures/atlas-lower-1.jpg",
+      "bytes": 176263,
+      "sha256": "9ae2993ca249b066e19c0a1b902c09f4b5ca5e6746637672bcd2aa78069844ce"
+    },
+    {
+      "file": "models/runtime/textures/atlas-lower-2.jpg",
+      "bytes": 392913,
+      "sha256": "6cef4ab44af90c5e1a2efbf2130cd15dd76120b9ba295a16482f32cff93bec10"
+    },
+    {
+      "file": "models/runtime/textures/atlas-upper-0.jpg",
+      "bytes": 1002341,
+      "sha256": "72e29d02a4293dace2051ab7918137cc4bcb55345b516c85653fbab71816a77e"
+    },
+    {
+      "file": "models/runtime/textures/atlas-upper-1.jpg",
+      "bytes": 113424,
+      "sha256": "2cb40215a91acd6205ed8404e372622c6b8f07832f5d135abda17b1cbe824f92"
+    },
+    {
+      "file": "models/runtime/textures/atlas-upper-2.jpg",
+      "bytes": 457358,
+      "sha256": "1f4d75f224e1d3b45b6222a99fb30340bb2cce14eb1ce1e599a54b9519a4fcfa"
+    },
+    {
+      "file": "models/runtime/textures/falcon-adapter-0.jpg",
+      "bytes": 941258,
+      "sha256": "f2b5f6e1449091121c19df2b19e1487e781ed0725e1c0c0f98c33108970f5e02"
+    },
+    {
+      "file": "models/runtime/textures/falcon-adapter-1.jpg",
+      "bytes": 157011,
+      "sha256": "038a0ddf457cc7afe064e5c9f25303d703e7af46c73f0bea7966472283834b44"
+    },
+    {
+      "file": "models/runtime/textures/falcon-adapter-2.jpg",
+      "bytes": 436497,
+      "sha256": "da8d9806b331f1c3c60897f11890fc16aad28e9ca6800d647529438ddc1efcf1"
+    },
+    {
+      "file": "models/runtime/textures/falcon-lower-0.jpg",
+      "bytes": 956501,
+      "sha256": "2519016c6c129b6b5db74663f6a43a01f97cae5a967f727ec87b148c2a561014"
+    },
+    {
+      "file": "models/runtime/textures/falcon-lower-1.jpg",
+      "bytes": 192459,
+      "sha256": "85cec672de42122e78430ad63c1ae0e924de39159094c3b829ffd7d03963aa55"
+    },
+    {
+      "file": "models/runtime/textures/falcon-lower-2.jpg",
+      "bytes": 477561,
+      "sha256": "2aab6637724d56ca01adbc35b1aaf366894a7c49b67bf8c055d3655da9168490"
+    },
+    {
+      "file": "models/runtime/textures/falcon-upper-0.jpg",
+      "bytes": 723690,
+      "sha256": "9d49b2f862f9a3f026c401e687a739a14ae8975bf6946211b1d45bb8ea43b299"
+    },
+    {
+      "file": "models/runtime/textures/falcon-upper-1.jpg",
+      "bytes": 160236,
+      "sha256": "fb85cd8ac8a8da134a62bb5e5149824eeb653ec57af6f64550d48d7c29589d3e"
+    },
+    {
+      "file": "models/runtime/textures/falcon-upper-2.jpg",
+      "bytes": 329618,
+      "sha256": "d082e1cc88f9b06d7f2fa27f3cd619bc125030e0b9c9b4bde35c279326bfe5dd"
+    },
+    {
+      "file": "models/satellite/battery_l.glb",
+      "bytes": 18984,
+      "sha256": "7373e3ff616f1a39acf42ecb70dff9720941907adbb599f1f26365abe84ab3ae"
+    },
+    {
+      "file": "models/satellite/battery_m.glb",
+      "bytes": 18984,
+      "sha256": "48d9c24d9ac819e0615e0e9912fc22bbb358ccae216f088730fc48295bd3da60"
+    },
+    {
+      "file": "models/satellite/battery_s.glb",
+      "bytes": 18984,
+      "sha256": "99e455f115f52f713067584c5e44674a0e607533eb8f3d0c825e37cb30d32d1c"
+    },
+    {
+      "file": "models/satellite/bus_large.glb",
+      "bytes": 109324,
+      "sha256": "912cdbde73b145729d8506ef2c2160298e31feaba8d1dbae78420559f9f059c3"
+    },
+    {
+      "file": "models/satellite/bus_medium.glb",
+      "bytes": 109428,
+      "sha256": "05cb4f2599e47d952c2635c5e5f00a8fb06eabefbf39fd330a8e3046ab514d35"
+    },
+    {
+      "file": "models/satellite/bus_micro.glb",
+      "bytes": 109148,
+      "sha256": "d431e4ee66c394aecb184c2d59f07c4882ec6a6ea3a9c0e86e0f139429943f46"
+    },
+    {
+      "file": "models/satellite/bus_small.glb",
+      "bytes": 109556,
+      "sha256": "d409d543b640431d8fabe6d11233573629059f7bee71688674ebb0c112088765"
+    },
+    {
+      "file": "models/satellite/comms_ka_band.glb",
+      "bytes": 44132,
+      "sha256": "b5ebf13e3002016abf39c0dd504892861e59c73bee1934a365f7ece93e8629ab"
+    },
+    {
+      "file": "models/satellite/comms_s_band.glb",
+      "bytes": 44132,
+      "sha256": "b82a5865b3f7bd6e2acb6d217184a4b65fe65041da6db24d6f903108e4078637"
+    },
+    {
+      "file": "models/satellite/comms_uhf.glb",
+      "bytes": 44128,
+      "sha256": "786eaacd6a3233eafc3592a5e524608d3b4034b870cf92213436c63e6d275863"
+    },
+    {
+      "file": "models/satellite/comms_x_band.glb",
+      "bytes": 44132,
+      "sha256": "a54f6591a54e4ec82aa49b2d1c891c76fb70601e2da4b0b423b3f8fcb46273fb"
+    },
+    {
+      "file": "models/satellite/fuel_l.glb",
+      "bytes": 73344,
+      "sha256": "f7c15bbb17e4224354cc1ef2d0e7d8beda3a2fdae3b00a5abb76bd8cd8e8e9e6"
+    },
+    {
+      "file": "models/satellite/fuel_m.glb",
+      "bytes": 73344,
+      "sha256": "033864e638a046a8707d6408b5316275bba094f4f88310fb988f9d9f2dc02b49"
+    },
+    {
+      "file": "models/satellite/fuel_s.glb",
+      "bytes": 73344,
+      "sha256": "62e8e87250076f1a521f0b41fe8a8575480fef9c0cac3d02547bdcb7dde7cd3c"
+    },
+    {
+      "file": "models/satellite/laser_altimeter.glb",
+      "bytes": 27364,
+      "sha256": "0d2e415961aed554633aa09d20527d0c2444ed3ef964e070dc1816f9373e7abb"
+    },
+    {
+      "file": "models/satellite/magnetometer.glb",
+      "bytes": 27360,
+      "sha256": "d4a6aef451a9db7ec829df0add15263946865388e192ee898afc0fbb08fc0f36"
+    },
+    {
+      "file": "models/satellite/neutron_detector.glb",
+      "bytes": 27364,
+      "sha256": "6e299506586cb2f8087f7980cff99d2b5a0589ee32aca449c2b50a7a854115c2"
+    },
+    {
+      "file": "models/satellite/optical_camera.glb",
+      "bytes": 27364,
+      "sha256": "f05fb937dba30157be060bb56841ee9a4f35f692502b6029cd2654953dc940f5"
+    },
+    {
+      "file": "models/satellite/PUT_SATELLITE_PARTS_HERE.txt",
+      "bytes": 150,
+      "sha256": "d40433ef1cfd726b08e7e868e07293345ea8bab1aad4f4e4ccc80760f5108c2e"
+    },
+    {
+      "file": "models/satellite/radar_imager.glb",
+      "bytes": 27360,
+      "sha256": "cce8e0ab723bb250412e39d609d57b2f4775f13c6cadecfd9c835cd5b8d5cea0"
+    },
+    {
+      "file": "models/satellite/solar_wing_l.glb",
+      "bytes": 114684,
+      "sha256": "e2f09cefa9a0464fa8bec2984371d4a953159dcd5757e30eb58f3adec9cc6102"
+    },
+    {
+      "file": "models/satellite/solar_wing_m.glb",
+      "bytes": 114216,
+      "sha256": "c0d56a4d996d1370e350d9b2bba5b99a2a15814bf248e34d13de01a6a164799f"
+    },
+    {
+      "file": "models/satellite/solar_wing_s.glb",
+      "bytes": 114536,
+      "sha256": "8140c1e5205e835e9cee31245b1cf1267ebc883d41854a8eca26a78a08029e49"
+    },
+    {
+      "file": "models/satellite/spectrometer.glb",
+      "bytes": 27360,
+      "sha256": "71cce4188c7724e672a338b9629aa9ce4219b47b3aba6f848846da4520cbdbeb"
+    },
+    {
+      "file": "models/satellite/thermal_imager.glb",
+      "bytes": 27364,
+      "sha256": "091864dbfdb5c6bdcb073c74f5023c7835282dbac86c59e7434c24b357fd5ac8"
+    },
+    {
+      "file": "models/satellite/transponder_l.glb",
+      "bytes": 27364,
+      "sha256": "45f329dc616db2395140d3f09b93be60fdc469db0d24f1b8d20d2e41a70046e2"
+    },
+    {
+      "file": "models/satellite/transponder_m.glb",
+      "bytes": 27364,
+      "sha256": "e74a272771d3f24a7289e68c40c9f555c0f32ee23cfece9bb627eaddcc85568b"
+    },
+    {
+      "file": "models/satellite/transponder_s.glb",
+      "bytes": 27364,
+      "sha256": "1300ae9b2e1a408850d28458fa787f6b09a8d1c8744d78f3cf3806b3f41216b9"
+    },
+    {
+      "file": "models/satellite/weather_imager.glb",
+      "bytes": 27364,
+      "sha256": "78c49803e0e2fd5da0b2cbc23b16ddb2703fc132647874f9d1eebff4b2888702"
+    },
+    {
+      "file": "models/stage-sources.json",
+      "bytes": 427,
+      "sha256": "d98e6ae4889c5da2db5979e288896f075890a95d5b33756e21f1dff65d3c8b08"
+    },
+    {
+      "file": "models/supplied/aquarius.glb",
+      "bytes": 3720696,
+      "sha256": "8d07c591f113628839204e56798b6bec613af638d977b697b5fd436157a7cd1e"
+    },
+    {
+      "file": "models/supplied/ares-1.glb",
+      "bytes": 99136,
+      "sha256": "40a1cafe13b916d4a4c17ebb06bfad22138eaa38beb5ece883d15ceb25a1ee35"
+    },
+    {
+      "file": "models/supplied/cassini.glb",
+      "bytes": 1660492,
+      "sha256": "f8bc110e23821021e99b88634843449cc8e98d86d0d8561c612c1cf0404e64e7"
+    },
+    {
+      "file": "models/supplied/cloudsat.glb",
+      "bytes": 705152,
+      "sha256": "335d1e3c51f25c556c89e270f540c1fc714ecb063bed39b95f5df46104020a21"
+    },
+    {
+      "file": "models/supplied/cygnss.glb",
+      "bytes": 1622924,
+      "sha256": "830321f2d30099b4355f835d7ae5a2ab1f9f91c292dd01dfc008b8d4bf64c962"
+    },
+    {
+      "file": "models/supplied/jupiter-c.glb",
+      "bytes": 149372,
+      "sha256": "6584639c0cdb982de8bfb24682c3f541789b73a396d11e95e564a78862393460"
+    },
+    {
+      "file": "models/supplied/mobile-launcher.glb",
+      "bytes": 198480,
+      "sha256": "411ad36727a4290123431e77ca7a4622dcd534e2e76eb1134dc19fc07dd5be65"
+    },
+    {
+      "file": "models/supplied/mro.glb",
+      "bytes": 1219800,
+      "sha256": "0f92872363ebe1984738caa4a5739863b125a1bc890b3c77bff23d8daa406747"
+    },
+    {
+      "file": "models/supplied/stages/atlas-lower.glb",
+      "bytes": 55005812,
+      "sha256": "0a3fda92f0f72a8b43585f054bd4a22627e1923ccbda6b0c625b2ec71c411edb"
+    },
+    {
+      "file": "models/supplied/stages/atlas-upper.glb",
+      "bytes": 106189788,
+      "sha256": "7f5c90006ef6d252e5e54a5b2fb61f29188311c26b954d84191515c66e60f473"
+    },
+    {
+      "file": "models/supplied/stages/falcon-adapter.glb",
+      "bytes": 54534360,
+      "sha256": "699765e6852d8191b57f62e1597e0201b5682494db6c89772f317baf7c396dac"
+    },
+    {
+      "file": "models/supplied/stages/falcon-lower.glb",
+      "bytes": 44680660,
+      "sha256": "b13458dad5a952be05032550abdc5f49a3852efdc6c57b24ac06db4014c22cc1"
+    },
+    {
+      "file": "models/supplied/stages/falcon-upper.glb",
+      "bytes": 54102332,
+      "sha256": "c4148b1221524b2aea9e9d7617f7572d279aa91955ee3c267fd3b7fd3a8f91f1"
+    },
+    {
+      "file": "textures/atlas/ceres-portrait.jpg",
+      "bytes": 32915,
+      "sha256": "9a7b4e400a8fc08448eb232a16aecd209af6513586eede1ec976ea3a164557ff"
+    },
+    {
+      "file": "textures/atlas/comet-67p.jpg",
+      "bytes": 261157,
+      "sha256": "f27f66c3beb75662a33ba121487bdf5fa89e8f66c798d086e366e19f31841d1c"
+    },
+    {
+      "file": "textures/atlas/earth-clouds.jpg",
+      "bytes": 519577,
+      "sha256": "80c08eb0ae0d2f5daba9fdbeb51fa1123009b9d2141d961ec43873cde1ff9646"
+    },
+    {
+      "file": "textures/atlas/earth-night.jpg",
+      "bytes": 88297,
+      "sha256": "4b0661d93058eefd78c45ef5827ae97c70d40558158a51fec57f211a68b2e757"
+    },
+    {
+      "file": "textures/atlas/earth-surface.jpg",
+      "bytes": 356467,
+      "sha256": "1ed70af0494a92b69a40e12feffd7b47ad4c92b3d70ad0987fee77212b51635c"
+    },
+    {
+      "file": "textures/atlas/earthrise.jpg",
+      "bytes": 67035,
+      "sha256": "4326e44ea3266c7dd28a65f17117290ca16000f2a719af32b8c79b0e36e8c058"
+    },
+    {
+      "file": "textures/atlas/europa.jpg",
+      "bytes": 610862,
+      "sha256": "50d01ca5c01352d1c507bb17fefd1c46ba11260305656250062c6cdac89c8ebf"
+    },
+    {
+      "file": "textures/atlas/jupiter.jpg",
+      "bytes": 441285,
+      "sha256": "6b835ddd8036ea9efd25def04f75aa60b69b096025a37eeae5e9b6978e0a2281"
+    },
+    {
+      "file": "textures/atlas/manifest.json",
+      "bytes": 9229,
+      "sha256": "402286a9b1a481798901862e334e32210e87965f247e0572b9c5f6459c52c9b8"
+    },
+    {
+      "file": "textures/atlas/mars.jpg",
+      "bytes": 972896,
+      "sha256": "12ec6bf02ebd42a246edc778cb2ce8c595b4d9f0892badf0bfff8abb2303c780"
+    },
+    {
+      "file": "textures/atlas/mercury-portrait.jpg",
+      "bytes": 27758,
+      "sha256": "ae26042c878b6882dde515918772f6f2e90500c2ee0acdb17236b55c5277f4dd"
+    },
+    {
+      "file": "textures/atlas/neptune.jpg",
+      "bytes": 210528,
+      "sha256": "e9bb2b7bcfb98d3f1adc6f2e20e833a00c11e9677238d8a00ae7431214ca70aa"
+    },
+    {
+      "file": "textures/atlas/saturn.jpg",
+      "bytes": 275735,
+      "sha256": "d959a239e3d87630daf08e2a688dcbf315fe01b1fd474e55522770108f40aca7"
+    },
+    {
+      "file": "textures/atlas/stars.jpg",
+      "bytes": 42786,
+      "sha256": "8d2e7e8d515e238deaf90e2b7fb11b2838b6e8db64f933a57540d894468148aa"
+    },
+    {
+      "file": "textures/atlas/sun.jpg",
+      "bytes": 243011,
+      "sha256": "28744203497af76704cb5a5c29aabe029837b5d95b58e6c68b32cc57ab4676f0"
+    },
+    {
+      "file": "textures/atlas/uranus-portrait.png",
+      "bytes": 475380,
+      "sha256": "6c3cf9f941078b3427e85acf903f265aeb388cedd769ecd04d50b3e2c6d7e77a"
+    },
+    {
+      "file": "textures/atlas/venus-radar.jpg",
+      "bytes": 1166974,
+      "sha256": "e395bced59e95339efbdd002d4a0bbbf81fe323a6694f3a4039120560c80e789"
+    },
+    {
+      "file": "textures/earth.jpg",
+      "bytes": 2430267,
+      "sha256": "04310dba908ab5e24bf73fbd3ef0be01bb1b820c76ae05ad7489b81a714c69a1"
+    },
+    {
+      "file": "textures/launch/Asphalt012_2K-JPG_Color.jpg",
+      "bytes": 4104616,
+      "sha256": "40517abe931e321b0fe059314720b6be0166159437220592afab49d79244e9de"
+    },
+    {
+      "file": "textures/launch/Asphalt012_2K-JPG_NormalGL.jpg",
+      "bytes": 9575192,
+      "sha256": "bf87b1095ed1f994a6fd63a079536a7df2fce07a2732d2fefdb2af9af1c094ca"
+    },
+    {
+      "file": "textures/launch/Asphalt012_2K-JPG_Roughness.jpg",
+      "bytes": 3068647,
+      "sha256": "b7a6f2e17842ae0136f89424aacfa8b0f357cffafab99365a990d5d00927925c"
+    },
+    {
+      "file": "textures/launch/Concrete030_2K-JPG_Color.jpg",
+      "bytes": 3535485,
+      "sha256": "dbd2447513aed53bc2dd3335274312ee5b545066dd1c7320ae3526a86fc806a1"
+    },
+    {
+      "file": "textures/launch/Concrete030_2K-JPG_NormalGL.jpg",
+      "bytes": 8137932,
+      "sha256": "e84b07e9cd2e01da883ae26dba303e1a8c855887df3082f92d843e7b58d831f4"
+    },
+    {
+      "file": "textures/launch/Concrete030_2K-JPG_Roughness.jpg",
+      "bytes": 2704947,
+      "sha256": "65880c731bf56d9409c499841fc4ce86ad32737535a39cce6da9e95b1476d033"
+    },
+    {
+      "file": "textures/launch/Grass004_2K-JPG_Color.jpg",
+      "bytes": 7644307,
+      "sha256": "735b141c8f1972e70a45879424f1238fea9f887324173097785f4ac36e67e9a3"
+    },
+    {
+      "file": "textures/launch/Grass004_2K-JPG_NormalGL.jpg",
+      "bytes": 10015079,
+      "sha256": "15ccad231764049d6581a52076d02bb6b627df77895cb0508e4017d8a4877fef"
+    },
+    {
+      "file": "textures/launch/Grass004_2K-JPG_Roughness.jpg",
+      "bytes": 3413801,
+      "sha256": "c449fdf1e779eb7be5a19c1d58ee28cc155ed0523a141b151f3cbc843c4ae2e3"
+    },
+    {
+      "file": "textures/launch/manifest.json",
+      "bytes": 3014,
+      "sha256": "046dac5b4192a1faa25080f630c9f95127dbf29bdbb3d65412605e104e026b0d"
+    },
+    {
+      "file": "textures/moon/ldem_3_8bit.jpg",
+      "bytes": 111552,
+      "sha256": "6d93f887e7d8bedfe35ab89ba785e5e3ca12381bd092a5e6abe2c707dda8bb98"
+    },
+    {
+      "file": "textures/moon/lroc_color_2k.jpg",
+      "bytes": 457942,
+      "sha256": "f7130a1822681fa7512d7dcfd40db8c10b9ba4f06777910348698260ed7a2170"
+    },
+    {
+      "file": "textures/moon/manifest.json",
+      "bytes": 946,
+      "sha256": "2af1662472660a2a43e2a8c52dff0a860bcc85e2be03493866dfc8c4d22c19ee"
+    },
+    {
+      "file": "vendor/three/addons/controls/OrbitControls.js",
+      "bytes": 29868,
+      "sha256": "5a44a9e86a2a0fb11933eed69bc2cd33c76a496854c1aed6ed776efa87d7b064"
+    },
+    {
+      "file": "vendor/three/addons/loaders/DDSLoader.js",
+      "bytes": 7160,
+      "sha256": "48aabf005cd99e5f1abee380da18544e9c405e9d8ec1ba1789a4162d36b4232c"
+    },
+    {
+      "file": "vendor/three/addons/loaders/DRACOLoader.js",
+      "bytes": 13628,
+      "sha256": "65c114ecb7b349cdc59c75b2c92d19cca672a138060dba0f60f64262fa40408c"
+    },
+    {
+      "file": "vendor/three/addons/loaders/GLTFLoader.js",
+      "bytes": 108522,
+      "sha256": "d073b438e6a07e1359741dd5d6c76c953420cc0d4fd84eb1bdde94315540e6a3"
+    },
+    {
+      "file": "vendor/three/addons/RoomEnvironment.js",
+      "bytes": 3735,
+      "sha256": "e21f41b7ef2016f2984a5d27850b42dffa797a6a194a138e288b06576d765a7b"
+    },
+    {
+      "file": "vendor/three/addons/utils/BufferGeometryUtils.js",
+      "bytes": 31906,
+      "sha256": "9be041e96308775d00e2695cc607645b9a9b64fd7c0e759dd8f7c00a8d92becb"
+    },
+    {
+      "file": "vendor/three/draco/draco_decoder.js",
+      "bytes": 512465,
+      "sha256": "8625489da79a805f4f2a7d511c3e52d8b4085608a9d2a4d5f4f9de5db0aea04f"
+    },
+    {
+      "file": "vendor/three/draco/draco_decoder.wasm",
+      "bytes": 192420,
+      "sha256": "a680d927bed9cb864ddbd63521868891af2bfbe755092761b4837487618df8ac"
+    },
+    {
+      "file": "vendor/three/draco/draco_wasm_wrapper.js",
+      "bytes": 58456,
+      "sha256": "8bb2952d2ba7d67e1414f8df819410cb0434a666be53f671fff75f68843d76f6"
+    },
+    {
+      "file": "vendor/three/LICENSE",
+      "bytes": 1081,
+      "sha256": "852e0e8699169bf9f6fdc6bda3e682d078dcbc738b5d33e74df594721bff271d"
+    },
+    {
+      "file": "vendor/three/three.module.js",
+      "bytes": 1272972,
+      "sha256": "76dea8151bc9352aef3528b4262e249b2604f62543828328db978d060d61a495"
+    },
+    {
+      "file": "videos/ascent.mp4",
+      "bytes": 36509946,
+      "sha256": "7881541d189e7333fa03d3aa87fec0b9ca612497335d9b991b4fb5c9e6829e02"
+    },
+    {
+      "file": "videos/manifest.json",
+      "bytes": 477,
+      "sha256": "2e73012cdc2c5868db550c8d1838044a10c1bbe98a9ed716dd656eb35c154461"
+    },
+    {
+      "file": "videos/moon-intro.mp4",
+      "bytes": 22968561,
+      "sha256": "6fc0cf9779dc3c1008fe383ca32a20eaef30f057b68913fe914c47dc63c33901"
+    },
+    {
+      "file": "videos/PUT_VIDEOS_HERE.txt",
+      "bytes": 160,
+      "sha256": "5d41487262e0c3bb62e203ea2a8b34291fe04b67ec2a0c4fd94962a1ec9af601"
+    },
+    {
+      "file": "docs/REALISM_AND_SPACE_APPS_AUDIT.md",
+      "bytes": 6852,
+      "sha256": "015f53356f8c12b1e0007d561f1d70ec70e444257e6dd4fad95b953b2021ad94"
+    }
+  ]
+}

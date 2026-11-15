@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "assets": [
+    {
+      "file": "Assets/Resources/earth-surface.jpg",
+      "source": "https://svs.gsfc.nasa.gov/3615/",
+      "original": "https://svs.gsfc.nasa.gov/vis/a000000/a003600/a003615/earth_noClouds.0330.jpg",
+      "creator": "NASA Goddard Scientific Visualization Studio / Reto Stockli",
+      "permission": "NASA imagery usage guidelines, with attribution. No NASA identifiers or endorsement claims.",
+      "permissionSource": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "modifications": "No source-file changes in this port. Unity import compression applies in the Windows build.",
+      "sha256": "1ed70af0494a92b69a40e12feffd7b47ad4c92b3d70ad0987fee77212b51635c"
+    },
+    {
+      "file": "Assets/Resources/manaus-2004.jpg",
+      "source": "https://science.nasa.gov/earth/earth-observatory/flooding-near-manaus-brazil-39359/",
+      "original": "https://assets.science.nasa.gov/content/dam/science/esd/eo/images/imagerecords/39000/39359/manaus_ali_2004159_lrg.jpg",
+      "creator": "Jesse Allen / NASA Earth Observatory, with EO-1 ALI data from the NASA EO-1 Team",
+      "permission": "NASA imagery usage guidelines, with attribution. No NASA identifiers or endorsement claims.",
+      "permissionSource": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "modifications": "Unmodified source JPEG. Display scaled as historical reference.",
+      "sha256": "4878f70b15bb5134c150f4376f204b7909f8a0000168875a4203596facae6147"
+    },
+    {
+      "file": "Assets/Resources/manaus-2009.jpg",
+      "source": "https://science.nasa.gov/earth/earth-observatory/flooding-near-manaus-brazil-39359/",
+      "original": "https://assets.science.nasa.gov/content/dam/science/esd/eo/images/imagerecords/39000/39359/manaus_ali_2009180_lrg.jpg",
+      "creator": "Jesse Allen / NASA Earth Observatory, with EO-1 ALI data from the NASA EO-1 Team",
+      "permission": "NASA imagery usage guidelines, with attribution. No NASA identifiers or endorsement claims.",
+      "permissionSource": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "modifications": "Unmodified source JPEG. Display scaled as historical reference.",
+      "sha256": "3bde8a58ed8e2e6ce736f25b0767c1dc4a7b75bd71f1a96da397715322c7c074"
+    },
+    {
+      "file": "Assets/Resources/browser-campaign-v2.json",
+      "source": "Original ORBITAL browser project",
+      "creator": "ORBITAL",
+      "permission": "Owner-provided project data reused in the native port.",
+      "modifications": "Versioned adapter copies IDs, titles, objectives and prerequisites. Simulation and equipment statistics are separate.",
+      "sha256": "5bdf197938c3bd5d08629ba5db4117e965c1311470cf431eb1a54d489a2886b0"
+    },
+    {
+      "file": "Assets/Orbital/Runtime/OrbitalView.cs",
+      "source": "Native Unity primitive meshes, authored layouts, ORBITAL wordmark and procedural stars",
+      "creator": "ORBITAL",
+      "permission": "Original project art with Unity built-in primitives and resources.",
+      "modifications": "Created for this Unity port."
+    },
+    {
+      "file": "Assets/Orbital/Runtime/WorkshopArt.cs",
+      "source": "Procedural Unity meshes and materials",
+      "creator": "ORBITAL",
+      "permission": "Original project art using Unity built-in primitives.",
+      "modifications": "Adds the launch table, coastal ground, service tower and timed procedural pad smoke."
+    },
+    {
+      "file": "Assets/Resources/Workshop/PadSmoke.shader",
+      "source": "Original ORBITAL ShaderLab and procedural opacity sprite",
+      "creator": "ORBITAL",
+      "permission": "Original project art using Unity shader includes.",
+      "modifications": "Alpha-blended pad exhaust material for the built-in render pipeline."
+    },
+    {
+      "file": "Assets/Resources/Workshop/concrete.jpg",
+      "source": "https://ambientcg.com/a/Concrete030",
+      "creator": "ambientCG / Lennart Demes",
+      "permission": "CC0-1.0, retained from owner-provided browser project manifest",
+      "permissionSource": "https://docs.ambientcg.com/license/",
+      "modifications": "Copied original color map from browser project; tiled in the assembly bay.",
+      "sha256": "dbd2447513aed53bc2dd3335274312ee5b545066dd1c7320ae3526a86fc806a1"
+    }
+  ]
+}

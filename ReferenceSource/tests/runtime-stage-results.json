@@ -1,0 +1,32 @@
+[
+  {
+    "file": "atlas-lower.glb",
+    "bytes": 8515448,
+    "triangles": 228539,
+    "finite": true
+  },
+  {
+    "file": "atlas-upper.glb",
+    "bytes": 17272832,
+    "triangles": 505217,
+    "finite": true
+  },
+  {
+    "file": "falcon-adapter.glb",
+    "bytes": 10421992,
+    "triangles": 297809,
+    "finite": true
+  },
+  {
+    "file": "falcon-lower.glb",
+    "bytes": 6812740,
+    "triangles": 159924,
+    "finite": true
+  },
+  {
+    "file": "falcon-upper.glb",
+    "bytes": 7260012,
+    "triangles": 194746,
+    "finite": true
+  }
+]

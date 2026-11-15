@@ -1,0 +1,84 @@
+/* Launch Gate & Design Review Styles */
+.review-shell { display: flex; flex-direction: column; gap: 18px; width: 100%; max-width: 1000px; padding: 24px 16px; z-index: 2; }
+.review-header-nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.review-meta-tag { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-cyan); background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); padding: 4px 10px; border-radius: 4px; }
+
+/* Action Summary Bar */
+.launch-gate-bar { display: flex; align-items: center; justify-content: space-between; gap: 20px; background: var(--bg-panel); border: 1px solid var(--border-glow); border-radius: 8px; padding: 18px 24px; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05); flex-wrap: wrap; }
+.gate-status-group { display: flex; flex-direction: column; gap: 4px; }
+.gate-eyebrow { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.12em; color: var(--text-muted); text-transform: uppercase; }
+.gate-summary-text { font-family: var(--font-mono); font-size: 1.25rem; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+.gate-summary-text.all-pass { color: var(--accent-green); text-shadow: 0 0 12px var(--accent-green-glow); }
+.gate-summary-text.has-fail { color: var(--accent-amber); }
+
+.btn-launch-big { font-size: 1.05rem; padding: 14px 32px; border-radius: 6px; letter-spacing: 0.05em; font-weight: 700; min-width: 220px; transition: all 0.2s ease; }
+.btn-launch-big:not(:disabled) { background: linear-gradient(135deg, rgba(56, 189, 248, 0.3), rgba(52, 211, 153, 0.3)); border-color: var(--accent-green); color: #ffffff; box-shadow: 0 0 20px rgba(52, 211, 153, 0.4); animation: pulse-launch 2.5s infinite ease-in-out; }
+.btn-launch-big:not(:disabled):hover { background: var(--accent-green); color: var(--bg-deep); box-shadow: 0 0 28px rgba(52, 211, 153, 0.8); transform: translateY(-1px); }
+
+@keyframes pulse-launch {
+  0%, 100% { box-shadow: 0 0 16px rgba(52, 211, 153, 0.4); }
+  50% { box-shadow: 0 0 28px rgba(52, 211, 153, 0.8); }
+}
+
+/* Checklist Layout */
+.checklist-section { display: flex; flex-direction: column; gap: 10px; }
+.checklist-title { font-family: var(--font-mono); font-size: 0.8125rem; letter-spacing: 0.1em; color: var(--accent-cyan); text-transform: uppercase; }
+.checklist-grid { display: flex; flex-direction: column; gap: 8px; }
+
+.check-item { background: rgba(13, 21, 39, 0.7); border: 1px solid var(--border-dim); border-radius: 6px; padding: 10px 16px; transition: border-color 0.15s ease; }
+.check-item.item-pass { border-left: 3px solid var(--accent-green); }
+.check-item.item-fail { border-left: 3px solid var(--accent-red); background: rgba(248, 113, 113, 0.05); }
+
+.check-item-main { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.check-item-left { display: flex; align-items: center; gap: 12px; flex: 1; }
+.check-status-icon { width: 20px; height: 20px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.check-status-icon.icon-pass { color: var(--accent-green); }
+.check-status-icon.icon-fail { color: var(--accent-red); }
+
+.check-names-wrap { display: flex; flex-direction: column; gap: 2px; }
+.check-short-name { font-size: 0.9rem; font-weight: 600; color: var(--text-primary); }
+.check-item-values { font-family: var(--font-mono); font-size: 0.8125rem; color: var(--text-muted); }
+.check-item-values.values-fail { color: var(--accent-red); font-weight: 600; }
+
+.check-badge { font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 3px; letter-spacing: 0.08em; }
+.check-badge.badge-pass { background: rgba(52, 211, 153, 0.15); color: var(--accent-green); border: 1px solid rgba(52, 211, 153, 0.4); }
+.check-badge.badge-fail { background: rgba(248, 113, 113, 0.15); color: var(--accent-red); border: 1px solid rgba(248, 113, 113, 0.4); }
+
+.check-fail-message { margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(248, 113, 113, 0.2); color: #fca5a5; font-size: 0.8125rem; line-height: 1.45; }
+.check-fail-message::before { content: "↳ "; color: var(--accent-red); font-weight: 700; }
+
+/* Judges Review Section */
+.judges-section { display: flex; flex-direction: column; gap: 12px; margin-top: 6px; }
+.judges-header-wrap { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; }
+.judges-title { font-family: var(--font-mono); font-size: 0.8125rem; letter-spacing: 0.1em; color: var(--accent-cyan); text-transform: uppercase; }
+.judges-subtitle { font-size: 0.75rem; color: var(--text-muted); }
+
+.judges-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.judge-card { background: var(--bg-panel); border: 1px solid var(--border-dim); border-radius: 8px; padding: 16px 14px; display: flex; flex-direction: column; gap: 12px; position: relative; }
+.judge-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px; border-radius: 8px 8px 0 0; }
+.judge-card.card-engineer::before { background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent); }
+.judge-card.card-scientist::before { background: linear-gradient(90deg, transparent, var(--accent-green), transparent); }
+.judge-card.card-accountant::before { background: linear-gradient(90deg, transparent, var(--accent-amber), transparent); }
+
+.judge-card-header { display: flex; align-items: center; gap: 12px; }
+.judge-avatar-wrap { width: 48px; height: 48px; flex-shrink: 0; border-radius: 50%; overflow: hidden; border: 1px solid var(--border-dim); background: var(--bg-deep); display: flex; align-items: center; justify-content: center; }
+.judge-header-info { display: flex; flex-direction: column; gap: 2px; }
+.judge-role-title { font-size: 0.9375rem; font-weight: 700; color: var(--text-primary); }
+.judge-role-badge { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.judge-role-badge.badge-engineer { color: var(--accent-cyan); }
+.judge-role-badge.badge-scientist { color: var(--accent-green); }
+.judge-role-badge.badge-accountant { color: var(--accent-amber); }
+
+.judge-comment-box { background: rgba(7, 11, 20, 0.6); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 6px; padding: 10px 12px; font-size: 0.8125rem; color: #cbd5e1; line-height: 1.45; min-height: 52px; display: flex; align-items: center; }
+.judge-rating-area { margin-top: auto; display: flex; flex-direction: column; gap: 4px; }
+.judge-stars-row { display: flex; align-items: center; gap: 6px; }
+.judge-star { width: 18px; height: 18px; }
+.judge-stars-score { font-family: var(--font-mono); font-size: 0.875rem; font-weight: 700; color: var(--accent-amber); }
+.judge-rating-label { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); }
+.judge-rating-locked { background: rgba(248, 113, 113, 0.08); border: 1px dashed rgba(248, 113, 113, 0.3); border-radius: 4px; padding: 8px 10px; font-family: var(--font-mono); font-size: 0.75rem; color: #fca5a5; text-align: center; }
+
+@media (max-width: 860px) {
+  .judges-grid { grid-template-columns: 1fr; }
+  .launch-gate-bar { flex-direction: column; align-items: stretch; }
+  .btn-launch-big { width: 100%; }
+}

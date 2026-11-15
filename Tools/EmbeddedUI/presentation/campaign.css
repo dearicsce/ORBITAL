@@ -1,0 +1,90 @@
+/* Shared mission panels use the deck palette and leave scene surfaces interactive. */
+.campaign-panel {
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  min-width: 0;
+}
+.campaign-panel-title {
+  display: flex;
+  gap: .65rem;
+  align-items: center;
+  margin-block: 0 .65rem;
+}
+.campaign-panel-title svg { color: var(--status-passed); flex: none; width: 1.2rem; }
+.campaign-panel-title :is(h1, h2) { margin: 0; color: inherit; }
+.campaign-panel h2 { font-size: 1.1rem; }
+.campaign-question { font-size: clamp(1.25rem, 2.4vw, 2rem) !important; max-width: 38ch; }
+.campaign-panel p { margin: .45rem 0; }
+.campaign-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.campaign-plate, .campaign-panel-report, .campaign-panel-evidence, .campaign-panel-fit {
+  background: var(--bg-plate-surface);
+  border: 1px solid var(--border-structural);
+  padding: 1rem;
+}
+.campaign-panel-fit { margin-block-end: .7rem; padding: .7rem; }
+.campaign-panel-report { margin: 1rem 0; border-inline-start: 2px solid var(--status-passed); }
+.campaign-schedule, .campaign-metrics { margin: .6rem 0; padding: 0; }
+.campaign-metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr)); gap: .4rem 1rem; }
+.campaign-metrics dt, .campaign-meta { color: var(--text-muted); font-size: .82rem; }
+.campaign-metrics dd { margin: .12rem 0 .35rem; font-variant-numeric: tabular-nums; }
+.campaign-schedule li { list-style: none; border-bottom: 1px solid var(--border-structural); padding-block: .5rem; }
+.campaign-schedule strong { display: block; font: .8rem var(--font-telemetry); }
+.campaign-table { overflow-x: auto; }
+.campaign-table table { width: 100%; border-collapse: collapse; text-align: start; }
+.campaign-table caption { text-align: start; margin: .7rem 0 .35rem; color: var(--text-primary); }
+.campaign-table th, .campaign-table td { padding: .5rem; text-align: start; border-bottom: 1px solid var(--border-structural); }
+.campaign-outcome { font-weight: 700; }
+.campaign-panel [data-result="passed"] { color: var(--status-passed); }
+.campaign-panel [data-result="pending"] { color: var(--status-warning); }
+.campaign-panel [data-result="failed"], .campaign-rejection { color: #ff9d96; }
+.campaign-panel-actions { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: .65rem; }
+.campaign-panel-actions button { white-space: normal; }
+.campaign-choice { display: grid; gap: .4rem; margin-block: .65rem; }
+.campaign-choice select { padding: .45rem; color: inherit; background: var(--bg-plate-deep); border: 1px solid var(--border-structural); }
+.campaign-brief { padding: 1.25rem clamp(1rem, 4vw, 3rem); min-height: 100vh; }
+.campaign-brief-body { display: grid; grid-template-columns: minmax(12rem, 1fr) minmax(0, 2.5fr); gap: 1rem; margin-top: 1rem; }
+.campaign-brief-art { min-height: 12rem; overflow: hidden; }
+.campaign-brief-art img { width: 100%; height: 100%; max-height: 65vh; object-fit: cover; }
+.campaign-brief .mission-source { margin-top: 1rem; }
+@media (max-width: 810px) {
+  .campaign-columns, .campaign-brief-body { grid-template-columns: minmax(0, 1fr); }
+  .campaign-brief-art { max-height: 13rem; }
+}
+
+.campaign-brief {
+  background: var(--bg-plate-deep);
+  color: var(--text-primary);
+}
+.campaign-brief .orbital-topbar {
+  background: var(--bg-plate-surface);
+  padding: .85rem 1rem;
+}
+.campaign-brief-art {
+  position: relative;
+  min-height: 20rem;
+  align-self: start;
+  aspect-ratio: 1 / 1;
+  background: var(--bg-plate-surface);
+  border: 1px solid var(--border-structural);
+}
+.campaign-brief-art > :is(svg, img, span) { max-width: 100%; }
+.campaign-brief h1 { font-size: clamp(1.6rem, 3vw, 2.6rem); }
+.campaign-brief .campaign-plate p { line-height: 1.55; }
+.campaign-kepler { max-width: 78rem; margin: 1rem auto; }
+.campaign-log { margin-block: .6rem; }
+.campaign-log ol { padding-inline-start: 1.4rem; }
+.campaign-live-evidence > summary, .campaign-log > summary { cursor: pointer; padding-block: .5rem; }
+.campaign-live-evidence .campaign-panel { padding: .7rem; }
+.campaign-panel-flight .campaign-panel-actions { margin: 0; }
+.satellite-workshop :is(.ws-header, .ws-catalogue, .ws-inspector),
+[data-screen="rocketSelect"] .scene-info,
+.numerical-launch .launch-instruments,
+.mission-control .control-panel, .cruise-screen :is(.cruise-commands, .cruise-telemetry) {
+  background: var(--bg-plate-surface);
+  border-color: var(--border-structural);
+  box-shadow: none;
+  backdrop-filter: none;
+}
+@media (max-width: 810px) {
+  .campaign-brief-art { min-height: 0; max-height: 12rem; aspect-ratio: 3 / 1; width: 100%; }
+}

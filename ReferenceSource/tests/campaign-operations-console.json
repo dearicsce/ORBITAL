@@ -1,0 +1,361 @@
+{
+  "assertions": 86,
+  "results": [
+    {
+      "mission": "m1",
+      "passed": true,
+      "stars": 4,
+      "objectives": [
+        {
+          "id": "coverage",
+          "name": "Survey coverage",
+          "value": 83.33333333333334,
+          "target": 45,
+          "unit": "%",
+          "passed": true
+        },
+        {
+          "id": "delivery",
+          "name": "Data returned",
+          "value": 9.28125,
+          "target": 3,
+          "unit": "GB",
+          "passed": true
+        },
+        {
+          "id": "health",
+          "name": "Powered operations",
+          "value": 100,
+          "target": 90,
+          "unit": "%",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "mission": "wildfire",
+      "passed": true,
+      "stars": 6,
+      "objectives": [
+        {
+          "id": "coverage",
+          "name": "Survey coverage",
+          "value": 83.33333333333334,
+          "target": 48,
+          "unit": "%",
+          "passed": true
+        },
+        {
+          "id": "delivery",
+          "name": "Data returned",
+          "value": 3.125,
+          "target": 1.6,
+          "unit": "GB",
+          "passed": true
+        },
+        {
+          "id": "health",
+          "name": "Powered operations",
+          "value": 100,
+          "target": 90,
+          "unit": "%",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "mission": "ocean",
+      "passed": true,
+      "stars": 5.5,
+      "objectives": [
+        {
+          "id": "coverage",
+          "name": "Survey coverage",
+          "value": 87.5,
+          "target": 52,
+          "unit": "%",
+          "passed": true
+        },
+        {
+          "id": "delivery",
+          "name": "Data returned",
+          "value": 6.5625,
+          "target": 3,
+          "unit": "GB",
+          "passed": true
+        },
+        {
+          "id": "health",
+          "name": "Powered operations",
+          "value": 100,
+          "target": 90,
+          "unit": "%",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "mission": "ice",
+      "passed": true,
+      "stars": 6,
+      "objectives": [
+        {
+          "id": "coverage",
+          "name": "Survey coverage",
+          "value": 82.5,
+          "target": 48,
+          "unit": "%",
+          "passed": true
+        },
+        {
+          "id": "delivery",
+          "name": "Data returned",
+          "value": 9.1875,
+          "target": 3,
+          "unit": "GB",
+          "passed": true
+        },
+        {
+          "id": "health",
+          "name": "Powered operations",
+          "value": 100,
+          "target": 90,
+          "unit": "%",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "mission": "m2",
+      "passed": true,
+      "stars": 4,
+      "objectives": [
+        {
+          "id": "coverage",
+          "name": "Service availability",
+          "value": 85.83333333333333,
+          "target": 50,
+          "unit": "%",
+          "passed": true
+        },
+        {
+          "id": "health",
+          "name": "Powered operations",
+          "value": 100,
+          "target": 90,
+          "unit": "%",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "mission": "storm",
+      "passed": true,
+      "stars": 6,
+      "objectives": [
+        {
+          "id": "coverage",
+          "name": "Survey coverage",
+          "value": 87.5,
+          "target": 55,
+          "unit": "%",
+          "passed": true
+        },
+        {
+          "id": "delivery",
+          "name": "Data returned",
+          "value": 6.5,
+          "target": 4,
+          "unit": "GB",
+          "passed": true
+        },
+        {
+          "id": "health",
+          "name": "Powered operations",
+          "value": 100,
+          "target": 90,
+          "unit": "%",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "mission": "night",
+      "passed": true,
+      "stars": 6,
+      "objectives": [
+        {
+          "id": "coverage",
+          "name": "Survey coverage",
+          "value": 59.523809523809526,
+          "target": 45,
+          "unit": "%",
+          "passed": true
+        },
+        {
+          "id": "delivery",
+          "name": "Data returned",
+          "value": 0.875,
+          "target": 0.75,
+          "unit": "GB",
+          "passed": true
+        },
+        {
+          "id": "health",
+          "name": "Powered operations",
+          "value": 100,
+          "target": 90,
+          "unit": "%",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "mission": "solar",
+      "passed": true,
+      "stars": 5.5,
+      "objectives": [
+        {
+          "id": "coverage",
+          "name": "Survey coverage",
+          "value": 70.00000000000009,
+          "target": 55,
+          "unit": "%",
+          "passed": true
+        },
+        {
+          "id": "delivery",
+          "name": "Data returned",
+          "value": 0.055000000000000035,
+          "target": 0.02,
+          "unit": "GB",
+          "passed": true
+        },
+        {
+          "id": "health",
+          "name": "Powered operations",
+          "value": 100,
+          "target": 90,
+          "unit": "%",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "mission": "m3",
+      "passed": true,
+      "stars": 4,
+      "objectives": [
+        {
+          "id": "coverage",
+          "name": "Survey coverage",
+          "value": 86.66666666666667,
+          "target": 45,
+          "unit": "%",
+          "passed": true
+        },
+        {
+          "id": "delivery",
+          "name": "Data returned",
+          "value": 2.6000000000000005,
+          "target": 1,
+          "unit": "GB",
+          "passed": true
+        },
+        {
+          "id": "health",
+          "name": "Powered operations",
+          "value": 100,
+          "target": 90,
+          "unit": "%",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "mission": "mapping",
+      "passed": true,
+      "stars": 5.5,
+      "objectives": [
+        {
+          "id": "coverage",
+          "name": "Survey coverage",
+          "value": 90.83333333333333,
+          "target": 50,
+          "unit": "%",
+          "passed": true
+        },
+        {
+          "id": "delivery",
+          "name": "Data returned",
+          "value": 1.65625,
+          "target": 0.8,
+          "unit": "GB",
+          "passed": true
+        },
+        {
+          "id": "health",
+          "name": "Powered operations",
+          "value": 100,
+          "target": 90,
+          "unit": "%",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "mission": "relay",
+      "passed": true,
+      "stars": 5.5,
+      "objectives": [
+        {
+          "id": "coverage",
+          "name": "Service availability",
+          "value": 90.83333333333333,
+          "target": 48,
+          "unit": "%",
+          "passed": true
+        },
+        {
+          "id": "health",
+          "name": "Powered operations",
+          "value": 100,
+          "target": 90,
+          "unit": "%",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "mission": "observatory",
+      "passed": true,
+      "stars": 6,
+      "objectives": [
+        {
+          "id": "coverage",
+          "name": "Survey coverage",
+          "value": 83.33333333333334,
+          "target": 52,
+          "unit": "%",
+          "passed": true
+        },
+        {
+          "id": "delivery",
+          "name": "Data returned",
+          "value": 2.4750000000000005,
+          "target": 1,
+          "unit": "GB",
+          "passed": true
+        },
+        {
+          "id": "health",
+          "name": "Powered operations",
+          "value": 100,
+          "target": 90,
+          "unit": "%",
+          "passed": true
+        }
+      ]
+    }
+  ]
+}

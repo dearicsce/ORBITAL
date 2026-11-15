@@ -1,0 +1,37 @@
+{
+  "date": "2026-11-02",
+  "status": "implementation-and-numerical-checks-pass-rendered-QA-pending",
+  "checks": {
+    "orbitalGeometry": 8028,
+    "orbitEngineMapPersistence": 735,
+    "sceneGeometry": 33162,
+    "contracts": 112,
+    "flightCompletion": 31,
+    "campaignOperations": 86,
+    "historicalContext": 69,
+    "contentInspector": 231
+  },
+  "campaignStartersPassing": 12,
+  "siteMeshObjects": 30,
+  "runtimeTerrain": {
+    "files": 9,
+    "resolution": "2048 x 2048",
+    "source": "ambientCG",
+    "license": "CC0-1.0",
+    "bytes": 52200006
+  },
+  "renderedVisualAcceptance": {
+    "passed": false,
+    "reason": "Browser Use disabled; native Chrome window capture timed out after recovery",
+    "pages": [
+      "tests/scene-repairs.test.html",
+      "tests/launch.test.html"
+    ]
+  },
+  "limits": [
+    "Scene geometry checks stub DOM canvas/image allocations and do not rasterize",
+    "No new GPU/frame-time measurement",
+    "Lagrange trajectories and links remain labelled schematic",
+    "Lunar Earth link, fixed Sun and spherical bodies are simplified"
+  ]
+}

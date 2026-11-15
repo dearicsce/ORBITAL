@@ -1,0 +1,278 @@
+/* Space Mission Design Game - 3D Earth Fullscreen Menu Scene & HUD (Decluttered) */
+
+.menu-scene-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  overflow: hidden;
+  background-color: #030712;
+}
+
+.menu-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 2;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 36px 44px;
+}
+
+.menu-overlay button {
+  pointer-events: auto;
+}
+
+.menu-hud-top {
+  max-width: 540px;
+}
+
+.menu-title {
+  font-size: 2.75rem;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.85);
+}
+
+.menu-title-highlight {
+  color: var(--accent-cyan);
+  text-shadow: 0 0 25px rgba(56, 189, 248, 0.5);
+}
+
+.menu-action-panel {
+  position: absolute;
+  bottom: 44px;
+  right: 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.btn-hero {
+  font-size: 1.125rem;
+  padding: 16px 40px;
+  border-radius: 8px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  background-color: rgba(56, 189, 248, 0.2);
+  border: 1.5px solid var(--accent-cyan);
+  box-shadow: 0 0 24px var(--accent-cyan-glow), inset 0 0 12px rgba(56, 189, 248, 0.2);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-hero:hover {
+  background-color: var(--accent-cyan);
+  color: var(--bg-deep);
+  box-shadow: 0 0 35px var(--accent-cyan);
+}
+
+/* Post-Play Tab Row (SOLO, TEAM, SETTINGS, Back chip) */
+.menu-mode-tabs {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  background: rgba(13, 21, 39, 0.92);
+  padding: 14px 18px;
+  border: 1px solid var(--border-glow);
+  border-radius: 10px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+}
+
+.menu-tab-buttons-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.menu-tab-btn {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  padding: 10px 18px;
+  letter-spacing: 0.05em;
+  border-radius: 6px;
+}
+
+.menu-back-chip {
+  background: transparent;
+  border: 1px solid var(--border-dim);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.menu-back-chip:hover {
+  border-color: var(--text-primary);
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.menu-toast-msg {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent-amber);
+  background: rgba(251, 191, 36, 0.12);
+  border: 1px solid rgba(251, 191, 36, 0.35);
+  padding: 6px 12px;
+  border-radius: 4px;
+}
+
+/* Modal Dialog Styles (Settings & Confirm) */
+.settings-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(3, 7, 18, 0.8);
+  backdrop-filter: blur(6px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  pointer-events: auto;
+}
+
+.settings-dialog-box {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-glow);
+  border-radius: 10px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8);
+  overflow: hidden;
+}
+
+.settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-dim);
+  background: rgba(18, 29, 51, 0.6);
+}
+
+.settings-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+}
+
+.settings-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background: rgba(7, 11, 20, 0.6);
+  border: 1px solid var(--border-dim);
+  border-radius: 6px;
+}
+
+.settings-row-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.settings-danger-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px;
+  background: rgba(248, 113, 113, 0.08);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  border-radius: 6px;
+  gap: 12px;
+}
+
+.danger-title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.danger-sub {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.confirm-box {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.confirm-title {
+  font-size: 1.25rem;
+  color: var(--accent-red);
+  margin: 0;
+}
+
+.settings-desc {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+  margin: 0;
+}
+
+.confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+@media (max-width: 768px) {
+  .menu-overlay {
+    padding: 24px 20px;
+  }
+  .menu-hud-top {
+    max-width: 100%;
+  }
+  .menu-title {
+    font-size: 2.125rem;
+  }
+  .menu-action-panel {
+    bottom: 24px;
+    right: 20px;
+    left: 20px;
+    align-items: stretch;
+  }
+  .btn-hero {
+    width: 100%;
+  }
+  .menu-tab-buttons-row {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+  .menu-tab-btn, .menu-back-chip {
+    flex: 1 1 auto;
+  }
+}

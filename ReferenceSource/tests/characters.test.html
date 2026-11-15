@@ -1,0 +1,11 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Character tests</title><link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/theme.css"><link rel="stylesheet" href="../css/guide.css"></head><body><main style="padding:24px"><h1>Supplied characters and speech</h1><p>Click a character to test voice, subtitles and the top-positioned dialogue.</p><div id="cast" style="display:flex;gap:24px;flex-wrap:wrap;margin-top:160px"></div><button class="btn" id="mute">Toggle sound</button><button class="btn" id="queue">Play queue</button><button class="btn" id="clear">Stop dialogue</button><pre id="results"></pre></main><script type="module">
+import {loadCharacters,drawAvatar,getCharacter} from '../js/characters.js';
+import {showLine,queueLines,clearLines} from '../js/ui/speech.js';
+import {setMuted,isMuted} from '../js/voice.js';
+const cast=await loadCharacters();document.querySelector('#cast').innerHTML=cast.map(c=>'<button class="btn" data-id="'+c.id+'" style="flex-direction:column">'+drawAvatar(c.id,100)+c.name+'</button>').join('');
+document.querySelectorAll('[data-id]').forEach(b=>b.onclick=()=>showLine(b.dataset.id,'Mission control is ready. Compare your resources before launch.',{pointAt:'#mute'}));
+document.querySelector('#mute').onclick=()=>{setMuted(!isMuted());document.querySelector('#mute').textContent=isMuted()?'Sound off':'Sound on';};
+document.querySelector('#queue').onclick=()=>queueLines(cast.map(c=>({characterId:c.id,text:c.name+' checking in. All mission systems ready.'})));
+document.querySelector('#clear').onclick=clearLines;
+const checks=[['Four supplied characters',cast.length===4],['Commander removed from cast',!cast.some(c=>c.id==='commander')],...cast.map(c=>[c.id+' portrait and voice ready',drawAvatar(c.id).includes('<img')&&typeof c.voice.pitch==='number'])];document.querySelector('#results').textContent=checks.map(([n,ok])=>(ok?'PASS ':'FAIL ')+n).join('\n');
+</script></body></html>

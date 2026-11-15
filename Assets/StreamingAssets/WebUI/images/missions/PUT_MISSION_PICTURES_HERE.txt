@@ -1,0 +1,2 @@
+Put one picture per mission here: m1.jpg (flood), m2.jpg (mountain village relay), m3.jpg (Moon ice).
+Suggested size 1200x1200 or 1080x1350, under 400 KB each. If missing, the game draws a simple picture.

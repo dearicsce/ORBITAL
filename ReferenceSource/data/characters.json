@@ -1,0 +1,80 @@
+{
+  "characters": [
+    {
+      "id": "nova",
+      "name": "Nova",
+      "role": "Guide Robot",
+      "color": "#38bdf8",
+      "voice": {
+        "pitch": 1.45,
+        "rate": 1.25,
+        "preferredNames": [
+          "Google UK English Female",
+          "Samantha",
+          "Victoria",
+          "Microsoft Zira Desktop",
+          "Google US English"
+        ],
+        "gender": "female"
+      },
+      "image": "images/characters/nova.png"
+    },
+    {
+      "id": "engineer",
+      "name": "Chief Engineer Arjun Rao",
+      "role": "Chief Spacecraft Engineer",
+      "color": "#10b981",
+      "voice": {
+        "pitch": 0.95,
+        "rate": 1,
+        "preferredNames": [
+          "Rishi",
+          "Google UK English Male",
+          "Oliver",
+          "Microsoft Mark Desktop",
+          "Google US English"
+        ],
+        "gender": "male"
+      },
+      "image": "images/characters/engineer.jpg"
+    },
+    {
+      "id": "scientist",
+      "name": "Lead Scientist Dr. Meera Iyer",
+      "role": "Lead Planetary Scientist",
+      "color": "#a855f7",
+      "voice": {
+        "pitch": 1.15,
+        "rate": 1.05,
+        "preferredNames": [
+          "Google UK English Female",
+          "Karen",
+          "Moira",
+          "Microsoft Hazel Desktop",
+          "Veena"
+        ],
+        "gender": "female"
+      },
+      "image": "images/characters/scientist.jpg"
+    },
+    {
+      "id": "accountant",
+      "name": "Mission Accountant Kabir Shah",
+      "role": "Mission Budget Auditor",
+      "color": "#f59e0b",
+      "voice": {
+        "pitch": 1,
+        "rate": 1.2,
+        "preferredNames": [
+          "Fred",
+          "Tom",
+          "Microsoft George Desktop",
+          "Google US English",
+          "Alex"
+        ],
+        "gender": "male"
+      },
+      "image": "images/characters/accountant.jpg"
+    }
+  ]
+}

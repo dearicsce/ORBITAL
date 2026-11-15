@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "reviewDate": "2026-11-02",
+  "implementation": "Independent standard two-body equations, SI; no supplied software copied",
+  "references": [
+    {
+      "title": "JPL Astrodynamic Parameters / DE440",
+      "url": "https://ssd.jpl.nasa.gov/astro_par.html",
+      "uses": [
+        "Earth mu 3.98600435507e14 m3/s2",
+        "Moon mu 4.902800118e12 m3/s2",
+        "Earth sidereal rotation 86164.09054 s"
+      ]
+    },
+    {
+      "title": "JPL Planetary Physical Parameters",
+      "url": "https://ssd.jpl.nasa.gov/planets/phys_par.html",
+      "uses": [
+        "Earth mean radius 6371.0084 km"
+      ]
+    },
+    {
+      "title": "JPL Satellite Physical Parameters",
+      "url": "https://ssd.jpl.nasa.gov/sats/phys_par/",
+      "uses": [
+        "Moon mean radius 1737.4 km"
+      ]
+    },
+    {
+      "title": "NASA Moon Fact Sheet",
+      "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html",
+      "uses": [
+        "Moon sidereal rotation 655.720 h"
+      ]
+    },
+    {
+      "title": "NASA Basics of Space Flight / Gravity and Mechanics",
+      "url": "https://science.nasa.gov/learn/basics-of-space-flight/chapter3-4/",
+      "uses": [
+        "Kepler elliptical orbit model and period"
+      ]
+    },
+    {
+      "title": "T. S. Kelso / Orbital Coordinate Systems II",
+      "url": "https://celestrak.org/columns/v02n02/",
+      "uses": [
+        "Inertial to rotating coordinates and topocentric elevation concepts"
+      ]
+    }
+  ],
+  "assumptions": [
+    "Spherical bodies, scenario zero longitude at t=0, fixed Sun +X, cylindrical eclipse; no dated ephemeris, penumbra, J2 or SGP4",
+    "Preset SSO 700 km / 98.2 degrees; nodal precession and local time not propagated",
+    "Scenario station coordinates approximate DSN/Svalbard locations; 10 degree masks, simultaneous availability assumed; not an operational booking network",
+    "Lunar Earth link fixed +X 384400 km; Earth station handover omitted",
+    "Distant Lagrange missions use explicitly labelled fixed guided contact/eclipse fallback; no halo orbit claimed",
+    "Targets are explicit example geographic points; geometry previews only, no science credit changes until observation-record stage",
+    "3D operations exaggerates altitude and spacecraft size, selector uses true body/orbit ratio",
+    "Existing downlink capacity, mission fit, rocket capability and thermal coefficients remain authored balance values"
+  ]
+}

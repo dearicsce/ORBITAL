@@ -1,0 +1,406 @@
+{
+  "products": [
+    {
+      "id": "diviner-pcp",
+      "provider": "NASA PDS / LRO",
+      "productName": "Diviner seasonal average bolometric brightness temperature PCP",
+      "productVersion": "1.0",
+      "sourceUrl": "https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_pcp/seasonal/slon/pols/pcp_avg_tbol_pols_ls030_slon01_240.tab",
+      "retrievedAtUTC": "2026-11-10T14:54:18.158Z",
+      "observedStartUTC": "2009-07-05T16:50:26.195Z",
+      "observedEndUTC": "2020-03-15T00:00:00Z",
+      "units": "K",
+      "resolution": {
+        "value": 240,
+        "units": "m",
+        "meaning": "grid spacing at pole, not guaranteed resolving power"
+      },
+      "extent": {
+        "west": -131.784519,
+        "east": -54.318434,
+        "south": -88.511562,
+        "north": -88.004395
+      },
+      "coordinateSystem": "Moon planetocentric latitude, east longitude; seasonal Ls 0–60°, subsolar longitude 0–15°",
+      "timeScale": "UTC",
+      "missingValueMeaning": "Unsampled and empty bins are unknown",
+      "attribution": "LRO Diviner Science Team / UCLA / Jean-Pierre Williams",
+      "redistributionNotes": "NASA PDS scientific archive. Retain product label, attribution and processing limitations; no endorsement.",
+      "rawChecksum": "a4360dbf30b43982d3463d21810202d6f4cfb8f0f6856a3623dfbade98667565",
+      "rawRange": "bytes=107989644-108120203",
+      "fullProductChecksum": null
+    },
+    {
+      "id": "lola-gdr",
+      "provider": "NASA PDS / LRO",
+      "productName": "LOLA LDEM_75S_240M height grid",
+      "productVersion": "V2.1",
+      "sourceUrl": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/float_img/ldem_75s_240m_float.img",
+      "retrievedAtUTC": "2026-11-10T14:54:31.654Z",
+      "observedStartUTC": "2009-07-13T17:33:17Z",
+      "observedEndUTC": "2017-02-02T22:18:35Z",
+      "units": "m (converted from km)",
+      "resolution": {
+        "value": 240,
+        "units": "m",
+        "meaning": "grid spacing at pole, not guaranteed resolving power"
+      },
+      "extent": {
+        "west": -131.784519,
+        "east": -54.318434,
+        "south": -88.511562,
+        "north": -88.004395
+      },
+      "coordinateSystem": "Moon ME/PA DE421 body-fixed; south polar stereographic; sphere 1737400 m",
+      "timeScale": "UTC",
+      "missingValueMeaning": "Unsampled and empty bins are unknown",
+      "attribution": "LRO LOLA Science Team / NASA Goddard / David E. Smith",
+      "redistributionNotes": "NASA PDS scientific archive. Retain product label, attribution and processing limitations; no endorsement.",
+      "rawChecksum": "74652056638667d32554e6f8b3dab625fe5136dcf48444b70de5b37b547af3bb",
+      "rawRange": "bytes=26988960-31639599",
+      "fullProductChecksum": null
+    }
+  ],
+  "bundle": {
+    "id": "lunar-polar-context-1",
+    "schemaVersion": 1,
+    "scenarioVersion": 1,
+    "productIds": [
+      "diviner-pcp",
+      "lola-gdr"
+    ],
+    "processingVersion": "orbital-lunar-nearest-1",
+    "geographicBounds": {
+      "west": -131.784519,
+      "east": -54.318434,
+      "south": -88.511562,
+      "north": -88.004395
+    },
+    "referenceTime": "2020-03-15T00:00:00Z",
+    "targets": [
+      {
+        "row": 2074,
+        "column": 1717,
+        "latitudeDeg": -88.004395,
+        "longitudeDeg": -131.784519,
+        "temperatureK": 44.243065,
+        "localTimeHours": 2.7144,
+        "id": "cold-context-0",
+        "elevationM": -1567.775011062622,
+        "valid": true
+      },
+      {
+        "row": 2061,
+        "column": 1717,
+        "latitudeDeg": -88.071419,
+        "longitudeDeg": -129.504491,
+        "temperatureK": 41.87542,
+        "localTimeHours": 2.8664,
+        "id": "cold-context-1",
+        "elevationM": -2134.446382522583,
+        "valid": true
+      },
+      {
+        "row": 2048,
+        "column": 1717,
+        "latitudeDeg": -88.135173,
+        "longitudeDeg": -127.064456,
+        "temperatureK": 38.752625,
+        "localTimeHours": 3.029,
+        "id": "cold-context-2",
+        "elevationM": -2360.7687950134277,
+        "valid": true
+      },
+      {
+        "row": 2035,
+        "column": 1717,
+        "latitudeDeg": -88.195312,
+        "longitudeDeg": -124.456754,
+        "temperatureK": 38.319931,
+        "localTimeHours": 3.2029,
+        "id": "cold-context-3",
+        "elevationM": -2436.3853931427,
+        "valid": true
+      },
+      {
+        "row": 2022,
+        "column": 1717,
+        "latitudeDeg": -88.251461,
+        "longitudeDeg": -121.675462,
+        "temperatureK": 36.530346,
+        "localTimeHours": 3.3883,
+        "id": "cold-context-4",
+        "elevationM": -2021.1231708526611,
+        "valid": true
+      },
+      {
+        "row": 2008,
+        "column": 1717,
+        "latitudeDeg": -88.307013,
+        "longitudeDeg": -118.482186,
+        "temperatureK": 40.897415,
+        "localTimeHours": 3.6012,
+        "id": "cold-context-5",
+        "elevationM": -1744.6835041046143,
+        "valid": true
+      },
+      {
+        "row": 1995,
+        "column": 1717,
+        "latitudeDeg": -88.353592,
+        "longitudeDeg": -115.333066,
+        "temperatureK": 44.792213,
+        "localTimeHours": 3.8111,
+        "id": "cold-context-6",
+        "elevationM": -1418.26331615448,
+        "valid": true
+      },
+      {
+        "row": 1982,
+        "column": 1717,
+        "latitudeDeg": -88.394918,
+        "longitudeDeg": -112.011286,
+        "temperatureK": 65.001213,
+        "localTimeHours": 4.0326,
+        "id": "cold-context-7",
+        "elevationM": -678.9006590843201,
+        "valid": true
+      },
+      {
+        "row": 1967,
+        "column": 1717,
+        "latitudeDeg": -88.435534,
+        "longitudeDeg": -107.976599,
+        "temperatureK": 46.618988,
+        "localTimeHours": 4.3016,
+        "id": "cold-context-8",
+        "elevationM": 5.665971897542477,
+        "valid": true
+      },
+      {
+        "row": 1954,
+        "column": 1717,
+        "latitudeDeg": -88.464167,
+        "longitudeDeg": -104.322719,
+        "temperatureK": 48.89101,
+        "localTimeHours": 4.5452,
+        "id": "cold-context-9",
+        "elevationM": -619.1796660423279,
+        "valid": true
+      },
+      {
+        "row": 1941,
+        "column": 1717,
+        "latitudeDeg": -88.486333,
+        "longitudeDeg": -100.546045,
+        "temperatureK": 44.640327,
+        "localTimeHours": 4.7969,
+        "id": "cold-context-10",
+        "elevationM": -1174.2515563964844,
+        "valid": true
+      },
+      {
+        "row": 1928,
+        "column": 1717,
+        "latitudeDeg": -88.501745,
+        "longitudeDeg": -96.674471,
+        "temperatureK": 39.263363,
+        "localTimeHours": 5.055,
+        "id": "cold-context-11",
+        "elevationM": -1568.4622526168823,
+        "valid": true
+      },
+      {
+        "row": 1915,
+        "column": 1717,
+        "latitudeDeg": -88.510195,
+        "longitudeDeg": -92.740783,
+        "temperatureK": 38.255028,
+        "localTimeHours": 5.3173,
+        "id": "cold-context-12",
+        "elevationM": -1629.0606260299683,
+        "valid": true
+      },
+      {
+        "row": 1901,
+        "column": 1717,
+        "latitudeDeg": -88.511562,
+        "longitudeDeg": -88.78113,
+        "temperatureK": 43.042778,
+        "localTimeHours": 5.5813,
+        "id": "cold-context-13",
+        "elevationM": -1089.8241996765137,
+        "valid": true
+      },
+      {
+        "row": 1888,
+        "column": 1717,
+        "latitudeDeg": -88.505828,
+        "longitudeDeg": -84.833047,
+        "temperatureK": 44.755913,
+        "localTimeHours": 5.8445,
+        "id": "cold-context-14",
+        "elevationM": -1024.963617324829,
+        "valid": true
+      },
+      {
+        "row": 1875,
+        "column": 1717,
+        "latitudeDeg": -88.493073,
+        "longitudeDeg": -80.933506,
+        "temperatureK": 49.803055,
+        "localTimeHours": 6.1044,
+        "id": "cold-context-15",
+        "elevationM": -798.2439994812012,
+        "valid": true
+      },
+      {
+        "row": 1848,
+        "column": 1717,
+        "latitudeDeg": -88.445013,
+        "longitudeDeg": -73.133151,
+        "temperatureK": 72.185593,
+        "localTimeHours": 6.6245,
+        "id": "cold-context-16",
+        "elevationM": 310.8122944831848,
+        "valid": true
+      },
+      {
+        "row": 1835,
+        "column": 1717,
+        "latitudeDeg": -88.412105,
+        "longitudeDeg": -69.577666,
+        "temperatureK": 74.64756,
+        "localTimeHours": 6.8615,
+        "id": "cold-context-17",
+        "elevationM": 1386.5160942077637,
+        "valid": true
+      },
+      {
+        "row": 1822,
+        "column": 1717,
+        "latitudeDeg": -88.373343,
+        "longitudeDeg": -66.179043,
+        "temperatureK": 237.980118,
+        "localTimeHours": 7.0881,
+        "id": "cold-context-18",
+        "elevationM": 970.4008102416992,
+        "valid": true
+      },
+      {
+        "row": 1809,
+        "column": 1717,
+        "latitudeDeg": -88.329137,
+        "longitudeDeg": -62.949405,
+        "temperatureK": 76.747513,
+        "localTimeHours": 7.3034,
+        "id": "cold-context-19",
+        "elevationM": 354.61485385894775,
+        "valid": true
+      },
+      {
+        "row": 1796,
+        "column": 1717,
+        "latitudeDeg": -88.279905,
+        "longitudeDeg": -59.895385,
+        "temperatureK": 69.34407,
+        "localTimeHours": 7.507,
+        "id": "cold-context-20",
+        "elevationM": -134.8647028207779,
+        "valid": true
+      },
+      {
+        "row": 1783,
+        "column": 1717,
+        "latitudeDeg": -88.226067,
+        "longitudeDeg": -57.019007,
+        "temperatureK": 71.185608,
+        "localTimeHours": 7.6987,
+        "id": "cold-context-21",
+        "elevationM": -920.9731221199036,
+        "valid": true
+      },
+      {
+        "row": 1770,
+        "column": 1717,
+        "latitudeDeg": -88.168028,
+        "longitudeDeg": -54.318434,
+        "temperatureK": 50.720951,
+        "localTimeHours": 7.8788,
+        "id": "cold-context-22",
+        "elevationM": -1818.3377981185913,
+        "valid": true
+      }
+    ],
+    "validityMask": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "assumptions": {
+      "deadlineSec": 32400,
+      "minimumElevationDeg": 20,
+      "minimumDeliveredMinutes": 1,
+      "description": "Authored orbital context inspection. Temperature is a multi-year seasonal average; cold conditions are not proof of ice. No terrain illumination solution is claimed. Other locations are unknown."
+    },
+    "scoringVersion": "nasa-context-1",
+    "processedChecksum": "66e4fcb75d02807d569b95895488bb6b36823c2df1212da8e2e09103a1994ee6"
+  },
+  "processing": {
+    "sourceRecords": [
+      {
+        "url": "https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_pcp/seasonal/slon/pols/pcp_avg_tbol_pols_ls030_slon01_240.xml",
+        "range": null,
+        "retrievedAtUTC": "2026-11-10T14:54:16.767Z",
+        "sha256": "c434aa4916cf70917a09ecbed4c6bd44537ff343687c6c9c056ede843a4064e8",
+        "bytes": 13093,
+        "contentRange": null
+      },
+      {
+        "url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/float_img/ldem_75s_240m_float.lbl",
+        "range": null,
+        "retrievedAtUTC": "2026-11-10T14:54:17.133Z",
+        "sha256": "8ad7ed746f0944762d249281db50667d4e1e9a0059eb836b4003909c1a5b336a",
+        "bytes": 4877,
+        "contentRange": null
+      },
+      {
+        "url": "https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_pcp/seasonal/slon/pols/pcp_avg_tbol_pols_ls030_slon01_240.tab",
+        "range": "bytes=107989644-108120203",
+        "retrievedAtUTC": "2026-11-10T14:54:18.158Z",
+        "sha256": "a4360dbf30b43982d3463d21810202d6f4cfb8f0f6856a3623dfbade98667565",
+        "bytes": 130560,
+        "contentRange": "bytes 107989644-108120203/215979356"
+      },
+      {
+        "url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/float_img/ldem_75s_240m_float.img",
+        "range": "bytes=26988960-31639599",
+        "retrievedAtUTC": "2026-11-10T14:54:31.654Z",
+        "sha256": "74652056638667d32554e6f8b3dab625fe5136dcf48444b70de5b37b547af3bb",
+        "bytes": 4650640,
+        "contentRange": "bytes 26988960-31639599/58125376"
+      }
+    ],
+    "method": "Select complete Diviner excerpt cells south of 88 S; evenly subsample <=24 cells; nearest LOLA polar grid sample. Temperatures remain source averages. Elevations convert km to m. Horizontal sampling mismatch up to 170 m, distinct acquisition periods and frames limit interpretation."
+  }
+}

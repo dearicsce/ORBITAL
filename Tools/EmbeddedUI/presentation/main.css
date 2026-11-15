@@ -1,0 +1,31 @@
+@import "./theme.css";
+@import "tailwindcss/theme.css";
+@import "tailwindcss/utilities.css";
+@import "./deck.css";
+@import "./campaign.css";
+@import "./campaign-polish.css";
+
+@import "./title.css";
+@import "./flight-console.css";
+@import "./recovery.css";
+@import "./gameplay-polish.css";
+@import "./form-controls.css";
+
+.orbital-root .brief-plan-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.orbital-root .brief-plan-controls label {
+  display: grid;
+  gap: .3rem;
+  font-size: .85rem;
+}
+
+.orbital-root .brief-plan-controls select {
+  padding: .55rem;
+  color: var(--text-primary);
+  background: var(--bg-plate-deep);
+  border: 1px solid var(--border-structural);
+}

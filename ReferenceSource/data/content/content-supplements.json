@@ -1,0 +1,33 @@
+[
+  {
+    "id": "nasa-lro-moon",
+    "manifest": "textures/moon/manifest.json",
+    "runtimeConsumers": [
+      "lunar body rendering",
+      "lunar campaign cards"
+    ],
+    "source": "https://svs.gsfc.nasa.gov/4720/",
+    "factualUse": "Visual presentation only"
+  },
+  {
+    "id": "orbital-geometry",
+    "manifest": "data/content/orbital-sources.json",
+    "runtimeConsumers": [
+      "orbit selector",
+      "deployment",
+      "live operations",
+      "ground track and access forecasts"
+    ],
+    "source": "https://ssd.jpl.nasa.gov/astro_par.html",
+    "factualUse": "SI two-body constants and independently implemented equations; scenario epoch and stations are assumptions"
+  },
+  {
+    "id": "launch-terrain",
+    "manifest": "textures/launch/manifest.json",
+    "runtimeConsumers": [
+      "launch site terrain, roads and pads"
+    ],
+    "source": "https://docs.ambientcg.com/license/",
+    "factualUse": "CC0 visual materials; fictional coastal launch complex"
+  }
+]

@@ -1,0 +1,20 @@
+{
+  "method": "Original tests executed using VM modules, result DOM fixture and in-memory localStorage",
+  "results": [
+    {
+      "test": "engine",
+      "passed": true,
+      "summary": "PASS: All 15 assertions passed successfully."
+    },
+    {
+      "test": "state",
+      "passed": true,
+      "summary": "PASS: All 33 state assertions passed successfully."
+    },
+    {
+      "test": "events",
+      "passed": true,
+      "summary": "Total: 23 / 23 assertions passed."
+    }
+  ]
+}

@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Events & Launch Tests - Space Mission Design Game</title>
+    <style>
+      body {
+        background: #0f172a;
+        color: #e2e8f0;
+        font-family: monospace;
+        padding: 24px;
+        line-height: 1.6;
+      }
+      h1 {
+        font-size: 1.5rem;
+        margin-bottom: 16px;
+        color: #38bdf8;
+      }
+      .test-group {
+        margin-bottom: 24px;
+        background: #1e293b;
+        border-radius: 8px;
+        padding: 16px 20px;
+        border: 1px solid #334155;
+      }
+      .test-title {
+        font-weight: bold;
+        font-size: 1.1rem;
+        color: #f1f5f9;
+        margin-bottom: 12px;
+      }
+      .pass {
+        color: #4ade80;
+        font-weight: bold;
+      }
+      .fail {
+        color: #f87171;
+        font-weight: bold;
+      }
+      .summary {
+        font-size: 1.25rem;
+        margin-top: 24px;
+        padding: 16px;
+        border-radius: 8px;
+      }
+      .summary.all-pass {
+        background: #064e3b;
+        color: #6ee7b7;
+      }
+      .summary.has-fail {
+        background: #7f1d1d;
+        color: #fca5a5;
+      }
+      pre {
+        background: #0b0f19;
+        padding: 12px;
+        border-radius: 6px;
+        overflow-x: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Events & Launch Results Specification Tests (Step 10a)</h1>
+    <div id="results">Running tests...</div>
+
+    <script type="module">
+      import { loadData } from '../js/data.js';
+      import { evaluateDesign, rateDesign } from '../js/engine.js';
+      import { runEvents, rollLaunch, applyEvents } from '../js/events.js';
+
+      async function run() {
+        const resultsEl = document.getElementById('results');
+        resultsEl.innerHTML = '';
+
+        const data = await loadData('../');
+        let totalAssertions = 0;
+        let passedAssertions = 0;
+
+        function assert(title, actual, expected, compareFn = null) {
+          totalAssertions++;
+          const ok = compareFn ? compareFn(actual, expected) : actual === expected;
+          if (ok) passedAssertions++;
+          return { title, actual, expected, ok };
+        }
+
+        function approx(a, b, delta = 0.005) {
+          return Math.abs(a - b) <= delta;
+        }
+
+        const groups = [];
+
+        // --- TEST 1: Easy difficulty yields no events ([]) ---
+        {
+          const assertions = [];
+          const designEasy = {
+            missionId: 'm1',
+            busId: 'bus_micro',
+            panelIds: ['panel_m'],
+            batteryIds: ['battery_s'],
+            commsId: 'comms_x_band',
+            computerId: 'computer_basic',
+            pointingId: 'pointing_reaction_wheels',
+            fuelIds: ['fuel_s'],
+            instrumentIds: ['optical_camera'],
+            launcherId: 'kestrel',
+            orbitId: 'sso',
+            difficulty: 'easy'
+          };
+
+          const events = runEvents(designEasy, data);
+          assertions.push(assert('Easy difficulty returns empty array', events.length, 0));
+          assertions.push(assert('Returns array instance', Array.isArray(events), true));
+
+          groups.push({
+            name: '1. Easy Difficulty (No Events)',
+            assertions
+          });
+        }
+
+        // --- TEST 2: Normal mission m2 yields solar_flare and battery_fade ---
+        {
+          const assertions = [];
+          const designM2 = {
+            missionId: 'm2',
+            busId: 'bus_medium',
+            panelIds: ['panel_l'],
+            batteryIds: ['battery_l'],
+            commsId: 'comms_dish_m',
+            computerId: 'computer_basic',
+            pointingId: 'pointing_reaction_wheels',
+            fuelIds: ['fuel_l'],
+            instrumentIds: ['transponder_s'],
+            launcherId: 'condor',
+            orbitId: 'geo',
+            difficulty: 'normal'
+          };
+
+          const events = runEvents(designM2, data);
+          assertions.push(assert('Normal m2 event count is 2', events.length, 2));
+          assertions.push(assert('First event is solar_flare', events[0]?.id, 'solar_flare'));
+          assertions.push(assert('Second event is battery_fade', events[1]?.id, 'battery_fade'));
+
+          groups.push({
+            name: '2. Normal Mission m2 Fixed Events',
+            assertions
+          });
+        }
+
+        // --- TEST 3: Design A on m1 (Normal) survives antenna_fault (downlink margin ~62%) ---
+        {
+          const assertions = [];
+          const designA = {
+            missionId: 'm1',
+            busId: 'bus_micro',
+            panelIds: ['panel_m'],
+            batteryIds: ['battery_s'],
+            commsId: 'comms_x_band',
+            computerId: 'computer_basic',
+            pointingId: 'pointing_reaction_wheels',
+            fuelIds: ['fuel_s'],
+            instrumentIds: ['optical_camera'],
+            launcherId: 'kestrel',
+            orbitId: 'sso',
+            difficulty: 'normal'
+          };
+
+          const evalResult = evaluateDesign(designA, data);
+          const downlinkMargin = evalResult.margins.downlink;
+          // Reconciled with Stage 05 geometric forecast model:
+          // In SSO with global Earth stations, orbitForecast.contactFraction ~ 0.1023 (2.455 h/day contact).
+          // At base X-band 60 GB/day and distance factor 1.0, downlink capacity is ~147.33 GB/day.
+          // Optical camera generates 30 GB/day.
+          // Expected physical margin: (147.33 - 30) / 147.33 = 0.79638 (~79.6%).
+          // (Legacy static world1.json placeholder assumed 1.3 h/day, yielding ~61.5%).
+          assertions.push(
+            assert(
+              'Design A downlink margin is ~79.6% from geometric orbital forecast',
+              downlinkMargin,
+              0.7964,
+              (a, e) => approx(a, e, 0.02) || approx(a, 0.79638, 0.005)
+            )
+          );
+
+          const events = runEvents(designA, data);
+          assertions.push(assert('Mission m1 yields 1 event', events.length, 1));
+          assertions.push(assert('Event is antenna_fault', events[0]?.id, 'antenna_fault'));
+          assertions.push(assert('Survives antenna_fault', events[0]?.survived, true));
+          assertions.push(assert('Effect is None', events[0]?.effect, 'None'));
+          assertions.push(assert('Science multiplier is 1.0', events[0]?.scienceMultiplier, 1.0));
+          assertions.push(assert('Lifetime multiplier is 1.0', events[0]?.lifetimeMultiplier, 1.0));
+
+          groups.push({
+            name: '3. Design A on m1 Survives antenna_fault',
+            assertions
+          });
+        }
+
+        // --- TEST 4: An m2 design in GEO with basic computer fails solar_flare and loses 30% science ---
+        {
+          const assertions = [];
+          const designM2Geo = {
+            missionId: 'm2',
+            busId: 'bus_medium',
+            panelIds: ['panel_l'],
+            batteryIds: ['battery_l'],
+            commsId: 'comms_dish_m',
+            computerId: 'computer_basic', // Unshielded, not radTolerant
+            pointingId: 'pointing_reaction_wheels',
+            fuelIds: ['fuel_l'],
+            instrumentIds: ['transponder_s'],
+            launcherId: 'condor',
+            orbitId: 'geo', // High radiation beyond LEO/SSO
+            difficulty: 'normal'
+          };
+
+          const evalResult = evaluateDesign(designM2Geo, data);
+          const events = runEvents(designM2Geo, data);
+          const solarFlare = events.find((e) => e.id === 'solar_flare');
+
+          assertions.push(assert('solar_flare event is present', Boolean(solarFlare), true));
+          assertions.push(assert('Fails solar_flare in GEO with basic computer', solarFlare?.survived, false));
+          assertions.push(assert('Solar flare scienceMultiplier is 0.70', solarFlare?.scienceMultiplier, 0.70, (a, e) => approx(a, e, 0.01)));
+          assertions.push(assert('Solar flare effect is -30% science', solarFlare?.effect, '-30% science'));
+
+          const adjusted = applyEvents(evalResult, [solarFlare]);
+          const expectedScience = evalResult.sciencePoints * 0.70;
+          assertions.push(assert('applyEvents reduces sciencePoints by 30%', adjusted.sciencePoints, expectedScience, (a, e) => approx(a, e, 0.01)));
+
+          // Check that rateDesign with adjusted respects adjusted.sciencePoints
+          const ratingBefore = rateDesign(designM2Geo, data, []);
+          const ratingAfter = rateDesign(designM2Geo, data, [solarFlare], adjusted);
+          assertions.push(assert('Scientist comment reflects adjusted science points', ratingAfter.comments.scientist.includes(adjusted.sciencePoints.toFixed(1)), true));
+
+          groups.push({
+            name: '4. GEO Satellite Fails solar_flare & Loses 30% Science',
+            assertions
+          });
+        }
+
+        // --- TEST 5: Hard difficulty launch with Kestrel fails at rng 0.99 and succeeds at rng 0.01 ---
+        {
+          const assertions = [];
+          const designHard = {
+            missionId: 'm1',
+            busId: 'bus_micro',
+            panelIds: ['panel_m'],
+            batteryIds: ['battery_s'],
+            commsId: 'comms_x_band',
+            computerId: 'computer_basic',
+            pointingId: 'pointing_reaction_wheels',
+            fuelIds: ['fuel_s'],
+            instrumentIds: ['optical_camera'],
+            launcherId: 'kestrel',
+            orbitId: 'sso',
+            difficulty: 'hard'
+          };
+
+          const failResult = rollLaunch(designHard, data, () => 0.99);
+          assertions.push(assert('Launch fails when roll (0.99) exceeds reliability (0.90)', failResult.success, false));
+          assertions.push(assert('Reliability is reported as 0.90', failResult.reliability, 0.90));
+          assertions.push(assert('Reason message provided on failure', typeof failResult.reason, 'string'));
+
+          const successResult = rollLaunch(designHard, data, () => 0.01);
+          assertions.push(assert('Launch succeeds when roll (0.01) is within reliability (0.90)', successResult.success, true));
+          assertions.push(assert('Reliability is reported as 0.90 on success', successResult.reliability, 0.90));
+
+          groups.push({
+            name: '5. Hard Launch Roll with Kestrel (RNG Test)',
+            assertions
+          });
+        }
+
+        // --- RENDER RESULTS ---
+        let html = '';
+        for (const g of groups) {
+          html += `<div class="test-group">`;
+          html += `<div class="test-title">${g.name}</div>`;
+          for (const a of g.assertions) {
+            const statusClass = a.ok ? 'pass' : 'fail';
+            const statusLabel = a.ok ? 'PASS' : 'FAIL';
+            html += `<div>[<span class="${statusClass}">${statusLabel}</span>] ${a.title} &rarr; actual: <code>${JSON.stringify(a.actual)}</code> (expected: <code>${JSON.stringify(a.expected)}</code>)</div>`;
+          }
+          html += `</div>`;
+        }
+
+        const allOk = passedAssertions === totalAssertions;
+        html += `<div class="summary ${allOk ? 'all-pass' : 'has-fail'}">`;
+        html += `<strong>Total: ${passedAssertions} / ${totalAssertions} assertions passed.</strong>`;
+        if (allOk) {
+          html += `<div>All step 10a specifications passed successfully!</div>`;
+        } else {
+          html += `<div>Some tests failed. Check logs above.</div>`;
+        }
+        html += `</div>`;
+
+        resultsEl.innerHTML = html;
+      }
+
+      run().catch((err) => {
+        document.getElementById('results').innerHTML = `<div class="fail">Test Runner Error: ${err.message}<pre>${err.stack}</pre></div>`;
+      });
+    </script>
+  </body>
+</html>

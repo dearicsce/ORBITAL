@@ -1,0 +1,255 @@
+{
+  "schemaVersion": 2,
+  "records": [
+    {
+      "id": "m1",
+      "name": "Flood watch",
+      "objective": "Deliver useful flood observations",
+      "requires": [],
+      "level": 0
+    },
+    {
+      "id": "m2",
+      "name": "Remote links",
+      "objective": "Keep remote communities connected",
+      "requires": [
+        "m1"
+      ],
+      "level": 0
+    },
+    {
+      "id": "m3",
+      "name": "Moon ice hunt",
+      "objective": "Complete the lunar ice survey",
+      "requires": [
+        "m2"
+      ],
+      "level": 0
+    },
+    {
+      "id": "wildfire",
+      "name": "Wildfire sentinel",
+      "objective": "Map active heat signatures",
+      "requires": [
+        "m1"
+      ],
+      "level": 0
+    },
+    {
+      "id": "ocean",
+      "name": "Ocean pulse",
+      "objective": "Deliver the ocean survey",
+      "requires": [
+        "m1"
+      ],
+      "level": 0
+    },
+    {
+      "id": "ice",
+      "name": "Ice frontier",
+      "objective": "Complete the polar survey",
+      "requires": [
+        "m1"
+      ],
+      "level": 0
+    },
+    {
+      "id": "storm",
+      "name": "Storm tracker",
+      "objective": "Return the storm observations",
+      "requires": [
+        "m2"
+      ],
+      "level": 0
+    },
+    {
+      "id": "night",
+      "name": "Night watch",
+      "objective": "Complete the night-side survey",
+      "requires": [
+        "m2"
+      ],
+      "level": 0
+    },
+    {
+      "id": "solar",
+      "name": "Solar guardian",
+      "objective": "Sustain the space-weather watch",
+      "requires": [
+        "m2"
+      ],
+      "level": 0
+    },
+    {
+      "id": "mapping",
+      "name": "Lunar cartographer",
+      "objective": "Map the lunar surface",
+      "requires": [
+        "m3"
+      ],
+      "level": 0
+    },
+    {
+      "id": "relay",
+      "name": "Far-side relay",
+      "objective": "Maintain relay availability",
+      "requires": [
+        "m3"
+      ],
+      "level": 0
+    },
+    {
+      "id": "observatory",
+      "name": "Deep-space observatory",
+      "objective": "Return deep-space science",
+      "requires": [
+        "m3"
+      ],
+      "level": 0
+    },
+    {
+      "id": "lunar-pathfinder",
+      "name": "Lunar pathfinder",
+      "objective": "Photograph the Moon during a flyby.",
+      "requires": [
+        "m2"
+      ],
+      "level": 0
+    },
+    {
+      "id": "lunar-capture",
+      "name": "Lunar capture demonstration",
+      "objective": "Brake into lunar orbit and return a surface survey.",
+      "requires": [
+        "m3"
+      ],
+      "level": 0
+    },
+    {
+      "id": "venus-clouds",
+      "name": "Venus cloud survey",
+      "objective": "Photograph Venus’s cloud tops.",
+      "requires": [
+        "m3"
+      ],
+      "level": 1
+    },
+    {
+      "id": "mars-scout",
+      "name": "Mars scout",
+      "objective": "Return a flyby survey of Mars.",
+      "requires": [
+        "m3"
+      ],
+      "level": 1
+    },
+    {
+      "id": "mars-orbiter",
+      "name": "Mars reconnaissance orbiter",
+      "objective": "Brake into Mars orbit, then survey the surface.",
+      "requires": [
+        "mars-scout"
+      ],
+      "level": 1
+    },
+    {
+      "id": "ceres-rendezvous",
+      "name": "Ceres rendezvous",
+      "objective": "Match velocity with Ceres and image its cratered terrain.",
+      "requires": [
+        "mars-orbiter"
+      ],
+      "level": 1
+    },
+    {
+      "id": "comet-pass",
+      "name": "67P dust survey",
+      "objective": "Characterise the active comet during a perihelion flyby.",
+      "requires": [
+        "mars-orbiter"
+      ],
+      "level": 1
+    },
+    {
+      "id": "jupiter-scout",
+      "name": "Jupiter reconnaissance",
+      "objective": "Survey Jupiter from outside the strongest radiation belts.",
+      "requires": [
+        "mars-orbiter"
+      ],
+      "level": 1
+    },
+    {
+      "id": "jupiter-orbiter",
+      "name": "Jupiter high orbiter",
+      "objective": "Capture into a wide Jovian orbit above the strongest radiation belts.",
+      "requires": [
+        "jupiter-scout"
+      ],
+      "level": 1
+    },
+    {
+      "id": "europa-scout",
+      "name": "Europa ice survey",
+      "objective": "Image the fractured ice during a guided close encounter.",
+      "requires": [
+        "jupiter-scout"
+      ],
+      "level": 1
+    },
+    {
+      "id": "saturn-scout",
+      "name": "Saturn ring survey",
+      "objective": "Image Saturn’s rings from a safe flyby corridor.",
+      "requires": [
+        "jupiter-scout"
+      ],
+      "level": 1
+    },
+    {
+      "id": "uranus-scout",
+      "name": "Uranus long watch",
+      "objective": "Survey the tilted ice giant.",
+      "requires": [
+        "saturn-scout"
+      ],
+      "level": 1
+    },
+    {
+      "id": "neptune-scout",
+      "name": "Neptune far signal",
+      "objective": "Return a science packet after a decades-long cruise.",
+      "requires": [
+        "saturn-scout"
+      ],
+      "level": 1
+    },
+    {
+      "id": "heliopause-crossing",
+      "name": "Heliopause crossing",
+      "objective": "Detect the edge of the solar wind with a magnetometer.",
+      "requires": [
+        "neptune-scout"
+      ],
+      "level": 1
+    },
+    {
+      "id": "interstellar-precursor",
+      "name": "Interstellar precursor",
+      "objective": "Measure the magnetic environment in the local interstellar medium.",
+      "requires": [
+        "heliopause-crossing"
+      ],
+      "level": 1
+    },
+    {
+      "id": "proxima-sail",
+      "name": "Proxima sail demonstrator",
+      "objective": "Return a compact observation packet from a speculative stellar flyby.",
+      "requires": [
+        "interstellar-precursor"
+      ],
+      "level": 2
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+/* Review fixes: reserve a guide rail and give spacecraft its own workspace. */
+.screen {padding-right:92px;}
+.guide-dialogue {left:auto;right:12px;top:82px;flex-direction:row-reverse;max-width:min(460px,calc(100vw - 24px));}
+.guide-character .character-portrait {width:48px!important;height:63px!important;}
+.guide-character .robot-portrait img {width:410px!important;left:-6.4px!important;top:-4px!important;}
+.guide-character>span:last-child {max-width:64px;font-size:12px;line-height:1.3;text-align:center;}
+.guide-message {max-width:350px;}
+.builder {display:grid;grid-template-columns:minmax(370px,.85fr) minmax(400px,1.4fr);grid-template-rows:auto minmax(170px,.8fr) minmax(190px,1fr) auto;height:100dvh;padding:16px 92px 16px 20px;gap:14px;}
+.builder>.screen-top {grid-column:1/-1;}
+.builder-top {display:contents;}
+.builder .resources {grid-column:1;grid-row:2/4;overflow:auto;padding:20px;}
+.builder .catalogue {grid-column:2;grid-row:2;padding:14px;}
+.builder-view {grid-column:2;grid-row:3;min-height:0;}
+.camera-presets {grid-column:2;grid-row:4;}
+.resource-table th,.resource-table td {padding:12px 5px;}
+#parts-scroll-list {grid-template-columns:repeat(2,minmax(0,1fr));}
+.part-specs {gap:6px;}
+.brief-layout {padding-top:24px;gap:40px;}
+.commander-stage>.character-portrait {display:none;}
+.roster-heading {margin-top:20px;}
+.mission-card-content {padding:20px;gap:10px;}
+.mission-card-content>p {font-size:14px;}
+@media(max-width:1050px){.builder {display:flex;height:auto;min-height:100dvh;overflow:visible;padding:16px 80px 24px 16px;}.builder-top {display:flex;flex-direction:column;height:auto;}.builder .resources {overflow:visible;}.builder .catalogue {height:340px;}.builder-view {height:360px;flex:none;}.camera-presets {flex-wrap:wrap;}.brief-layout {grid-template-columns:1fr;padding-bottom:24px;}.brief-tiles {grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;}.brief-tiles article {padding:16px;}.brief-tiles strong {font-size:25px;}}
+@media(max-width:600px){.screen {padding-right:72px;}.builder {padding-right:72px;}.brief-tiles {grid-template-columns:1fr;}.resource-table {font-size:12px;}.resource-table th,.resource-table td {padding:10px 3px;}#parts-scroll-list {grid-template-columns:1fr;}.screen-top {align-items:flex-start;}.screen-top h1 {font-size:18px;}.scene-screen .screen-actions {padding-bottom:24px;}}
+
+.btn,.tab-btn {font-family:var(--font-sans);font-size:14px;letter-spacing:normal;}

@@ -1,0 +1,19 @@
+{
+  "type": "module",
+  "dependencies": {
+    "react-dom": "^19.0.1",
+    "motion": "^12.23.24",
+    "lucide-react": "^0.546.0",
+    "@vitejs/plugin-react": "^4.0.0",
+    "react": "^19.0.1",
+    "tailwindcss": "^4.3.3",
+    "@tailwindcss/vite": "^4.3.3",
+    "vite": "^6.0.0"
+  },
+  "name": "orbital-ui-preview",
+  "scripts": {
+    "preview": "vite preview --host 127.0.0.1",
+    "build": "vite build && node -e \"import('node:fs').then(fs => { fs.copyFileSync('dist/orbital-ui.js', 'orbital-ui.js'); fs.copyFileSync('dist/orbital-ui.css', 'orbital-ui.css'); console.log('Copied dist assets to presentation root.'); })\""
+  },
+  "private": true
+}

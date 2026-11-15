@@ -1,0 +1,70 @@
+
+html.native-scene #app > .orbital-root[data-screen="menu"] { background: transparent; }
+.orbital-root[data-screen="menu"] { isolation: isolate; color: #f4f2ed; }
+.orbital-root [data-deck-viewport] {
+  position: fixed; inset: 0 0 0 32%; z-index: -2; pointer-events: none;
+}
+.title-screen {
+  position: relative; height: 100dvh; min-height: 0; display: flex; flex-direction: column;
+  padding: 0 clamp(24px,4.8vw,76px); box-sizing: border-box;
+  background: linear-gradient(90deg,#050c18 0%,#050c18 26%,#050c18d9 37%,#050c1840 56%,transparent 72%);
+  font-family: var(--font-body),system-ui;
+}
+.title-header { display:flex; justify-content:space-between; align-items:center; gap:24px; padding:clamp(14px,2.7vh,30px) 0; }
+.title-brand { font-size:18px; letter-spacing:.19em; font-weight:750; }
+.title-brand > span { display:block; font-size:9px; font-weight:500; color:#a4b3c2; letter-spacing:.2em; margin-top:6px; }
+.title-header nav { display:flex; align-items:center; gap:clamp(15px,2.3vw,35px); }
+.title-screen button { font:inherit; cursor:pointer; }
+.title-header nav button,.title-footer button {
+  border:0; background:transparent; color:#b9c4ce; padding:10px 0; min-height:44px; font-size:13px;
+}
+.title-header nav button:hover,.title-footer button:hover { color:#fff; }
+.title-content { width:min(510px,48%); margin:auto 0; padding:18px 0 20px; }
+.title-kicker { font:10px var(--font-telemetry),monospace; letter-spacing:.17em; color:#9acfc8; margin:0 0 15px; }
+.title-content h1 {
+  font-family:var(--font-heading),system-ui; font-size:clamp(62px,8.2vw,132px);
+  line-height:.93; letter-spacing:-.045em; font-weight:750; margin:0 0 26px;
+}
+.title-intro { font-size:clamp(23px,2.5vw,37px); line-height:1.24; letter-spacing:-.03em; margin:0 0 17px; font-weight:450; }
+.title-description { max-width:36ch; color:#b5c2cd; line-height:1.65; font-size:14px; margin:0 0 30px; }
+.title-actions { display:grid; gap:10px; max-width:430px; }
+.title-actions > .title-continue {
+  display:flex; justify-content:space-between; align-items:center; gap:18px;
+  text-align:left; padding:18px 22px; border:1px solid #7fe2d3; min-height:60px;
+  color:#06191b; background:#9cddd5; transition:background .15s,border-color .15s,box-shadow .15s,transform .1s;
+  border-radius:3px; font-weight:650; font-size:17px; letter-spacing:.015em;
+}
+.title-actions > .title-continue:hover {
+  background:#c2eee8; border-color:#c2eee8; transform:translateY(-1px);
+  box-shadow:0 4px 16px rgba(127,226,211,0.25);
+}
+.title-actions > .title-continue:active { transform:translateY(0); }
+.title-actions > .title-continue:focus-visible {
+  outline:2px solid #8ef8e0; outline-offset:2px;
+}
+.title-footer { display:flex; justify-content:space-between; align-items:center; gap:20px; padding-bottom:18px; }
+.title-footer > span { font:9px var(--font-telemetry),monospace; letter-spacing:.16em; color:#a4b8c7; }
+.title-notice { color:#efd0a3; max-width:42ch; font-size:13px; }
+.title-about-backdrop { position:fixed; inset:0; z-index:50; background:#02070dc9; display:grid; place-items:center; padding:20px; }
+.title-about { max-width:460px; background:#16212c; border:1px solid #3c4c58; padding:28px; line-height:1.6; }
+.title-about h2 { font-size:24px; margin:20px 0 12px; }
+.title-about p { color:#c1cbd4; }
+.title-about button { background:transparent; color:#b7e7e1; border:0; min-height:44px; padding:8px 0; }
+.title-about-close { float:right; }
+@media(max-width:760px) {
+  .title-header { align-items:flex-start; padding-top:20px; }
+  .title-header nav { justify-content:flex-end; flex-wrap:wrap; gap:0 18px; max-width:65%; }
+  .title-header nav button { font-size:12px; }
+  .title-content { width:min(510px,83%); padding-top:80px; }
+  .title-screen { background:linear-gradient(90deg,#050c18ed 0%,#050c18ad 55%,#050c1830 100%); }
+  .orbital-root [data-deck-viewport] { inset:8% -45% 0 5%; }
+}
+@media(max-height:650px) and (min-width:761px) {
+  .title-header { padding:18px 0; }
+  .title-content { padding:10px 0 20px; }
+  .title-content h1 { font-size:78px; margin-bottom:16px; }
+  .title-description { margin-bottom:18px; }
+  .title-description { display:none; }
+  .title-intro { font-size:24px; }
+  .title-actions > button { padding:10px 16px; min-height:44px; }
+}

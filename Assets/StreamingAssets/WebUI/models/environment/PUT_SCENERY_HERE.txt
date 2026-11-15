@@ -1,0 +1,1 @@
+Put scenery here: observatory.glb, ground_station.glb (all optional; simple shapes are used if missing).

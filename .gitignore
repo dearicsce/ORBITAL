@@ -1,0 +1,45 @@
+# Unity caches and local settings
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+/.vs/
+/.vscode/
+/[Bb]uild/
+/[Bb]uilds/
+/Build-Current*/
+/Build-Display/
+/Release/
+/Verification/
+/Video/
+/scratch/
+/Orbital.exe
+/Assembly-CSharp*.csproj
+/*.slnx
+/*.log
+*.csproj.user
+
+# Installed dependencies and Python/Node caches
+**/node_modules/
+**/__pycache__/
+**/.pytest_cache/
+**/.cache/
+/Tools/Dependencies/
+/Tools/CoreChecks/bin/
+/Tools/CoreChecks/obj/
+*.pyc
+*.pyo
+
+# Machine-local secrets and temporary editor files
+.env
+.env.*
+!.env.example
+*.user
+*.suo
+*.tmp
+*.swp
+.DS_Store
+Thumbs.db

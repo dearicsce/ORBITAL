@@ -1,0 +1,34 @@
+[
+  [
+    "orbit",
+    true
+  ],
+  [
+    "mass",
+    true
+  ],
+  [
+    "power",
+    true
+  ],
+  [
+    "budget",
+    true
+  ],
+  [
+    "launch",
+    true
+  ],
+  [
+    "Orbit requires both choices",
+    true
+  ],
+  [
+    "Training has no events",
+    true
+  ],
+  [
+    "Training cannot have launch failure",
+    true
+  ]
+]

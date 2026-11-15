@@ -1,0 +1,2 @@
+Put cutscene videos here (mp4, H.264, under 20 MB each): ascent.mp4, deploy.mp4.
+Videos are optional; the game falls back to the 3D scene if a file is missing.

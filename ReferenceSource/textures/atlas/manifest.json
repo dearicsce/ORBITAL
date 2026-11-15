@@ -1,0 +1,165 @@
+{
+  "assets": [
+    {
+      "file": "earth-clouds.jpg",
+      "download": "https://svs.gsfc.nasa.gov/vis/a000000/a003600/a003615/flat_earth03.jpg",
+      "source": "https://svs.gsfc.nasa.gov/3615/",
+      "credit": "NASA Goddard SVS / Reto Stockli / NOAA CPC",
+      "processing": "Equirectangular Blue Marble with a processed cloud composite",
+      "usage": "Educational display in ORBITAL; credit retained. No agency identifiers included.",
+      "bytes": 519577,
+      "sha256": "80c08eb0ae0d2f5daba9fdbeb51fa1123009b9d2141d961ec43873cde1ff9646"
+    },
+    {
+      "file": "earth-surface.jpg",
+      "download": "https://svs.gsfc.nasa.gov/vis/a000000/a003600/a003615/earth_noClouds.0330.jpg",
+      "source": "https://svs.gsfc.nasa.gov/3615/",
+      "credit": "NASA Goddard SVS / Reto Stockli",
+      "processing": "Cloud-free equirectangular surface mosaic",
+      "usage": "Educational display in ORBITAL; credit retained. No agency identifiers included.",
+      "bytes": 356467,
+      "sha256": "1ed70af0494a92b69a40e12feffd7b47ad4c92b3d70ad0987fee77212b51635c"
+    },
+    {
+      "file": "mars.jpg",
+      "download": "https://assets.science.nasa.gov/content/dam/science/cds/3d/resources/image/mars/Mars.jpg",
+      "source": "https://science.nasa.gov/3d-resources/mars/",
+      "credit": "NASA/JPL-Caltech and USGS",
+      "processing": "Viking global mosaic, processed for spherical display",
+      "usage": "Educational display in ORBITAL; credit retained. No agency identifiers included.",
+      "bytes": 972896,
+      "sha256": "12ec6bf02ebd42a246edc778cb2ce8c595b4d9f0892badf0bfff8abb2303c780"
+    },
+    {
+      "file": "venus-radar.jpg",
+      "download": "https://assets.science.nasa.gov/content/dam/science/cds/3d/resources/image/venus/Venus.jpg",
+      "source": "https://science.nasa.gov/3d-resources/venus/",
+      "credit": "NASA/JPL-Caltech Magellan",
+      "processing": "Radar-derived surface with texture-filled gaps. Clouds obscuring the surface are omitted in this atlas layer.",
+      "usage": "Educational display in ORBITAL; credit retained. No agency identifiers included.",
+      "bytes": 1166974,
+      "sha256": "e395bced59e95339efbdd002d4a0bbbf81fe323a6694f3a4039120560c80e789"
+    },
+    {
+      "file": "saturn.jpg",
+      "download": "https://assets.science.nasa.gov/content/dam/science/cds/3d/resources/image/saturn/Saturn.jpg",
+      "source": "https://science.nasa.gov/3d-resources/saturn/",
+      "credit": "NASA 3D Resources / JPL-Caltech",
+      "processing": "Fictional cloud-band texture. Rings rendered as a separate schematic mesh.",
+      "usage": "Educational display in ORBITAL; credit retained. No agency identifiers included.",
+      "bytes": 275735,
+      "sha256": "d959a239e3d87630daf08e2a688dcbf315fe01b1fd474e55522770108f40aca7"
+    },
+    {
+      "file": "europa.jpg",
+      "download": "https://assets.science.nasa.gov/content/dam/science/cds/3d/resources/image/jupiter---europa/Jupiter%20-%20Europa.jpg",
+      "source": "https://science.nasa.gov/3d-resources/jupiter-europa/",
+      "credit": "NASA/JPL-Caltech and USGS",
+      "processing": "Processed Voyager map for spherical display",
+      "usage": "Educational display in ORBITAL; credit retained. No agency identifiers included.",
+      "bytes": 610862,
+      "sha256": "50d01ca5c01352d1c507bb17fefd1c46ba11260305656250062c6cdac89c8ebf"
+    },
+    {
+      "file": "neptune.jpg",
+      "download": "https://assets.science.nasa.gov/content/dam/science/cds/3d/resources/image/neptune/Neptune.jpg",
+      "source": "https://science.nasa.gov/3d-resources/neptune/",
+      "credit": "Don Davis & JPL-Caltech, NASA 3D Resources",
+      "processing": "Fictional texture with illustrative cloud features",
+      "usage": "Educational display in ORBITAL; credit retained. No agency identifiers included.",
+      "bytes": 210528,
+      "sha256": "e9bb2b7bcfb98d3f1adc6f2e20e833a00c11e9677238d8a00ae7431214ca70aa"
+    },
+    {
+      "file": "stars.jpg",
+      "download": "https://svs.gsfc.nasa.gov/vis/a000000/a004800/a004851/starmap_2020_4k_print.jpg",
+      "source": "https://svs.gsfc.nasa.gov/4851/",
+      "credit": "NASA Goddard SVS / Ernie Wright; ESA Gaia DR2, Hipparcos and Tycho data",
+      "processing": "Decorative celestial sky map reconstructed from stellar catalogues",
+      "usage": "Educational display in ORBITAL; credit retained. No agency identifiers included.",
+      "bytes": 42786,
+      "sha256": "8d2e7e8d515e238deaf90e2b7fb11b2838b6e8db64f933a57540d894468148aa"
+    },
+    {
+      "file": "sun.jpg",
+      "download": "https://svs.gsfc.nasa.gov/vis/a030000/a030300/a030362/euvi_aia304_2012_carrington_print.jpg",
+      "source": "https://svs.gsfc.nasa.gov/30362/",
+      "credit": "NASA JPL / STEREO EUVI and SDO AIA",
+      "processing": "False-colour extreme ultraviolet Carrington chromosphere map, 304 angstrom",
+      "usage": "Educational display in ORBITAL; credit retained. No agency identifiers included.",
+      "bytes": 243011,
+      "sha256": "28744203497af76704cb5a5c29aabe029837b5d95b58e6c68b32cc57ab4676f0"
+    },
+    {
+      "file": "jupiter.jpg",
+      "download": "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia07/pia07782/PIA07782.jpg",
+      "source": "https://science.nasa.gov/photojournal/cassinis-best-maps-of-jupiter-cylindrical-map/",
+      "credit": "NASA/JPL/Space Science Institute · Cassini-Huygens with ESA and ASI",
+      "processing": "Cassini cylindrical cloud map reconstructed from near-IR and blue-filter imagery",
+      "usage": "Educational display in ORBITAL; credit retained. No agency identifiers included.",
+      "bytes": 441285,
+      "sha256": "6b835ddd8036ea9efd25def04f75aa60b69b096025a37eeae5e9b6978e0a2281"
+    },
+    {
+      "file": "comet-67p.jpg",
+      "download": "https://blogs.esa.int/rosetta/files/2015/07/ESA_ROSETTA_NAVCAM_20150720.jpg",
+      "source": "https://blogs.esa.int/rosetta/2015/07/28/cometwatch-20-july/",
+      "credit": "European Space Agency / Rosetta / NAVCAM",
+      "processing": "Rosetta NAVCAM photograph, July 20, 2015. Bundled original; preview framed by the interface.",
+      "usage": "CC BY-SA 3.0 IGO",
+      "license": "https://creativecommons.org/licenses/by-sa/3.0/igo/",
+      "bytes": 261157,
+      "sha256": "f27f66c3beb75662a33ba121487bdf5fa89e8f66c798d086e366e19f31841d1c"
+    },
+    {
+      "file": "earthrise.jpg",
+      "download": "https://images-assets.nasa.gov/image/as08-14-2383/as08-14-2383~medium.jpg",
+      "source": "https://images.nasa.gov/details/as08-14-2383",
+      "credit": "NASA / Apollo 8 / William Anders",
+      "processing": "Earthrise photograph. Mission artwork for lunar flight.",
+      "usage": "Educational display with attribution.",
+      "bytes": 67035,
+      "sha256": "4326e44ea3266c7dd28a65f17117290ca16000f2a719af32b8c79b0e36e8c058"
+    },
+    {
+      "file": "earth-night.jpg",
+      "download": "https://svs.gsfc.nasa.gov/vis/a030000/a030000/a030003/earth_lights_print.jpg",
+      "source": "https://svs.gsfc.nasa.gov/30003/",
+      "credit": "NASA Goddard Space Flight Center / DMSP OLS",
+      "processing": "Annual clear-sky night-lights composite over a darkened Blue Marble surface. Historical data.",
+      "usage": "Educational display in ORBITAL; credit retained.",
+      "bytes": 88297,
+      "sha256": "4b0661d93058eefd78c45ef5827ae97c70d40558158a51fec57f211a68b2e757"
+    },
+    {
+      "file": "mercury-portrait.jpg",
+      "download": "https://assets.science.nasa.gov/dynamicimage/assets/science/psd/photojournal/pia/pia10/pia10398/PIA10398.jpg?fit=clip&h=540&w=800",
+      "source": "https://science.nasa.gov/photojournal/mercury-shows-its-true-colors/",
+      "credit": "NASA / JHUAPL / Carnegie Institution of Washington",
+      "processing": "MESSENGER enhanced-colour departure mosaic, PIA10398",
+      "usage": "Educational display in ORBITAL with source credit.",
+      "bytes": 27758,
+      "sha256": "ae26042c878b6882dde515918772f6f2e90500c2ee0acdb17236b55c5277f4dd"
+    },
+    {
+      "file": "ceres-portrait.jpg",
+      "download": "https://assets.science.nasa.gov/dynamicimage/assets/science/psd/photojournal/pia/pia21/pia21406/PIA21406.jpg?crop=faces%2Cfocalpoint&fit=clip&h=530&w=706",
+      "source": "https://science.nasa.gov/photojournal/enhanced-color-view-of-ceres-at-opposition/",
+      "credit": "NASA / JPL-Caltech / UCLA / MPS / DLR / IDA",
+      "processing": "Dawn enhanced-colour opposition view, PIA21406",
+      "usage": "Educational display in ORBITAL with source credit.",
+      "bytes": 32915,
+      "sha256": "9a7b4e400a8fc08448eb232a16aecd209af6513586eede1ec976ea3a164557ff"
+    },
+    {
+      "file": "uranus-portrait.png",
+      "download": "https://assets.science.nasa.gov/dynamicimage/assets/science/missions/webb/science/2023/12/STScI-01HHFP5G5BXSC5M7DX6DG9YXMB.png?fit=clip&h=409&w=566",
+      "source": "https://science.nasa.gov/asset/webb/uranus-close-up-nircam-image/",
+      "credit": "NASA / ESA / CSA / STScI",
+      "processing": "Webb NIRCam infrared composite with rings and moons",
+      "usage": "Educational display in ORBITAL with source credit.",
+      "bytes": 475380,
+      "sha256": "6c3cf9f941078b3427e85acf903f265aeb388cedd769ecd04d50b3e2c6d7e77a"
+    }
+  ]
+}

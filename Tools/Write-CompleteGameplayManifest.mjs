@@ -1,0 +1,25 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import crypto from 'node:crypto';
+const record='Verification/CompleteGameplay-2026-11-11',candidate=record+'/Candidate';
+const sha=file=>crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
+const walk=dir=>fs.readdirSync(dir,{withFileTypes:true}).sort((a,b)=>a.name.localeCompare(b.name)).flatMap(e=>e.isDirectory()?walk(path.join(dir,e.name)):[path.join(dir,e.name)]);
+const files=walk(candidate).filter(p=>!p.endsWith('.meta')).map(p=>({file:path.relative(candidate,p).replaceAll('\\','/'),sha256:sha(p),bytes:fs.statSync(p).size}));
+fs.writeFileSync(record+'/candidate-hashes.json',JSON.stringify({candidate:path.resolve(candidate),builtWith:'Unity 6000.6.8f1 Windows x64 Mono; rebuilt owned WebView2 host; deterministic owned WebUI',files},null,2)+'\n');
+const baseline=JSON.parse(fs.readFileSync(record+'/baseline-hashes.json'));
+const installed=baseline.filter(x=>x.file.startsWith('Build-Display/')).map(x=>({...x,currentSha256:sha(x.file),unchanged:sha(x.file)===x.sha256}));
+if(installed.some(x=>!x.unchanged))throw Error('Installed baseline changed during task');
+fs.writeFileSync(record+'/installed-preserved.json',JSON.stringify(installed,null,2));
+const source='Assets/StreamingAssets/WebUI',destination=candidate+'/ORBITAL_Data/StreamingAssets/WebUI';
+const sourceFiles=walk(source).filter(p=>!p.endsWith('.meta')).map(p=>({file:path.relative(source,p).replaceAll('\\','/'),sourceSha256:sha(p),candidateSha256:sha(path.join(destination,path.relative(source,p)))}));
+if(sourceFiles.some(x=>x.sourceSha256!==x.candidateSha256))throw Error('Source/candidate mismatch');
+fs.writeFileSync(record+'/source-candidate-match.json',JSON.stringify(sourceFiles,null,2));
+const old=record+'/Before/EmbeddedUI';
+// Additional evidence generators are owned tooling, not runtime dependencies.
+const current=walk('Tools/EmbeddedUI');
+const modified=current.filter(p=>!p.endsWith('.meta')).filter(p=>!fs.existsSync(path.join(old,path.relative('Tools/EmbeddedUI',p)))||sha(p)!==sha(path.join(old,path.relative('Tools/EmbeddedUI',p)))).map(p=>({file:p.replaceAll('\\','/'),owner:'Tools/EmbeddedUI; generated via Pack-WebUI.mjs',sha256:sha(p),previousSha256:fs.existsSync(path.join(old,path.relative('Tools/EmbeddedUI',p)))?sha(path.join(old,path.relative('Tools/EmbeddedUI',p))):null}));
+for(const file of ['Tools/Pack-WebUI.mjs','Tools/Check-FlightCredibility.mjs','Tools/Check-NasaData.mjs','Tools/Check-PackDeterminism.mjs','Tools/Check-CompleteGameplay.mjs','Tools/Check-GameplayBoundaries.mjs','Tools/Check-CompleteGameplayHost.mjs','Tools/Check-EmbeddedCampaign.mjs','Tools/Check-GameplayReleaseHost.mjs','Tools/Write-CompleteGameplayEvidence.mjs','Tools/Write-CompleteGameplayManifest.mjs','Tools/Write-CompleteGameplayLedger.mjs','Tools/Install-CompleteGameplayCandidate.ps1','Tools/NasaPipeline/acquire-flood-context.mjs','Tools/NasaPipeline/flood-pin.json','Tools/NasaPipeline/README.md','Tools/Dependencies/FloodProcessing/package.json','Tools/Dependencies/FloodProcessing/package-lock.json','MISSION_DIFFERENTIATION_MATRIX.md','MISSION_EVIDENCE_MODELS.md','README.md'])modified.push({file,owner:'Project-owned input/tool/document',sha256:sha(file)});
+fs.writeFileSync(record+'/changed-files.json',JSON.stringify(modified,null,2));
+const documentNames=['README.md','ledger.json','FINAL_ACCEPTANCE.json','LEARNING_KIT.md','learning-results-blank.csv','DEMO_AND_JUDGING.md','SCORING_CONTRACT.md','SCIENCE_LIMITS.md','navigation-provenance.json','flood-acquisition.json','flood-downloads.json','flood-processing.json','complete-gameplay-models.json','boundaries.json','package-files.json','Play-Candidate.cmd'];
+fs.writeFileSync(record+'/delivery-documents.json',JSON.stringify(documentNames.map(file=>({file,sha256:sha(record+'/'+file)})),null,2));
+console.log('Candidate: '+files.length+' files; '+sourceFiles.length+' matching source runtime files; installed '+installed.length+' hashes unchanged; '+modified.length+' changed owned files.');

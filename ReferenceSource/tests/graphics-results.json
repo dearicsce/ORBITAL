@@ -1,0 +1,16 @@
+{
+  "flightChecks": {
+    "passed": 7,
+    "failed": 0
+  },
+  "acceptanceChecks": {
+    "passed": 18,
+    "failed": 0
+  },
+  "originalRuleAssertions": 71,
+  "orbiterImporterChecks": 3,
+  "renderErrors": 0,
+  "observedRollingFrameMs": 16.7,
+  "observedDrawCalls": 42,
+  "note": "Rolling frame time measured at end of optimized flight with competing previews closed; not a guaranteed frame rate across the full flight or other hardware."
+}

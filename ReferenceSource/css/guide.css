@@ -1,0 +1,15 @@
+.character-portrait { object-fit:cover;object-position:center 20%;border-radius:18px;display:inline-block;vertical-align:middle; }
+.portrait-scientist { object-fit:contain;background:#fff; }.robot-portrait { position:relative;overflow:hidden;border-radius:40%; }.robot-portrait img { position:absolute;height:auto; }
+.guide-dialogue { position:fixed;z-index:80;top:78px;left:20px;display:flex;align-items:flex-start;gap:12px;max-width:min(480px,calc(100vw - 40px));pointer-events:none; }
+.guide-character { pointer-events:auto;border:0;background:transparent;color:#bdeef4;cursor:pointer;display:flex;align-items:center;flex-direction:column;gap:4px;padding:0;font:inherit;font-size:12px;flex-shrink:0; }
+.guide-message { pointer-events:auto;display:none;background:#102635f5;border:1px solid #476875;border-radius:16px;padding:14px;box-shadow:0 12px 40px #0005; }
+.guide-dialogue.speaking .guide-message,.guide-dialogue.expanded .guide-message,.guide-dialogue:hover .guide-message,.guide-dialogue:focus-within .guide-message { display:block; }
+.guide-message-top { display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:13px; }.guide-message-top>div { display:flex;gap:4px; }.guide-message button { font:inherit;font-size:12px;min-height:36px;padding:4px 8px;border-radius:8px;border:1px solid #466171;background:#1b3747;color:#d9eff3;cursor:pointer; }.guide-message p { margin:10px 0 0;font-size:14px;line-height:1.5; }
+.guide-dialogue.talking .guide-character { animation:guide-bob 2s ease-in-out infinite; }.guide-pointer { position:fixed;z-index:79;border:2px solid #6cdbe5;border-radius:12px;box-shadow:0 0 15px #6cdbe544;pointer-events:none; }
+@keyframes guide-bob { 50% {transform:translateY(-3px)} }
+@media(max-width:800px){.guide-dialogue { top:74px;left:12px;gap:8px;max-width:calc(100vw - 24px); }.guide-character .character-portrait { width:48px!important;height:63px!important; }.guide-character .robot-portrait img { width:410px!important;left:-6.4px!important;top:-4px!important; }.guide-message { padding:10px; }.guide-message p { font-size:12px; }}
+@media(prefers-reduced-motion:reduce){.guide-dialogue.talking .guide-character {animation:none;}}
+
+.video-caption {position:absolute;top:16px;left:16px;padding:8px 12px;background:#07121ddd;border-radius:8px;color:white;font-size:12px;}
+
+.menu-guide {position:absolute;top:0;right:0;}

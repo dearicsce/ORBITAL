@@ -1,0 +1,19 @@
+{
+  "url": "https://nrt3.modaps.eosdis.nasa.gov/archive/allData/61/MCDWD_L3_F2_NRT/2026/314/MCDWD_L3_F2_NRT.A2026314.h24v06.061.tif",
+  "sha256": "e6a8743d8aa3ba2d7f7b7226da3088e812ea8e6b352a6fbb9dc4ce2971f094ff",
+  "bytes": 258536,
+  "retrievedAtUTC": "2026-11-10T18:51:52.000Z",
+  "grid": [
+    60,
+    20,
+    70,
+    30
+  ],
+  "counts": {
+    "0": 6156645,
+    "1": 10800087,
+    "2": 5098,
+    "3": 2251,
+    "255": 6075919
+  }
+}

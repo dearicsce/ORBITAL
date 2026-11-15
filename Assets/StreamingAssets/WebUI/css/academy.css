@@ -1,0 +1,8 @@
+.academy-guide{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding:1rem 1.25rem;margin:.8rem 0;background:#0b2230;color:#eff9fd;border-left:4px solid #7edfd3}
+.academy-guide h2,.academy-guide p{margin:.35rem 0}
+.academy-guide small{color:#a1dace}
+.academy-actions{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.academy-target{outline:2px solid #f4c66c!important;outline-offset:2px}
+.academy-flight{position:relative;min-height:490px;background:#070f1b}
+.academy-flight-controls{position:relative;z-index:2;display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;padding:1rem;pointer-events:none}
+.academy-flight-controls button,.academy-flight-controls label{pointer-events:auto}

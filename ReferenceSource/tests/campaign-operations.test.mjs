@@ -1,0 +1,42 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {enrichCampaign,starterDesign,isMissionUnlocked,campaignOrder} from '../js/campaign.js';
+import {evaluateDesign,checkLaunchGate} from '../js/engine.js';
+import {createOperations,stepOperations,resolveIncident,operationSummary,chooseMode,INCIDENTS} from '../js/engine/operations.js';
+import {rateFlight} from '../js/flightOutcome.js';
+const data=enrichCampaign(JSON.parse(fs.readFileSync(new URL('../data/world1.json',import.meta.url))));
+let assertions=0;const check=(condition,message)=>{assert.ok(condition,message);assertions++;};
+const missions=campaignOrder(data);check(missions.length===12,'Twelve distinct contracts');
+check(enrichCampaign(data).missions.length===missions.length+1+data.missions.filter(m=>m.transfer).length,'Enrichment is idempotent');
+check(isMissionUnlocked(missions[0],{}),'First mission available');
+check(!isMissionUnlocked(data.missions.find(m=>m.id==='m3'),{}),'Lunar mission locked initially');
+const results=[];
+function run(state){for(let i=0;i<200&&!state.finished;i++){if(state.pendingIncident)resolveIncident(state,INCIDENTS[state.pendingIncident.id].choices[0].id);stepOperations(state);}return operationSummary(state);}
+for(const mission of missions){
+  const design=starterDesign(mission,data),evaluation=evaluateDesign(design,data),checks=checkLaunchGate(design,data);
+  check(checks.every(c=>c.ok),mission.id+' starter launch gate: '+checks.filter(c=>!c.ok).map(c=>c.id));
+  const state=createOperations(design,data,evaluation),summary=run(state);
+  const rating=rateFlight(design,data,evaluation,{success:true},[],summary);
+  results.push({mission:mission.id,passed:summary.passed,stars:rating.total,objectives:summary.objectives});
+  check(summary.passed,mission.id+' autopilot baseline objectives: '+JSON.stringify(summary.objectives));
+  check(rating.total>=3,mission.id+' baseline earns progression');
+  check(state.batteryWh>=0&&state.batteryWh<=state.batteryCapacityWh,'Battery bounds '+mission.id);
+  check(Math.abs(state.collectedGb-state.deliveredGb-state.storageGb-state.lostGb)<1e-7,'Data conservation '+mission.id);
+  const second=createOperations(design,data,evaluation);check(JSON.stringify(run(second))===JSON.stringify(summary),'Deterministic replay '+mission.id);
+}
+const design=starterDesign(missions[0],data),evaluation=evaluateDesign(design,data);
+const idle=createOperations(design,data,evaluation);chooseMode(idle,'safe');check(!run(idle).passed,'Doing no science fails objectives');
+const paused=createOperations(design,data,evaluation);paused.paused=true;stepOperations(paused);check(paused.tick===0,'Paused clock does not advance');
+paused.paused=false;paused.pendingIncident={id:'debris'};paused.fuelKg=0;check(!resolveIncident(paused,'burn'),'Cannot spend nonexistent fuel');stepOperations(paused);check(paused.tick===0,'Incident pauses clock');
+const transmitting=createOperations(design,data,evaluation);chooseMode(transmitting,'downlink');check(!run(transmitting).passed,'Transmitting without collecting fails');
+const broken=createOperations(design,data,{...evaluation,batteryUsableWh:0,panelPower:0});check(!run(broken).passed,'Unpowered craft cannot pass');
+const unfinished=createOperations(design,data,evaluation);check(!operationSummary(unfinished).passed,'Unfinished run cannot pass');
+const checkpoint=createOperations(design,data,evaluation);
+while(!checkpoint.pendingIncident&&checkpoint.tick<40)stepOperations(checkpoint);
+check(Boolean(checkpoint.pendingIncident),'Checkpoint reaches an incident requiring a decision');
+const restored=JSON.parse(JSON.stringify(checkpoint));
+check(JSON.stringify(run(restored))===JSON.stringify(run(checkpoint)),'Serialized incident resumes to an identical result');
+const completedSnapshot=JSON.stringify(restored);stepOperations(restored);
+check(JSON.stringify(restored)===completedSnapshot,'Completed operation does not mutate on another tick');
+fs.writeFileSync(new URL('./campaign-operations-results.json',import.meta.url),JSON.stringify({assertions,results},null,2));
+console.log(JSON.stringify({assertions,results},null,2));

@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>State Tests - Space Mission Design Game</title>
+    <style>
+      body {
+        background: #0f172a;
+        color: #e2e8f0;
+        font-family: monospace;
+        padding: 24px;
+        line-height: 1.6;
+      }
+      h1 {
+        font-size: 1.5rem;
+        margin-bottom: 16px;
+        color: #38bdf8;
+      }
+      .test-group {
+        margin-bottom: 24px;
+        background: #1e293b;
+        border-radius: 8px;
+        padding: 16px 20px;
+        border: 1px solid #334155;
+      }
+      .pass {
+        color: #4ade80;
+        font-weight: bold;
+      }
+      .fail {
+        color: #f87171;
+        font-weight: bold;
+      }
+      .summary {
+        font-size: 1.25rem;
+        margin-top: 24px;
+        padding: 16px;
+        border-radius: 8px;
+      }
+      .summary.all-pass {
+        background: #064e3b;
+        color: #6ee7b7;
+      }
+      .summary.has-fail {
+        background: #7f1d1d;
+        color: #fca5a5;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>State Specification Tests (Step 4)</h1>
+    <div id="results">Running tests...</div>
+
+    <script type="module">
+import {completedFlight} from './flight-fixture.js';
+
+      import { loadData } from '../js/data.js';
+      import {
+        getState,
+        resetState,
+        setDesign,
+        clearDesign,
+        completeMission,
+        markTutorialDone,
+        saveProgress,
+        loadProgress
+      } from '../js/state.js';
+
+      async function run() {
+        const resultsEl = document.getElementById('results');
+        resultsEl.innerHTML = '';
+
+        const data = await loadData('../');
+        const passStars = data.settings?.passStars ?? 3.0;
+
+        let totalAssertions = 0;
+        let passedAssertions = 0;
+
+        function assert(title, actual, expected, compareFn = null) {
+          totalAssertions++;
+          const ok = compareFn ? compareFn(actual, expected) : actual === expected;
+          if (ok) passedAssertions++;
+          return { title, actual, expected, ok };
+        }
+
+        // Test 1: Passing at 3 stars
+        resetState();
+        const ratingPass = { total: 3.0, medal: 'Bronze', engineer: 1, scientist: 1, accountant: 1 };
+        const passed1 = completeMission('m1', ratingPass, passStars, completedFlight);
+        const stateAfterPass = getState();
+
+        const testsPass = [
+          assert('Passing at 3.0 stars returns true', passed1, true),
+          assert('Mission m1 recorded as completed', Boolean(stateAfterPass.completedMissions.m1), true),
+          assert('Mission m1 stars recorded as 3.0', stateAfterPass.completedMissions.m1?.stars, 3.0),
+          assert('Mission m1 medal recorded as Bronze', stateAfterPass.completedMissions.m1?.medal, 'Bronze')
+        ];
+
+        // Test 2: Not passing at 2.5 stars
+        resetState();
+        const ratingFail = { total: 2.5, medal: null, engineer: 1, scientist: 1, accountant: 0.5 };
+        const passed2 = completeMission('m1', ratingFail, passStars, completedFlight);
+        const stateAfterFail = getState();
+
+        const testsFail = [
+          assert('Not passing at 2.5 stars returns false', passed2, false),
+          assert('Mission m1 not recorded in completedMissions', stateAfterFail.completedMissions.m1, undefined)
+        ];
+
+        // Test 3: Best stars kept on replay
+        resetState();
+        // First completion: 4.5 stars (Silver)
+        completeMission('m1', { total: 4.5, medal: 'Silver' }, passStars, completedFlight);
+        let sReplay = getState();
+        const starsFirst = sReplay.completedMissions.m1?.stars;
+
+        // Replay with lower score: 3.5 stars (Bronze) -> should keep 4.5 stars Silver
+        completeMission('m1', { total: 3.5, medal: 'Bronze' }, passStars, completedFlight);
+        sReplay = getState();
+        const starsAfterLowerReplay = sReplay.completedMissions.m1?.stars;
+        const medalAfterLowerReplay = sReplay.completedMissions.m1?.medal;
+
+        // Replay with higher score: 5.5 stars (Gold) -> should update to 5.5 stars Gold
+        completeMission('m1', { total: 5.5, medal: 'Gold' }, passStars, completedFlight);
+        sReplay = getState();
+        const starsAfterHigherReplay = sReplay.completedMissions.m1?.stars;
+        const medalAfterHigherReplay = sReplay.completedMissions.m1?.medal;
+
+        const testsReplay = [
+          assert('Initial completion has 4.5 stars', starsFirst, 4.5),
+          assert('Replay with 3.5 keeps 4.5 stars', starsAfterLowerReplay, 4.5),
+          assert('Replay with 3.5 keeps Silver medal', medalAfterLowerReplay, 'Silver'),
+          assert('Replay with 5.5 updates to 5.5 stars', starsAfterHigherReplay, 5.5),
+          assert('Replay with 5.5 updates to Gold medal', medalAfterHigherReplay, 'Gold')
+        ];
+
+        // Test 4: Save then load gives the same state
+        resetState();
+        setDesign({
+          missionId: 'm2',
+          busId: 'bus_medium',
+          panelIds: ['panel_l'],
+          batteryIds: ['battery_l'],
+          launcherId: 'condor',
+          orbitId: 'geo',
+          difficulty: 'hard'
+        });
+        completeMission('m1', { total: 4.5, medal: 'Silver' }, passStars, completedFlight);
+
+        const beforeSave = getState();
+        const savedOk = saveProgress();
+
+        // Mutate state in memory or reset
+        resetState();
+        const stateAfterReset = getState();
+        const loadedOk = loadProgress();
+        const afterLoad = getState();
+
+        const testsSaveLoad = [
+          assert('saveProgress returns true', savedOk, true),
+          assert('State was cleared on reset', stateAfterReset.currentMissionId, 'tutorial'),
+          assert('loadProgress returns true', loadedOk, true),
+          assert('Loaded missionId matches saved', afterLoad.currentMissionId, beforeSave.currentMissionId),
+          assert('Loaded difficulty matches saved', afterLoad.difficulty, beforeSave.difficulty),
+          assert('Loaded busId matches saved', afterLoad.currentDesign.busId, beforeSave.currentDesign.busId),
+          assert('Loaded launcherId matches saved', afterLoad.currentDesign.launcherId, beforeSave.currentDesign.launcherId),
+          assert('Loaded m1 stars match saved', afterLoad.completedMissions.m1?.stars, beforeSave.completedMissions.m1?.stars),
+          assert('Loaded m1 medal matches saved', afterLoad.completedMissions.m1?.medal, beforeSave.completedMissions.m1?.medal)
+        ];
+
+        // Test 5: Tutorial state tracking
+        resetState();
+        const initialTutorialDone = getState().tutorialDone;
+        markTutorialDone();
+        const tutorialDoneAfterMark = getState().tutorialDone;
+        saveProgress();
+        resetState();
+        loadProgress();
+        const tutorialDoneAfterLoad = getState().tutorialDone;
+
+        const testsTutorial = [
+          assert('tutorialDone is false by default', initialTutorialDone, false),
+          assert('markTutorialDone sets tutorialDone to true', tutorialDoneAfterMark, true),
+          assert('tutorialDone persists across save and load', tutorialDoneAfterLoad, true)
+        ];
+
+        // Test 6: Empty default design specification (Step 15)
+        resetState();
+        const defaultDesign = getState().currentDesign;
+        const testsEmptyDesign = [
+          assert('Default busId is null', defaultDesign.busId, null),
+          assert('Default launcherId is null', defaultDesign.launcherId, null),
+          assert('Default orbitId is null', defaultDesign.orbitId, null),
+          assert('Default commsId is null', defaultDesign.commsId, null),
+          assert('Default computerId is null', defaultDesign.computerId, null),
+          assert('Default pointingId is null', defaultDesign.pointingId, null),
+          assert('Default panelIds is empty array', defaultDesign.panelIds.length, 0),
+          assert('Default batteryIds is empty array', defaultDesign.batteryIds.length, 0),
+          assert('Default fuelIds is empty array', defaultDesign.fuelIds.length, 0),
+          assert('Default instrumentIds is empty array', defaultDesign.instrumentIds.length, 0)
+        ];
+
+        function renderGroup(title, tests) {
+          const groupEl = document.createElement('div');
+          groupEl.className = 'test-group';
+          const h2 = document.createElement('h2');
+          h2.style.fontSize = '1.1rem';
+          h2.style.marginBottom = '10px';
+          h2.textContent = title;
+          groupEl.appendChild(h2);
+
+          tests.forEach((t) => {
+            const p = document.createElement('div');
+            p.innerHTML = `<span class="${t.ok ? 'pass' : 'fail'}">[${t.ok ? 'PASS' : 'FAIL'}]</span> ${t.title}: actual = ${JSON.stringify(t.actual)}, expected = ${JSON.stringify(t.expected)}`;
+            groupEl.appendChild(p);
+          });
+          return groupEl;
+        }
+
+        resultsEl.appendChild(renderGroup('1. Passing at 3 stars threshold', testsPass));
+        resultsEl.appendChild(renderGroup('2. Failing below passStars threshold (2.5 stars)', testsFail));
+        resultsEl.appendChild(renderGroup('3. Keeping best stars on replay', testsReplay));
+        resultsEl.appendChild(renderGroup('4. Save and load persistence integrity', testsSaveLoad));
+        resultsEl.appendChild(renderGroup('5. Tutorial state tracking & persistence', testsTutorial));
+        resultsEl.appendChild(renderGroup('6. Empty default design specification', testsEmptyDesign));
+
+        const summaryEl = document.createElement('div');
+        const allOk = passedAssertions === totalAssertions;
+        summaryEl.className = `summary ${allOk ? 'all-pass' : 'has-fail'}`;
+        summaryEl.textContent = allOk
+          ? `PASS: All ${totalAssertions} state assertions passed successfully.`
+          : `FAIL: ${totalAssertions - passedAssertions} of ${totalAssertions} assertions failed.`;
+        resultsEl.appendChild(summaryEl);
+      }
+
+      const previousSave=localStorage.getItem('space_mission_game_state_v1');
+      run().finally(()=>{if(previousSave===null)localStorage.removeItem('space_mission_game_state_v1');else localStorage.setItem('space_mission_game_state_v1',previousSave);});
+    </script>
+  </body>
+</html>

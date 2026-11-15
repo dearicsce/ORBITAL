@@ -1,0 +1,14 @@
+{
+  "note": "Source models preserved; optimized runtime copies are now active in Falcon 9/Atlas V assemblies.",
+  "profiles": {
+    "falcon": {
+      "lower": "models/runtime/falcon-lower.glb",
+      "upper": "models/runtime/falcon-upper.glb",
+      "adapter": "models/runtime/falcon-adapter.glb"
+    },
+    "atlas": {
+      "lower": "models/runtime/atlas-lower.glb",
+      "upper": "models/runtime/atlas-upper.glb"
+    }
+  }
+}

@@ -1,0 +1,34 @@
+[
+  {
+    "file": "falcon-upper.glb",
+    "originalBytes": 54102332,
+    "runtimeBytes": 7260012,
+    "originalTriangles": 1200500,
+    "runtimeTriangles": 194746,
+    "maxPositionError": 0.010998026230915012
+  },
+  {
+    "file": "falcon-adapter.glb",
+    "originalBytes": 54534360,
+    "runtimeBytes": 10421992,
+    "originalTriangles": 1061464,
+    "runtimeTriangles": 297809,
+    "maxPositionError": 0.010990803337200095
+  },
+  {
+    "file": "atlas-lower.glb",
+    "originalBytes": 55005812,
+    "runtimeBytes": 8515448,
+    "originalTriangles": 1190820,
+    "runtimeTriangles": 228539,
+    "maxPositionError": 0.010987044775803442
+  },
+  {
+    "file": "atlas-upper.glb",
+    "originalBytes": 106189788,
+    "runtimeBytes": 17272832,
+    "originalTriangles": 2815094,
+    "runtimeTriangles": 505217,
+    "maxPositionError": 0.010989654639347868
+  }
+]

@@ -1,0 +1,2812 @@
+{
+  "schemaVersion": 1,
+  "transformVersion": "historical-context-1",
+  "reviewDate": "2026-11-02",
+  "purpose": "Historical context only, excluded from scientific scoring and operational collision prediction",
+  "series": [
+    {
+      "id": "launchData_2025-10-02",
+      "title": "Launches and payloads",
+      "sourceFile": "launchData_2025-10-02.csv",
+      "sourcePath": "reference-library/sources/drive-data/DAS (Debris assessment Software)/launchData_2025-10-02.csv",
+      "sourceSha256": "8f9ecdf97e9ba4734e9ef3c4295bc1ca47553a65b18aba618583d898294ad15b",
+      "columns": [
+        {
+          "id": "LAUNCHES",
+          "label": "Launches",
+          "unit": "count",
+          "meaningStatus": "Supplied header meaning; publisher definitions not independently established"
+        },
+        {
+          "id": "PAYLOADS",
+          "label": "Payloads",
+          "unit": "count",
+          "meaningStatus": "Supplied header meaning; publisher definitions not independently established"
+        },
+        {
+          "id": "ISS Payloads",
+          "label": "ISS payloads",
+          "unit": "count",
+          "meaningStatus": "Supplied header meaning; publisher definitions not independently established"
+        }
+      ],
+      "provenance": "supplied-reference-unverified",
+      "publisher": "Not established from supplied files",
+      "scoringEligible": false,
+      "definitionStatus": "Headers and numeric structure checked; scientific definitions unverified",
+      "dateStatus": "Cutoff inferred from filename, not a verified publisher timestamp",
+      "records": [
+        {
+          "year": 1957,
+          "values": {
+            "LAUNCHES": 2,
+            "PAYLOADS": 2,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1958,
+          "values": {
+            "LAUNCHES": 8,
+            "PAYLOADS": 8,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1959,
+          "values": {
+            "LAUNCHES": 14,
+            "PAYLOADS": 15,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1960,
+          "values": {
+            "LAUNCHES": 19,
+            "PAYLOADS": 21,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1961,
+          "values": {
+            "LAUNCHES": 35,
+            "PAYLOADS": 41,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1962,
+          "values": {
+            "LAUNCHES": 72,
+            "PAYLOADS": 77,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1963,
+          "values": {
+            "LAUNCHES": 55,
+            "PAYLOADS": 71,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1964,
+          "values": {
+            "LAUNCHES": 87,
+            "PAYLOADS": 103,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1965,
+          "values": {
+            "LAUNCHES": 112,
+            "PAYLOADS": 158,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1966,
+          "values": {
+            "LAUNCHES": 118,
+            "PAYLOADS": 145,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1967,
+          "values": {
+            "LAUNCHES": 127,
+            "PAYLOADS": 158,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1968,
+          "values": {
+            "LAUNCHES": 119,
+            "PAYLOADS": 139,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1969,
+          "values": {
+            "LAUNCHES": 110,
+            "PAYLOADS": 139,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1970,
+          "values": {
+            "LAUNCHES": 114,
+            "PAYLOADS": 129,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1971,
+          "values": {
+            "LAUNCHES": 121,
+            "PAYLOADS": 154,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1972,
+          "values": {
+            "LAUNCHES": 106,
+            "PAYLOADS": 130,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1973,
+          "values": {
+            "LAUNCHES": 109,
+            "PAYLOADS": 135,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1974,
+          "values": {
+            "LAUNCHES": 106,
+            "PAYLOADS": 126,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1975,
+          "values": {
+            "LAUNCHES": 125,
+            "PAYLOADS": 155,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1976,
+          "values": {
+            "LAUNCHES": 128,
+            "PAYLOADS": 159,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1977,
+          "values": {
+            "LAUNCHES": 124,
+            "PAYLOADS": 136,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1978,
+          "values": {
+            "LAUNCHES": 124,
+            "PAYLOADS": 165,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1979,
+          "values": {
+            "LAUNCHES": 106,
+            "PAYLOADS": 123,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1980,
+          "values": {
+            "LAUNCHES": 105,
+            "PAYLOADS": 130,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1981,
+          "values": {
+            "LAUNCHES": 123,
+            "PAYLOADS": 159,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1982,
+          "values": {
+            "LAUNCHES": 121,
+            "PAYLOADS": 143,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1983,
+          "values": {
+            "LAUNCHES": 127,
+            "PAYLOADS": 161,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1984,
+          "values": {
+            "LAUNCHES": 129,
+            "PAYLOADS": 173,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1985,
+          "values": {
+            "LAUNCHES": 121,
+            "PAYLOADS": 166,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1986,
+          "values": {
+            "LAUNCHES": 103,
+            "PAYLOADS": 136,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1987,
+          "values": {
+            "LAUNCHES": 110,
+            "PAYLOADS": 140,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1988,
+          "values": {
+            "LAUNCHES": 116,
+            "PAYLOADS": 143,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1989,
+          "values": {
+            "LAUNCHES": 101,
+            "PAYLOADS": 137,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1990,
+          "values": {
+            "LAUNCHES": 116,
+            "PAYLOADS": 166,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1991,
+          "values": {
+            "LAUNCHES": 88,
+            "PAYLOADS": 136,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1992,
+          "values": {
+            "LAUNCHES": 95,
+            "PAYLOADS": 129,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1993,
+          "values": {
+            "LAUNCHES": 79,
+            "PAYLOADS": 109,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1994,
+          "values": {
+            "LAUNCHES": 89,
+            "PAYLOADS": 123,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1995,
+          "values": {
+            "LAUNCHES": 74,
+            "PAYLOADS": 101,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1996,
+          "values": {
+            "LAUNCHES": 73,
+            "PAYLOADS": 98,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1997,
+          "values": {
+            "LAUNCHES": 86,
+            "PAYLOADS": 152,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1998,
+          "values": {
+            "LAUNCHES": 77,
+            "PAYLOADS": 156,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1999,
+          "values": {
+            "LAUNCHES": 73,
+            "PAYLOADS": 126,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2000,
+          "values": {
+            "LAUNCHES": 82,
+            "PAYLOADS": 119,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2001,
+          "values": {
+            "LAUNCHES": 58,
+            "PAYLOADS": 84,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2002,
+          "values": {
+            "LAUNCHES": 62,
+            "PAYLOADS": 94,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2003,
+          "values": {
+            "LAUNCHES": 61,
+            "PAYLOADS": 88,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2004,
+          "values": {
+            "LAUNCHES": 53,
+            "PAYLOADS": 72,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2005,
+          "values": {
+            "LAUNCHES": 52,
+            "PAYLOADS": 72,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2006,
+          "values": {
+            "LAUNCHES": 63,
+            "PAYLOADS": 91,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2007,
+          "values": {
+            "LAUNCHES": 65,
+            "PAYLOADS": 110,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2008,
+          "values": {
+            "LAUNCHES": 67,
+            "PAYLOADS": 103,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2009,
+          "values": {
+            "LAUNCHES": 75,
+            "PAYLOADS": 123,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2010,
+          "values": {
+            "LAUNCHES": 70,
+            "PAYLOADS": 120,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2011,
+          "values": {
+            "LAUNCHES": 80,
+            "PAYLOADS": 127,
+            "ISS Payloads": 1
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2012,
+          "values": {
+            "LAUNCHES": 75,
+            "PAYLOADS": 126,
+            "ISS Payloads": 6
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2013,
+          "values": {
+            "LAUNCHES": 78,
+            "PAYLOADS": 204,
+            "ISS Payloads": 4
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2014,
+          "values": {
+            "LAUNCHES": 90,
+            "PAYLOADS": 193,
+            "ISS Payloads": 47
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2015,
+          "values": {
+            "LAUNCHES": 83,
+            "PAYLOADS": 172,
+            "ISS Payloads": 49
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2016,
+          "values": {
+            "LAUNCHES": 83,
+            "PAYLOADS": 176,
+            "ISS Payloads": 45
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2017,
+          "values": {
+            "LAUNCHES": 86,
+            "PAYLOADS": 381,
+            "ISS Payloads": 64
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2018,
+          "values": {
+            "LAUNCHES": 112,
+            "PAYLOADS": 385,
+            "ISS Payloads": 16
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2019,
+          "values": {
+            "LAUNCHES": 97,
+            "PAYLOADS": 415,
+            "ISS Payloads": 20
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2020,
+          "values": {
+            "LAUNCHES": 104,
+            "PAYLOADS": 1232,
+            "ISS Payloads": 20
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2021,
+          "values": {
+            "LAUNCHES": 135,
+            "PAYLOADS": 1726,
+            "ISS Payloads": 18
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2022,
+          "values": {
+            "LAUNCHES": 179,
+            "PAYLOADS": 2278,
+            "ISS Payloads": 29
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2023,
+          "values": {
+            "LAUNCHES": 212,
+            "PAYLOADS": 2692,
+            "ISS Payloads": 23
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2024,
+          "values": {
+            "LAUNCHES": 254,
+            "PAYLOADS": 2608,
+            "ISS Payloads": 10
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2025,
+          "values": {
+            "LAUNCHES": 217,
+            "PAYLOADS": 2859,
+            "ISS Payloads": 0
+          },
+          "qualityFlags": [
+            "partial-year",
+            "cutoff-inferred-from-filename"
+          ]
+        }
+      ],
+      "issues": [],
+      "originalHeaders": [
+        "YEAR",
+        "LAUNCHES",
+        "PAYLOADS",
+        "ISS Payloads"
+      ],
+      "rowCount": 69,
+      "cutoff": "2025-10-02",
+      "firstYear": 1957,
+      "lastYear": 2025
+    },
+    {
+      "id": "annualLaunchDataByNation2025-10-02",
+      "title": "Launch counts by supplied country labels",
+      "sourceFile": "annualLaunchDataByNation2025-10-02.csv",
+      "sourcePath": "reference-library/sources/drive-data/DAS (Debris assessment Software)/annualLaunchDataByNation2025-10-02.csv",
+      "sourceSha256": "31956570f6411d309012895ed53547f8fe8ec1e449c9f0c70789d72eaa598560",
+      "columns": [
+        {
+          "id": "US",
+          "label": "US",
+          "unit": "count",
+          "meaningStatus": "Supplied header meaning; publisher definitions not independently established"
+        },
+        {
+          "id": "RUSSIA",
+          "label": "Russia",
+          "unit": "count",
+          "meaningStatus": "Supplied header meaning; publisher definitions not independently established"
+        },
+        {
+          "id": "CHINA",
+          "label": "China",
+          "unit": "count",
+          "meaningStatus": "Supplied header meaning; publisher definitions not independently established"
+        },
+        {
+          "id": "OTHER",
+          "label": "Other",
+          "unit": "count",
+          "meaningStatus": "Supplied header meaning; publisher definitions not independently established"
+        }
+      ],
+      "provenance": "supplied-reference-unverified",
+      "publisher": "Not established from supplied files",
+      "scoringEligible": false,
+      "definitionStatus": "Headers and numeric structure checked; scientific definitions unverified",
+      "dateStatus": "Cutoff inferred from filename, not a verified publisher timestamp",
+      "records": [
+        {
+          "year": 1957,
+          "values": {
+            "US": 0,
+            "RUSSIA": 2,
+            "CHINA": 0,
+            "OTHER": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1958,
+          "values": {
+            "US": 7,
+            "RUSSIA": 1,
+            "CHINA": 0,
+            "OTHER": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1959,
+          "values": {
+            "US": 11,
+            "RUSSIA": 3,
+            "CHINA": 0,
+            "OTHER": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1960,
+          "values": {
+            "US": 16,
+            "RUSSIA": 3,
+            "CHINA": 0,
+            "OTHER": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1961,
+          "values": {
+            "US": 29,
+            "RUSSIA": 6,
+            "CHINA": 0,
+            "OTHER": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1962,
+          "values": {
+            "US": 52,
+            "RUSSIA": 20,
+            "CHINA": 0,
+            "OTHER": 2
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1963,
+          "values": {
+            "US": 38,
+            "RUSSIA": 17,
+            "CHINA": 0,
+            "OTHER": 0
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1964,
+          "values": {
+            "US": 57,
+            "RUSSIA": 30,
+            "CHINA": 0,
+            "OTHER": 2
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1965,
+          "values": {
+            "US": 63,
+            "RUSSIA": 48,
+            "CHINA": 0,
+            "OTHER": 4
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1966,
+          "values": {
+            "US": 73,
+            "RUSSIA": 44,
+            "CHINA": 0,
+            "OTHER": 2
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1967,
+          "values": {
+            "US": 58,
+            "RUSSIA": 66,
+            "CHINA": 0,
+            "OTHER": 8
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1968,
+          "values": {
+            "US": 45,
+            "RUSSIA": 74,
+            "CHINA": 0,
+            "OTHER": 4
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1969,
+          "values": {
+            "US": 40,
+            "RUSSIA": 70,
+            "CHINA": 0,
+            "OTHER": 7
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1970,
+          "values": {
+            "US": 28,
+            "RUSSIA": 81,
+            "CHINA": 1,
+            "OTHER": 9
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1971,
+          "values": {
+            "US": 32,
+            "RUSSIA": 83,
+            "CHINA": 1,
+            "OTHER": 12
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1972,
+          "values": {
+            "US": 31,
+            "RUSSIA": 74,
+            "CHINA": 0,
+            "OTHER": 9
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1973,
+          "values": {
+            "US": 23,
+            "RUSSIA": 86,
+            "CHINA": 0,
+            "OTHER": 3
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1974,
+          "values": {
+            "US": 24,
+            "RUSSIA": 81,
+            "CHINA": 0,
+            "OTHER": 12
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1975,
+          "values": {
+            "US": 28,
+            "RUSSIA": 89,
+            "CHINA": 3,
+            "OTHER": 12
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1976,
+          "values": {
+            "US": 26,
+            "RUSSIA": 99,
+            "CHINA": 2,
+            "OTHER": 6
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1977,
+          "values": {
+            "US": 24,
+            "RUSSIA": 98,
+            "CHINA": 0,
+            "OTHER": 12
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1978,
+          "values": {
+            "US": 32,
+            "RUSSIA": 88,
+            "CHINA": 1,
+            "OTHER": 11
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1979,
+          "values": {
+            "US": 16,
+            "RUSSIA": 87,
+            "CHINA": 0,
+            "OTHER": 5
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1980,
+          "values": {
+            "US": 13,
+            "RUSSIA": 89,
+            "CHINA": 0,
+            "OTHER": 4
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1981,
+          "values": {
+            "US": 18,
+            "RUSSIA": 98,
+            "CHINA": 1,
+            "OTHER": 11
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1982,
+          "values": {
+            "US": 18,
+            "RUSSIA": 101,
+            "CHINA": 1,
+            "OTHER": 6
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1983,
+          "values": {
+            "US": 22,
+            "RUSSIA": 98,
+            "CHINA": 1,
+            "OTHER": 11
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1984,
+          "values": {
+            "US": 23,
+            "RUSSIA": 97,
+            "CHINA": 4,
+            "OTHER": 12
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1985,
+          "values": {
+            "US": 18,
+            "RUSSIA": 98,
+            "CHINA": 1,
+            "OTHER": 12
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1986,
+          "values": {
+            "US": 7,
+            "RUSSIA": 91,
+            "CHINA": 2,
+            "OTHER": 5
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1987,
+          "values": {
+            "US": 8,
+            "RUSSIA": 95,
+            "CHINA": 2,
+            "OTHER": 6
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1988,
+          "values": {
+            "US": 15,
+            "RUSSIA": 90,
+            "CHINA": 4,
+            "OTHER": 12
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1989,
+          "values": {
+            "US": 18,
+            "RUSSIA": 74,
+            "CHINA": 0,
+            "OTHER": 11
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1990,
+          "values": {
+            "US": 30,
+            "RUSSIA": 75,
+            "CHINA": 5,
+            "OTHER": 18
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1991,
+          "values": {
+            "US": 19,
+            "RUSSIA": 59,
+            "CHINA": 1,
+            "OTHER": 15
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1992,
+          "values": {
+            "US": 31,
+            "RUSSIA": 54,
+            "CHINA": 4,
+            "OTHER": 18
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1993,
+          "values": {
+            "US": 26,
+            "RUSSIA": 47,
+            "CHINA": 1,
+            "OTHER": 11
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1994,
+          "values": {
+            "US": 28,
+            "RUSSIA": 48,
+            "CHINA": 5,
+            "OTHER": 13
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1995,
+          "values": {
+            "US": 32,
+            "RUSSIA": 32,
+            "CHINA": 2,
+            "OTHER": 25
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1996,
+          "values": {
+            "US": 35,
+            "RUSSIA": 25,
+            "CHINA": 3,
+            "OTHER": 25
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1997,
+          "values": {
+            "US": 47,
+            "RUSSIA": 27,
+            "CHINA": 6,
+            "OTHER": 23
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1998,
+          "values": {
+            "US": 45,
+            "RUSSIA": 24,
+            "CHINA": 7,
+            "OTHER": 30
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1999,
+          "values": {
+            "US": 35,
+            "RUSSIA": 26,
+            "CHINA": 4,
+            "OTHER": 36
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2000,
+          "values": {
+            "US": 37,
+            "RUSSIA": 33,
+            "CHINA": 6,
+            "OTHER": 29
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2001,
+          "values": {
+            "US": 25,
+            "RUSSIA": 23,
+            "CHINA": 1,
+            "OTHER": 18
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2002,
+          "values": {
+            "US": 23,
+            "RUSSIA": 24,
+            "CHINA": 4,
+            "OTHER": 26
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2003,
+          "values": {
+            "US": 26,
+            "RUSSIA": 21,
+            "CHINA": 6,
+            "OTHER": 22
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2004,
+          "values": {
+            "US": 18,
+            "RUSSIA": 22,
+            "CHINA": 9,
+            "OTHER": 19
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2005,
+          "values": {
+            "US": 18,
+            "RUSSIA": 21,
+            "CHINA": 6,
+            "OTHER": 20
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2006,
+          "values": {
+            "US": 23,
+            "RUSSIA": 24,
+            "CHINA": 6,
+            "OTHER": 29
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2007,
+          "values": {
+            "US": 23,
+            "RUSSIA": 25,
+            "CHINA": 10,
+            "OTHER": 26
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2008,
+          "values": {
+            "US": 19,
+            "RUSSIA": 27,
+            "CHINA": 11,
+            "OTHER": 30
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2009,
+          "values": {
+            "US": 27,
+            "RUSSIA": 32,
+            "CHINA": 6,
+            "OTHER": 30
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2010,
+          "values": {
+            "US": 19,
+            "RUSSIA": 30,
+            "CHINA": 15,
+            "OTHER": 20
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2011,
+          "values": {
+            "US": 20,
+            "RUSSIA": 30,
+            "CHINA": 18,
+            "OTHER": 28
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2012,
+          "values": {
+            "US": 15,
+            "RUSSIA": 25,
+            "CHINA": 19,
+            "OTHER": 32
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2013,
+          "values": {
+            "US": 22,
+            "RUSSIA": 32,
+            "CHINA": 14,
+            "OTHER": 30
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2014,
+          "values": {
+            "US": 24,
+            "RUSSIA": 34,
+            "CHINA": 16,
+            "OTHER": 34
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2015,
+          "values": {
+            "US": 19,
+            "RUSSIA": 28,
+            "CHINA": 19,
+            "OTHER": 30
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2016,
+          "values": {
+            "US": 26,
+            "RUSSIA": 17,
+            "CHINA": 21,
+            "OTHER": 36
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2017,
+          "values": {
+            "US": 33,
+            "RUSSIA": 21,
+            "CHINA": 18,
+            "OTHER": 38
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2018,
+          "values": {
+            "US": 37,
+            "RUSSIA": 17,
+            "CHINA": 37,
+            "OTHER": 45
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2019,
+          "values": {
+            "US": 32,
+            "RUSSIA": 22,
+            "CHINA": 32,
+            "OTHER": 32
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2020,
+          "values": {
+            "US": 44,
+            "RUSSIA": 13,
+            "CHINA": 35,
+            "OTHER": 28
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2021,
+          "values": {
+            "US": 50,
+            "RUSSIA": 16,
+            "CHINA": 52,
+            "OTHER": 29
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2022,
+          "values": {
+            "US": 82,
+            "RUSSIA": 21,
+            "CHINA": 62,
+            "OTHER": 36
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2023,
+          "values": {
+            "US": 108,
+            "RUSSIA": 19,
+            "CHINA": 66,
+            "OTHER": 43
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2024,
+          "values": {
+            "US": 153,
+            "RUSSIA": 17,
+            "CHINA": 65,
+            "OTHER": 50
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2025,
+          "values": {
+            "US": 135,
+            "RUSSIA": 13,
+            "CHINA": 58,
+            "OTHER": 30
+          },
+          "qualityFlags": [
+            "partial-year",
+            "cutoff-inferred-from-filename"
+          ]
+        }
+      ],
+      "issues": [],
+      "originalHeaders": [
+        "YEAR",
+        "US",
+        "RUSSIA",
+        "CHINA",
+        "OTHER"
+      ],
+      "rowCount": 69,
+      "cutoff": "2025-10-02",
+      "firstYear": 1957,
+      "lastYear": 2025
+    },
+    {
+      "id": "publicCatalogObjectCounts_2025-10-02",
+      "title": "Public catalog counts — supplied series",
+      "sourceFile": "publicCatalogObjectCounts_2025-10-02.csv",
+      "sourcePath": "reference-library/sources/drive-data/DAS (Debris assessment Software)/publicCatalogObjectCounts_2025-10-02.csv",
+      "sourceSha256": "ad1c33c34f49e9a733c9ba98ac1dbd7553159f37213053a77815c874a55cba1c",
+      "columns": [
+        {
+          "id": "COUNT",
+          "label": "Catalog count",
+          "unit": "count",
+          "meaningStatus": "Supplied header meaning; publisher definitions not independently established"
+        }
+      ],
+      "provenance": "supplied-reference-unverified",
+      "publisher": "Not established from supplied files",
+      "scoringEligible": false,
+      "definitionStatus": "Headers and numeric structure checked; scientific definitions unverified",
+      "dateStatus": "Cutoff inferred from filename, not a verified publisher timestamp",
+      "records": [
+        {
+          "year": 1957,
+          "values": {
+            "COUNT": 3
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1958,
+          "values": {
+            "COUNT": 13
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1959,
+          "values": {
+            "COUNT": 30
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1960,
+          "values": {
+            "COUNT": 74
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1961,
+          "values": {
+            "COUNT": 477
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1962,
+          "values": {
+            "COUNT": 624
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1963,
+          "values": {
+            "COUNT": 828
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1964,
+          "values": {
+            "COUNT": 1140
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1965,
+          "values": {
+            "COUNT": 2445
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1966,
+          "values": {
+            "COUNT": 2841
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1967,
+          "values": {
+            "COUNT": 2789
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1968,
+          "values": {
+            "COUNT": 3168
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1969,
+          "values": {
+            "COUNT": 3511
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1970,
+          "values": {
+            "COUNT": 4072
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1971,
+          "values": {
+            "COUNT": 4467
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1972,
+          "values": {
+            "COUNT": 4794
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1973,
+          "values": {
+            "COUNT": 5311
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1974,
+          "values": {
+            "COUNT": 5478
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1975,
+          "values": {
+            "COUNT": 6313
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1976,
+          "values": {
+            "COUNT": 7050
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1977,
+          "values": {
+            "COUNT": 7339
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1978,
+          "values": {
+            "COUNT": 7749
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1979,
+          "values": {
+            "COUNT": 8105
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1980,
+          "values": {
+            "COUNT": 8254
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1981,
+          "values": {
+            "COUNT": 8733
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1982,
+          "values": {
+            "COUNT": 10865
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1983,
+          "values": {
+            "COUNT": 11177
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1984,
+          "values": {
+            "COUNT": 11406
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1985,
+          "values": {
+            "COUNT": 11597
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1986,
+          "values": {
+            "COUNT": 12458
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1987,
+          "values": {
+            "COUNT": 13023
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1988,
+          "values": {
+            "COUNT": 13198
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1989,
+          "values": {
+            "COUNT": 13213
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1990,
+          "values": {
+            "COUNT": 12833
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1991,
+          "values": {
+            "COUNT": 13090
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1992,
+          "values": {
+            "COUNT": 13284
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1993,
+          "values": {
+            "COUNT": 15104
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1994,
+          "values": {
+            "COUNT": 16183
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1995,
+          "values": {
+            "COUNT": 16530
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1996,
+          "values": {
+            "COUNT": 16607
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1997,
+          "values": {
+            "COUNT": 17386
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1998,
+          "values": {
+            "COUNT": 17846
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1999,
+          "values": {
+            "COUNT": 21748
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2000,
+          "values": {
+            "COUNT": 22043
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2001,
+          "values": {
+            "COUNT": 22222
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2002,
+          "values": {
+            "COUNT": 22206
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2003,
+          "values": {
+            "COUNT": 21940
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2004,
+          "values": {
+            "COUNT": 21852
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2005,
+          "values": {
+            "COUNT": 21847
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2006,
+          "values": {
+            "COUNT": 22802
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2007,
+          "values": {
+            "COUNT": 22884
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2008,
+          "values": {
+            "COUNT": 23104
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2009,
+          "values": {
+            "COUNT": 22744
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2010,
+          "values": {
+            "COUNT": 22851
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2011,
+          "values": {
+            "COUNT": 23133
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2012,
+          "values": {
+            "COUNT": 23104
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2013,
+          "values": {
+            "COUNT": 23061
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2014,
+          "values": {
+            "COUNT": 23146
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2015,
+          "values": {
+            "COUNT": 22800
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2016,
+          "values": {
+            "COUNT": 22673
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2017,
+          "values": {
+            "COUNT": 22929
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2018,
+          "values": {
+            "COUNT": 23688
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2019,
+          "values": {
+            "COUNT": 24220
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2020,
+          "values": {
+            "COUNT": 25325
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2021,
+          "values": {
+            "COUNT": 26904
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2022,
+          "values": {
+            "COUNT": 29896
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2023,
+          "values": {
+            "COUNT": 30559
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2024,
+          "values": {
+            "COUNT": 32168
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2025,
+          "values": {
+            "COUNT": 33047
+          },
+          "qualityFlags": [
+            "partial-year",
+            "cutoff-inferred-from-filename"
+          ]
+        }
+      ],
+      "issues": [],
+      "originalHeaders": [
+        "YEAR",
+        "COUNT"
+      ],
+      "rowCount": 69,
+      "cutoff": "2025-10-02",
+      "firstYear": 1957,
+      "lastYear": 2025
+    },
+    {
+      "id": "payloadToLaunchRatios_2025-10-02",
+      "title": "Payload-to-launch ratio",
+      "sourceFile": "payloadToLaunchRatios_2025-10-02.csv",
+      "sourcePath": "reference-library/sources/drive-data/DAS (Debris assessment Software)/payloadToLaunchRatios_2025-10-02.csv",
+      "sourceSha256": "c66d4d63a8bf9a61d29844331fc3d337593534f42734c926155adf99cf636a24",
+      "columns": [
+        {
+          "id": "RATIO",
+          "label": "Payloads per launch",
+          "unit": "ratio",
+          "meaningStatus": "Supplied header meaning; publisher definitions not independently established"
+        }
+      ],
+      "provenance": "supplied-reference-unverified",
+      "publisher": "Not established from supplied files",
+      "scoringEligible": false,
+      "definitionStatus": "Headers and numeric structure checked; scientific definitions unverified",
+      "dateStatus": "Cutoff inferred from filename, not a verified publisher timestamp",
+      "records": [
+        {
+          "year": 1957,
+          "values": {
+            "RATIO": 1
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1958,
+          "values": {
+            "RATIO": 1
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1959,
+          "values": {
+            "RATIO": 1.07
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1960,
+          "values": {
+            "RATIO": 1.11
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1961,
+          "values": {
+            "RATIO": 1.17
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1962,
+          "values": {
+            "RATIO": 1.07
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1963,
+          "values": {
+            "RATIO": 1.29
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1964,
+          "values": {
+            "RATIO": 1.18
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1965,
+          "values": {
+            "RATIO": 1.41
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1966,
+          "values": {
+            "RATIO": 1.23
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1967,
+          "values": {
+            "RATIO": 1.24
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1968,
+          "values": {
+            "RATIO": 1.17
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1969,
+          "values": {
+            "RATIO": 1.26
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1970,
+          "values": {
+            "RATIO": 1.13
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1971,
+          "values": {
+            "RATIO": 1.27
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1972,
+          "values": {
+            "RATIO": 1.23
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1973,
+          "values": {
+            "RATIO": 1.24
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1974,
+          "values": {
+            "RATIO": 1.19
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1975,
+          "values": {
+            "RATIO": 1.24
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1976,
+          "values": {
+            "RATIO": 1.24
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1977,
+          "values": {
+            "RATIO": 1.1
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1978,
+          "values": {
+            "RATIO": 1.33
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1979,
+          "values": {
+            "RATIO": 1.16
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1980,
+          "values": {
+            "RATIO": 1.24
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1981,
+          "values": {
+            "RATIO": 1.29
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1982,
+          "values": {
+            "RATIO": 1.18
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1983,
+          "values": {
+            "RATIO": 1.27
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1984,
+          "values": {
+            "RATIO": 1.34
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1985,
+          "values": {
+            "RATIO": 1.37
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1986,
+          "values": {
+            "RATIO": 1.32
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1987,
+          "values": {
+            "RATIO": 1.27
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1988,
+          "values": {
+            "RATIO": 1.23
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1989,
+          "values": {
+            "RATIO": 1.36
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1990,
+          "values": {
+            "RATIO": 1.43
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1991,
+          "values": {
+            "RATIO": 1.55
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1992,
+          "values": {
+            "RATIO": 1.36
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1993,
+          "values": {
+            "RATIO": 1.38
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1994,
+          "values": {
+            "RATIO": 1.38
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1995,
+          "values": {
+            "RATIO": 1.36
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1996,
+          "values": {
+            "RATIO": 1.34
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1997,
+          "values": {
+            "RATIO": 1.77
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1998,
+          "values": {
+            "RATIO": 2.01
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 1999,
+          "values": {
+            "RATIO": 1.73
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2000,
+          "values": {
+            "RATIO": 1.45
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2001,
+          "values": {
+            "RATIO": 1.42
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2002,
+          "values": {
+            "RATIO": 1.49
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2003,
+          "values": {
+            "RATIO": 1.44
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2004,
+          "values": {
+            "RATIO": 1.33
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2005,
+          "values": {
+            "RATIO": 1.36
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2006,
+          "values": {
+            "RATIO": 1.42
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2007,
+          "values": {
+            "RATIO": 1.67
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2008,
+          "values": {
+            "RATIO": 1.54
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2009,
+          "values": {
+            "RATIO": 1.64
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2010,
+          "values": {
+            "RATIO": 1.71
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2011,
+          "values": {
+            "RATIO": 1.59
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2012,
+          "values": {
+            "RATIO": 1.68
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2013,
+          "values": {
+            "RATIO": 2.62
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2014,
+          "values": {
+            "RATIO": 2.14
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2015,
+          "values": {
+            "RATIO": 2.07
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2016,
+          "values": {
+            "RATIO": 2.12
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2017,
+          "values": {
+            "RATIO": 4.43
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2018,
+          "values": {
+            "RATIO": 3.44
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2019,
+          "values": {
+            "RATIO": 4.28
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2020,
+          "values": {
+            "RATIO": 11.85
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2021,
+          "values": {
+            "RATIO": 12.79
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2022,
+          "values": {
+            "RATIO": 12.73
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2023,
+          "values": {
+            "RATIO": 12.7
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2024,
+          "values": {
+            "RATIO": 10.27
+          },
+          "qualityFlags": []
+        },
+        {
+          "year": 2025,
+          "values": {
+            "RATIO": 13.18
+          },
+          "qualityFlags": [
+            "partial-year",
+            "cutoff-inferred-from-filename"
+          ]
+        }
+      ],
+      "issues": [],
+      "originalHeaders": [
+        "YEAR",
+        "RATIO"
+      ],
+      "rowCount": 69,
+      "cutoff": "2025-10-02",
+      "firstYear": 1957,
+      "lastYear": 2025
+    }
+  ],
+  "crossSeriesFlags": [
+    {
+      "year": 1962,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 1964,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 1965,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 1966,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 1967,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 1968,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 1969,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 1970,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 1971,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 1972,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 1973,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 1974,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 1975,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 1976,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 1977,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 1978,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 1979,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 1980,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 1981,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 1982,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 1983,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 1984,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 1985,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 1986,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 1987,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 1988,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 1989,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 1990,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 1991,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 1992,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 1993,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 1994,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 1995,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 1996,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 1997,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 1998,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 1998,
+      "type": "ratio-not-reconciled",
+      "meaning": "Supplied rounded ratio differs from count-based ratio. Preserve originals."
+    },
+    {
+      "year": 1999,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 2000,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 2001,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 2001,
+      "type": "ratio-not-reconciled",
+      "meaning": "Supplied rounded ratio differs from count-based ratio. Preserve originals."
+    },
+    {
+      "year": 2002,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 2002,
+      "type": "ratio-not-reconciled",
+      "meaning": "Supplied rounded ratio differs from count-based ratio. Preserve originals."
+    },
+    {
+      "year": 2003,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 2004,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 2004,
+      "type": "ratio-not-reconciled",
+      "meaning": "Supplied rounded ratio differs from count-based ratio. Preserve originals."
+    },
+    {
+      "year": 2005,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 2005,
+      "type": "ratio-not-reconciled",
+      "meaning": "Supplied rounded ratio differs from count-based ratio. Preserve originals."
+    },
+    {
+      "year": 2006,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 2006,
+      "type": "ratio-not-reconciled",
+      "meaning": "Supplied rounded ratio differs from count-based ratio. Preserve originals."
+    },
+    {
+      "year": 2007,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 2007,
+      "type": "ratio-not-reconciled",
+      "meaning": "Supplied rounded ratio differs from count-based ratio. Preserve originals."
+    },
+    {
+      "year": 2008,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 2009,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 2010,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 2011,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 2012,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 2013,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 2014,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 2015,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 2016,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 2017,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 2018,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 2019,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 2020,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 2021,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 2022,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 2023,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 2024,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    },
+    {
+      "year": 2025,
+      "type": "country-total-not-reconciled",
+      "meaning": "Country-label totals differ from the supplied LAUNCHES column. Definitions are unverified; do not combine these as one authoritative total."
+    }
+  ],
+  "excludedOperationalInputs": [
+    "Object catalog CSVs: epochs/frames/units not validated for propagation",
+    "CDM workbooks: covariance/frames/units not validated; best-effort filled values not operational warnings"
+  ]
+}

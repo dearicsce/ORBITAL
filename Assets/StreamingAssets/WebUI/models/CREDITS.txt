@@ -1,0 +1,13 @@
+Space Mission Design Game - 3D Models Attribution & Credits
+=============================================================
+
+All default models use procedural Three.js fallbacks generated at runtime.
+When contributing external .glb assets, list author name, source link, and license below:
+
+- Procedural Primitives: Built-in procedural geometry by Space Mission Design Game engine.
+
+2026-10-31: Detailed fictional rocket and satellite GLB assets authored for this project by Codex. Source generators: tools/build-models.mjs and tools/glb-writer.mjs. No third-party model assets or brands used. Existing Earth imagery attribution is retained. Three.js MIT license: vendor/three/LICENSE.
+
+Additional user-supplied Falcon/Atlas stage GLBs: see models/stage-sources.json. No creator/license metadata was supplied with these files. Orbiter source/scenery retained under models/orbiter-source with the archive LICENSE; source archive supplied by the user, copyright Martin Schweiger. Any asset-specific notices must be retained during conversion.
+
+Graphics pass: Orbiter KLC39B/VAB MSH assets and referenced DDS textures, plus Concrete, Exhaust and cloud1 textures, imported from the user-supplied Orbiter archive. Preserve models/orbiter-source/LICENSE. Supplied Falcon/Atlas GLBs are used through optimized runtime copies; source originals unchanged.

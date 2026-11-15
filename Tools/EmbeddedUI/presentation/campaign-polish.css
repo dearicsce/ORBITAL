@@ -1,0 +1,151 @@
+
+/* Match the title deck's hardware surfaces across the campaign, archive and live console. */
+#app :is(.program-map,.mission-archive,.campaign-brief) {
+  --atlas-line: var(--border-structural);
+  --atlas-muted: var(--text-muted);
+  color: var(--text-primary);
+  background: var(--bg-plate-deep);
+  font-family: var(--font-body), system-ui;
+}
+#app :is(.program-top,.mission-archive .orbital-topbar,.campaign-brief .orbital-topbar) {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .75rem 1.25rem;
+  min-height: 68px;
+  padding: .9rem clamp(1rem,4vw,3.5rem);
+  border-bottom: 1px solid var(--border-structural);
+  background: var(--bg-plate-surface);
+}
+#app .program-top .orbital-status { margin-inline-start: auto; }
+#app :is(.program-intro,.program-breadcrumbs,.program-layout,.program-footer,.program-reference) {
+  margin-inline: auto;
+  width: min(93%, 1440px);
+}
+#app .program-intro { padding: 1.35rem 0 .6rem; align-items: center; }
+#app .program-intro h1 { font-family: var(--font-heading); font-weight: 650; letter-spacing: -.015em; }
+#app .program-intro .orbital-eyebrow { display: none; }
+#app .program-breadcrumbs { margin-block: .6rem .95rem; padding-block: .55rem; }
+#app .program-layout { grid-template-columns: minmax(0,1.37fr) minmax(350px,1fr); gap: 1.25rem; }
+#app :is(.program-main,.program-panel,.program-launch-controls,.program-reference,.program-bodies) {
+  background: var(--bg-plate-surface);
+  border-color: var(--border-structural);
+  box-shadow: none;
+  border-radius: 3px;
+}
+#app .program-scroll { max-height: min(62vh,490px); }
+#app .program-scroll.list-mode {
+  background: var(--bg-plate-deep);
+  padding: .75rem;
+  overflow: auto;
+}
+#app .list-mode .program-chart {
+  min-width: 0;
+  display: grid;
+  height: auto;
+  grid-template-columns: repeat(auto-fit,minmax(min(100%,170px),1fr));
+  gap: .7rem;
+  padding: 0;
+}
+#app .list-mode .program-tile {
+  display: flex;
+  align-items: center;
+  min-height: 66px;
+  background: var(--bg-plate-surface);
+  border: 1px solid var(--border-structural);
+  box-shadow: none;
+  overflow: hidden;
+}
+#app .list-mode .program-tile[aria-pressed=true] { border-color: var(--status-passed); }
+#app .list-mode .program-tile-art { flex: 0 0 58px; height: 66px; }
+#app .program-tile-label { flex: 1; min-width: 0; background: transparent; }
+#app .program-tile-label strong { font-size: .91rem; line-height: 1.22; }
+#app .program-tile-label small { color: var(--text-muted); margin-top: .28rem; }
+#app .program-panel {
+  position: relative;
+  inset: auto;
+  max-height: none;
+  overflow: visible;
+}
+#app .program-panel .program-panel-art { height: clamp(140px,18vh,195px); }
+#app .program-panel-copy { overflow-wrap: normal; padding: 1.15rem 1.35rem 1.5rem; }
+#app .program-panel-copy h2 { font-size: 1.65rem; }
+#app .program-launch-controls { padding: 0; border: 0; }
+#app .program-launch-controls .program-actions {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  position: static;
+  gap: .6rem;
+  margin-bottom: .9rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+#app .program-launch-controls #map-brief { grid-column: 1 / -1; min-height: 44px; }
+#app .program-launch-controls .orbital-button { padding: .6rem .45rem; white-space: normal; overflow-wrap: normal; }
+#app :is(.program-launch-controls,.program-tools) select { max-width: 100%; min-width: 0; }
+#app .program-reference { border: 1px solid var(--border-structural); padding: .85rem 1rem; margin-bottom: 2rem; }
+#app :is(.program-reference,.program-bodies) > summary { cursor: pointer; }
+#app #map-history-host { max-width: 100%; overflow: auto; }
+#app :is(.program-map,.mission-archive,.campaign-brief) :is(.orbital-button,.orbital-brand) {
+  border-radius: 3px; border-color: #444a51; color: var(--text-primary); background: var(--bg-plate-raised);
+}
+#app :is(.program-map,.campaign-brief) .orbital-button.primary {
+  background: var(--status-passed); border-color: var(--status-passed); color: #101819;
+}
+#app :is(.program-map,.mission-archive,.campaign-brief) .orbital-button:not(:disabled):hover { border-color: var(--status-passed); }
+#app .archive-content {
+  max-width: 1320px;
+  margin: 1.5rem auto;
+  padding: 0 clamp(1rem,4vw,2.6rem);
+  background: transparent;
+  border: 0;
+}
+#app .archive-content [data-observations] { display: grid; gap: .55rem; }
+#app .archive-content .evidence-tabs { margin: .4rem 0; }
+#app .archive-content .evidence-comparison { max-height: min(60vh,660px); width: 100%; background: #24272b; }
+#app .archive-content .evidence-comparison img { object-fit: contain; object-position: 50% 50%; }
+#app .archive-content .evidence-question { max-width: 78ch; background: var(--bg-plate-surface); border-color: var(--status-passed); }
+#app .archive-content h1 { font-size: clamp(1.8rem,4vw,2.65rem); }
+#app .archive-content :is(p,h1,h3,h4) { margin-block: 0 .4rem; }
+#orbital-export-status { inset: auto 1rem 1rem auto; max-width: min(35rem,90vw); pointer-events: none; }
+.campaign-plan { margin: 1rem 0; padding: 0; border: 0; min-width: 0; }
+.campaign-plan legend { margin-bottom: .5rem; font-weight: 650; }
+.campaign-plan-options { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .65rem; }
+.campaign-plan-options button {
+  display: grid;
+  align-content: start;
+  gap: .35rem;
+  padding: .8rem;
+  background: var(--bg-plate-raised);
+  border: 1px solid var(--border-structural);
+  color: var(--text-primary);
+  text-align: start;
+}
+.campaign-plan-options button span { color: var(--text-muted); font-weight: 400; line-height: 1.4; }
+.campaign-plan-options button[aria-pressed=true] { border-color: var(--status-passed); }
+.campaign-plan-options button[aria-pressed=true] strong { color: var(--status-passed); }
+.campaign-plan-options button:hover { box-shadow: 0 0 0 1px var(--status-passed); }
+.mission-model-reference {
+  background: var(--bg-plate-surface);
+  border: 1px solid var(--border-structural);
+  align-self: start;
+}
+.mission-model-reference p { color: var(--text-muted); margin: .75rem; }
+.mission-model-viewport { position: relative; height: clamp(180px,42vh,420px); }
+.mission-model-viewport canvas { position: absolute; inset: 0; display: block; }
+[data-screen=rocketSelect] .choice-chips { flex-wrap: wrap; max-width: min(80vw,940px); }
+[data-screen=rocketSelect] .choice-chips button[aria-pressed=true] { border-color: var(--status-passed); color: var(--status-passed); }
+[data-screen=rocketSelect] #rocket-info { max-width: min(25vw,400px); }
+@media (max-width: 900px) {
+  #app .program-layout { grid-template-columns: minmax(0,1fr); }
+  #app .program-panel[data-open=false] { display:none; }
+  [data-screen=rocketSelect] #rocket-info { max-width: 90vw; }
+}
+@media (max-width: 580px) {
+  .campaign-plan-options { grid-template-columns: 1fr; }
+  #app .program-top .orbital-status { margin-inline-start: 0; }
+}
+
+.campaign-panel-brief .campaign-panel-actions { margin-block: 1rem; }

@@ -1,0 +1,120 @@
+:is(#app, .orbital-root) select:not([multiple]):not([size]) {
+  box-sizing: border-box;
+  min-height: 32px;
+  min-width: 0;
+  max-width: 100%;
+  padding: 6px 10px;
+  color: var(--orbital-text);
+  background: var(--orbital-surface-raised);
+  border: 1px solid var(--orbital-border-strong);
+  border-radius: var(--orbital-radius-control);
+  color-scheme: dark;
+  font: 500 13px/1.3 var(--font-body);
+  cursor: pointer;
+}
+
+:is(#app, .orbital-root) select:not([multiple]):not([size]):hover:enabled {
+  border-color: var(--orbital-accent);
+  background: var(--orbital-surface-hover);
+}
+
+:is(#app, .orbital-root) select:not([multiple]):not([size]):disabled {
+  opacity: .56;
+  cursor: default;
+}
+
+@supports (appearance: base-select) and selector(::picker(select)) {
+  :is(#app, .orbital-root) select:not([multiple]):not([size]),
+  :is(#app, .orbital-root) select:not([multiple]):not([size])::picker(select) {
+    appearance: base-select;
+  }
+
+  :is(#app, .orbital-root) select:not([multiple]):not([size])::picker-icon {
+    color: var(--orbital-accent);
+    margin-inline-start: 12px;
+  }
+
+  :is(#app, .orbital-root) select:not([multiple]):not([size]):open::picker-icon {
+    transform: rotate(.5turn);
+  }
+
+  :is(#app, .orbital-root) select:not([multiple]):not([size])::picker(select) {
+    box-sizing: border-box;
+    min-inline-size: min(anchor-size(width), calc(100vw - 32px));
+    max-inline-size: calc(100vw - 32px);
+    max-block-size: min(320px, 55dvh);
+    overflow: auto;
+    padding: 4px;
+    color: var(--orbital-text);
+    background: var(--orbital-surface);
+    border: 1px solid var(--orbital-border-strong);
+    border-radius: var(--orbital-radius-panel);
+    box-shadow: 0 10px 25px #0008;
+  }
+
+  :is(#app, .orbital-root) select:not([multiple]):not([size]) option {
+    min-height: 32px;
+    padding: 7px 10px;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    color: var(--orbital-text);
+    background: transparent;
+    border-radius: var(--orbital-radius-control);
+  }
+
+  :is(#app, .orbital-root) select:not([multiple]):not([size]) option:checked {
+    color: var(--orbital-accent);
+    background: var(--orbital-surface-raised);
+  }
+
+  :is(#app, .orbital-root) select:not([multiple]):not([size]) option:is(:hover, :focus-visible):enabled {
+    background: var(--orbital-surface-hover);
+  }
+
+  :is(#app, .orbital-root) select:not([multiple]):not([size]) option:disabled {
+    color: var(--orbital-text-dim);
+  }
+}
+
+.cruise-commands label:has(#cruise-plan) {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  margin: 6px 8px 4px 0;
+}
+
+.cruise-commands label:has(#cruise-plan) + small {
+  color: var(--orbital-text-muted);
+}
+
+.mission-experiment-dialog > label {
+  display: grid;
+  gap: 6px;
+  margin-block: 10px;
+  color: var(--orbital-text-muted);
+  font-size: 13px;
+}
+
+.mission-experiment-dialog > p {
+  margin-block: 8px 10px;
+  color: var(--orbital-text-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.mission-experiment-dialog > p:has(#trial-run) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mission-experiment-dialog #trial-prediction {
+  min-height: 36px;
+  padding: 7px 10px;
+  color: var(--orbital-text);
+  background: var(--orbital-surface-raised);
+  border: 1px solid var(--orbital-border-strong);
+  border-radius: var(--orbital-radius-control);
+  font: inherit;
+}

@@ -1,0 +1,1 @@
+Put satellite parts here: solar_wing_s.glb, solar_wing_m.glb, solar_wing_l.glb (ONE wing each), bus_*.glb, dishes, tanks, instruments (all optional).
