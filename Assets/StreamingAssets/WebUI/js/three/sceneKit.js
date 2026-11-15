@@ -25,7 +25,14 @@ export function createScene(container,{position=[8,6,12],target=[0,0,0],controls
   renderer.setPixelRatio(Math.min(devicePixelRatio,1.75)); container.appendChild(renderer.domElement);
   renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;
   renderer.shadowMap.enabled=shadows;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
-  const pmrem=new THREE.PMREMGenerator(renderer),room=new RoomEnvironment();const environment=pmrem.fromScene(room,.04);scene.environment=space?null:environment.texture;room.dispose();pmrem.dispose();
+  let environment = null;
+  if (!space) {
+    const pmrem = new THREE.PMREMGenerator(renderer), room = new RoomEnvironment();
+    environment = pmrem.fromScene(room, .04);
+    scene.environment = environment.texture;
+    room.dispose();
+    pmrem.dispose();
+  }
   const orbit = controls ? new OrbitControls(camera,renderer.domElement) : null;
   if(orbit){ orbit.target.fromArray(target); orbit.enableDamping=true; orbit.minDistance=2; orbit.maxDistance=60; }
   const api={scene,camera,renderer,controls:orbit,sun,dead:false,draw:null,metrics:{averageFrameMs:16.7,frames:0}};
@@ -39,7 +46,7 @@ export function createScene(container,{position=[8,6,12],target=[0,0,0],controls
     previous=now;if(lost)return;api.draw?.(dt,now/1000);if(api.dead)return;if(orbit?.enabled)orbit.update();renderer.render(scene,camera); }; frame=requestAnimationFrame(tick);
   const onLost=e=>{e.preventDefault();lost=true;}; const onRestored=()=>{lost=false;};
   renderer.domElement.addEventListener('webglcontextlost',onLost); renderer.domElement.addEventListener('webglcontextrestored',onRestored);
-  api.destroy=()=>{ if(api.dead)return;api.dead=true;cancelAnimationFrame(frame);resize.disconnect();orbit?.dispose();disposeObject(scene);environment.dispose();renderer.domElement.removeEventListener('webglcontextlost',onLost);renderer.domElement.removeEventListener('webglcontextrestored',onRestored);renderer.dispose();renderer.forceContextLoss();renderer.domElement.remove(); };
+  api.destroy=()=>{ if(api.dead)return;api.dead=true;cancelAnimationFrame(frame);resize.disconnect();orbit?.dispose();disposeObject(scene);environment?.dispose();renderer.domElement.removeEventListener('webglcontextlost',onLost);renderer.domElement.removeEventListener('webglcontextrestored',onRestored);renderer.dispose();renderer.forceContextLoss();renderer.domElement.remove(); };
   return api;
 }
 export function roundPointsMaterial(options={}){

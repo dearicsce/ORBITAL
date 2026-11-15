@@ -1,3 +1,5 @@
+import {INTENTS,advancePointing,pointingEnvironment} from '../unity/spacecraftSystems.js';
+import {incidentEvidence,incidentOptions} from '../unity/systemsOperations.js';
 import {initializeOperations,synchronizeLifecycle} from '../unity/missionLifecycle.js';
 import {relayPolicy} from '../unity/relayTraffic.js';
 import {missionGuide,bindMissionGuide} from '../unity/missionGuide.js';
@@ -21,6 +23,7 @@ function sparkline(history,key,max=100){
 }
 function metric(label,id,unit){return `<div class="control-metric"><span>${label}</span><strong id="${id}">—</strong><small>${unit}</small></div>`;}
 
+import {mountFeaturedOperations} from '../unity/featuredFlight.js';
 import {mountEvidenceTimeline} from '../unity/campaignEvidenceView.js';
 
 export function renderMissionControl(container,data,session,onReport,continuation=null,{persist=setFlightSession,training=false,onTrainingSuccess=()=>{}}={}){
@@ -43,18 +46,20 @@ export function renderMissionControl(container,data,session,onReport,continuatio
 
     <header class="control-header"><div><p class="orbital-eyebrow">ORBITAL / LIVE OPERATIONS</p><h1>${mission.name}</h1></div><div class="control-clock"><span>MISSION ELAPSED</span><strong id="mission-clock">00:00</strong><small><span id="real-clock"></span><span id="phase-clock"></span></small></div><button class="orbital-button" id="pause-ops">Pause</button></header>
     <div class="control-layout"><aside class="control-panel control-objectives"><p class="orbital-eyebrow">FLIGHT OBJECTIVES</p><h2>${state.evidence?scienceQuestion(mission.id,state.evidence):mission.objective}</h2>${scheduleBrief(state.evidence)}${missionGuide('operations',mission.id)}<div id="ops-objectives"></div>${state.evidence?.sourceEvidenceModel?'<label>Source priorities <select id="source-policy"><option value="broad">Broad context · all valid cells</option><option value="priority">Prioritize flood classes / cold lunar / fire-confidence half</option></select></label><p>Priority cut and 10-minute useful-integration cap per source location are authored. Cold is not ice; confidence is not probability.</p>':''}${state.relayTraffic?'<label>Traffic policy <select id="relay-policy"><option value="urgent">Send urgent first</option><option value="batch">Batch every sixth interval</option></select></label><p id="relay-status"></p>':''}<div class="control-sector-title">${state.profile.relay?'SERVICE':'SURVEY'} COMPLETION</div><div class="control-sectors" id="survey-sectors"></div><p class="control-note">${state.profile.relay?'Availability across the sampled operational window.':'Coverage represents useful observing time, not geographic ground resolution.'}</p><div id="ops-preview" class="ops-preview"></div><div id="ops-evidence-panel"></div><div class="control-environment"><span id="sun-state"></span><span id="contact-state"></span></div></aside>
-    <div class="control-centre"><div class="mission-control-space" id="ops-canvas"></div>${cameraControls(design.orbitId)}<div class="control-orbit-label"><span>${operatingLocation(design.orbitId)}</span><strong id="active-mode">INITIALIZING</strong><span id="orbit-altitude"></span><p id="mode-explanation">Flight systems online</p></div></div>
+    <div class="control-centre"><div class="mission-control-space" id="ops-canvas"></div>${cameraControls(design.orbitId)}<div class="control-orbit-label"><span>${operatingLocation(design.orbitId)}</span><strong id="active-mode">INITIALIZING</strong><span id="orbit-altitude"></span><p id="mode-explanation">Flight systems online</p>${state.systems?'<p class="pointing-status" id="pointing-status"></p>':''}</div></div>
     <aside class="control-panel control-telemetry"><p class="orbital-eyebrow">SPACECRAFT TELEMETRY</p><div class="control-metric-grid">${metric('BATTERY','battery-live','Wh usable')}${metric('RECORDER','storage-live','GB onboard')}${metric('RETURNED','returned-live','GB delivered')}${metric('PROPELLANT','fuel-live','kg reserve')}</div><div class="control-power"><span>GENERATION / LOAD · LAST 270 s AVG</span><strong id="power-live"></strong></div><div class="control-chart"><span>BATTERY / %</span><div id="battery-chart"></div></div><div class="control-chart data-chart"><span>RECORDER / GB</span><div id="data-chart"></div></div><div class="control-temperature"><span>PAYLOAD TEMPERATURE</span><strong id="temperature-live"></strong></div></aside></div>
-    <details class="ground-overlay"><summary>${state.orbit?'Ground track, contacts & target access':'Guided observing and contact windows'}</summary><div id="ground-track"></div></details><div class="control-bottom"><div class="control-progress"><span id="orbit-number"></span><progress id="ops-progress" max="120" value="0"></progress><span id="ops-percent"></span></div><div class="control-commandbar"><div class="control-commands" role="group" aria-label="Spacecraft command">${[['auto','A','Autopilot'],['observe','01','Observe'],['downlink','02','Transmit'],['safe','03','Safe mode']].map(([id,n,name])=>`<button data-command="${id}" aria-pressed="${state.mode===id}"><small>${n}</small>${name}</button>`).join('')}</div><div class="control-speed" role="group" aria-label="Simulation speed">${[1,2,4].map(s=>`<button data-speed="${s}" aria-pressed="${s===1}">${s}×</button>`).join('')}</div><button class="orbital-button" id="skip-ops" title="Advance the same resource simulation until the next incident or window end. Failure is preserved.">Skip to next decision</button><button class="orbital-button" id="finish-ops">End now & evaluate</button><button class="orbital-button primary" id="report" hidden>View mission report ↗</button></div><p id="command-help" class="control-command-help">Autopilot schedules observations and downlinks. You remain in command of incident responses.</p><div class="control-log" id="ops-log" aria-live="polite"></div></div>
+    <details class="ground-overlay"><summary>${state.orbit?'Ground track, contacts & target access':'Guided observing and contact windows'}</summary><div id="ground-track"></div></details><div class="control-bottom"><div class="control-progress"><span id="orbit-number"></span><progress id="ops-progress" max="120" value="0"></progress><span id="ops-percent"></span></div><div class="control-commandbar"><div class="control-commands" role="group" aria-label="Spacecraft command">${[['auto','A','Autopilot'],['observe','01',state.systems?'Observe target':'Observe'],['downlink','02',state.systems?'Point to Earth':'Transmit'],...(state.systems?[['charge','03','Charge']]:[]),['safe','04','Safe mode']].map(([id,n,name])=>`<button data-command="${id}" aria-pressed="${state.mode===id}"><small>${n}</small>${name}</button>`).join('')}</div><div class="control-speed" role="group" aria-label="Simulation speed">${[1,2,4].map(s=>`<button data-speed="${s}" aria-pressed="${s===1}">${s}×</button>`).join('')}</div><button class="orbital-button" id="skip-ops" title="Advance the same resource simulation until the next incident or window end. Failure is preserved.">Skip to next decision</button><button class="orbital-button" id="finish-ops">End now & evaluate</button><button class="orbital-button primary" id="report" hidden>View mission report ↗</button></div><p id="command-help" class="control-command-help">Autopilot schedules observations and downlinks. You remain in command of incident responses.</p><div class="control-log" id="ops-log" aria-live="polite"></div></div>
     <div id="incident-host"></div></section>`;
   if(existing){existing.id='ops-canvas';existing.className='mission-control-space';container.querySelector('#ops-canvas').replaceWith(existing);}
   const view=continuation||createOrbitOps(container.querySelector('#ops-canvas'),{orbitId:design.orbitId,design,data,operationsSnapshot:state,initialProgress:state.tick/state.totalTicks});
   let speed=session.playback?.speed??1,accumulator=session.playback?.fractionMs??0,last=performance.now(),realMs=session.playback?.realMs??0,incidentShown=null,alive=true;
   const find=id=>container.querySelector('#'+id);
   const save=()=>{session.operations=state;session.operationsSummary=operationSummary(state);session.playback={speed,fractionMs:accumulator,realMs};persist(session);};
+  const refreshFeatured=mountFeaturedOperations(container,mission.id,()=>render());
   const evidencePanel=state.evidence?mountEvidenceTimeline(find('ops-evidence-panel'),()=>state):null;
   function render(){
     evidencePanel?.refresh();
+    refreshFeatured(state);
     find('phase-clock').textContent=' · Phase elapsed '+(state.tick*4.5).toFixed(1)+' min';
     const objectives=operationObjectives(state);
     synchronizeLifecycle(session);
@@ -64,8 +69,17 @@ export function renderMissionControl(container,data,session,onReport,continuatio
     find('storage-live').textContent=state.storageGb.toFixed(1)+' / '+state.storageCapacityGb.toFixed(0);
     find('returned-live').textContent=state.deliveredGb.toFixed(2);find('fuel-live').textContent=state.fuelKg.toFixed(1);
     find('power-live').textContent=state.tick===0?'— / — W (no completed interval)':state.generationW.toFixed(0)+' / '+state.loadW.toFixed(0)+' W';
-    find('temperature-live').textContent=state.temperature.toFixed(0)+' °C';
-    const preview=find('ops-preview'),opened=preview.querySelector('details')?.open;preview.innerHTML=operationsPreviewMarkup(state);if(opened)preview.querySelector('details').open=true;
+    find('temperature-live').textContent=state.systems
+      ? Math.round(state.systems.payloadC)+' °C payload · '+Math.round(state.systems.batteryC)+' °C battery'+(state.systems.heaterOn?' · Heater on':'')
+      : state.temperature.toFixed(0)+' °C';
+    if(state.systems){
+      const s=state.systems;
+      const requested=state.mode==='auto'?s.intent:state.mode;
+      find('pointing-status').textContent='Sun '+(state.sunlit?'lit':'eclipsed')+' · Earth '+(state.contact?'contact':'out of contact')+
+        ' · Target '+(s.intent==='observe'&&s.settleSec===0?'tracked':'standing by')+
+        ' · '+(requested!==s.intent?'Queued: '+INTENTS[requested]:s.settleSec>0?'Turning to '+INTENTS[requested]:INTENTS[requested]);
+    }
+    const preview=find('ops-preview'),opened=preview.querySelector('details')?.open;if(!preview.closest('.featured-advanced')||preview.closest('.featured-advanced').open){preview.innerHTML=operationsPreviewMarkup(state);if(opened)preview.querySelector('details').open=true;}
     find('sun-state').textContent=state.sunlit?'☀ Sunlit arc':'◐ Eclipse';
     let contactLabel='○ No ground contact';
     if(state.contactOutage>0){
@@ -105,14 +119,14 @@ export function renderMissionControl(container,data,session,onReport,continuatio
       else activeLabel='TRANSMITTING DATA';
     }
     find('active-mode').textContent=activeLabel;
-    find('mode-explanation').textContent=state.cooldown
+    find('mode-explanation').textContent=state.systems?.lastReason|| (state.cooldown
       ?'Protective recovery in progress'
       :state.intervalDeliveredGb>0
       ?`Downlink active · Delivered ${state.intervalDeliveredGb.toFixed(3)} GB this interval${state.storageGb<=0.001?' (recorder empty)':''}`
       :state.activeMode==='downlink'&&(!state.contact||state.contactOutage>0)?'Waiting for a ground station pass'
       :state.activeMode==='downlink'&&state.storageGb<=0.001?'Recorder empty · waiting for observations'
       :state.activeMode==='observe'?'Payload active · acquisition depends on the target window and conditions'
-      :state.activeMode==='safe'?'Reduced load · payload idle':'Returning stored observations to the ground';
+      :state.activeMode==='safe'?'Reduced load · payload idle':'Returning stored observations to the ground');
     find('ops-objectives').innerHTML=objectives.map(o=>`<div class="control-objective ${o.passed?'complete':''}"><div><span>${o.name}</span><strong>${o.value.toFixed(o.unit==='GB'?1:0)}<small> ${o.unit} · at least ${o.target} ${o.unit}</small></strong></div><progress max="${o.target}" value="${Math.min(o.target,o.value)}"></progress></div>`).join('');
     find('survey-sectors').innerHTML=Array.from({length:20},(_,i)=>`<span class="${objectives[0].value>=((i+1)*5)?'surveyed':''}"></span>`).join('');
     find('battery-chart').innerHTML=sparkline(state.history,'battery');find('data-chart').innerHTML=sparkline(state.history,'data',state.storageCapacityGb);
@@ -132,13 +146,13 @@ export function renderMissionControl(container,data,session,onReport,continuatio
     find('ops-log').textContent=state.log.slice(-1)[0]?.text||'Spacecraft acquired. Operational window open. All commands available.';
     sampleClock();
     if(state.pendingIncident&&incidentShown!==state.pendingIncident.id){
-      incidentShown=state.pendingIncident.id;const event=INCIDENTS[incidentShown];view.flash(incidentShown==='radiation'?'solar_flare':incidentShown==='contact'?'antenna_fault':incidentShown==='debris'?'debris_warning':'battery_fade');
-      find('incident-host').innerHTML=`<div class="control-incident-backdrop"><section class="control-incident" role="dialog" aria-modal="true" aria-labelledby="incident-title"><p class="orbital-eyebrow">FLIGHT DIRECTOR / YOUR DECISION</p><h2 id="incident-title">${event.name}</h2><p>${event.description}</p><div class="incident-choices">${event.choices.map(c=>`<button data-choice="${c.id}" ${['maneuver','burn'].includes(c.id)&&state.fuelKg<3?'disabled':''}><strong>${c.label} ↗</strong><span>${c.cost}</span></button>`).join('')}</div><small>Simulation paused while you decide. Your response changes this flight.</small></section></div>`;
+      incidentShown=state.pendingIncident.id;const event=incidentOptions(state,INCIDENTS);view.flash(incidentShown==='radiation'?'solar_flare':incidentShown==='contact'?'antenna_fault':incidentShown==='debris'?'debris_warning':'battery_fade');
+      find('incident-host').innerHTML=`<div class="control-incident-backdrop"><section class="control-incident" role="dialog" aria-modal="true" aria-labelledby="incident-title"><p class="orbital-eyebrow">FLIGHT DIRECTOR / YOUR DECISION</p><h2 id="incident-title">${event.name}</h2><p>${event.description}</p>${incidentEvidence(state)?`<p>${incidentEvidence(state)}</p>`:''}<div class="incident-choices">${event.choices.map(c=>`<button data-choice="${c.id}" ${['maneuver','burn'].includes(c.id)&&state.fuelKg<3?'disabled':''}><strong>${c.label} ↗</strong><span>${c.cost}</span></button>`).join('')}</div><small>Simulation paused while you decide. Your response changes this flight.</small></section></div>`;
       find('incident-host').querySelectorAll('[data-choice]').forEach(b=>b.onclick=()=>{if(command({type:'incident',choiceId:b.dataset.choice})){find('incident-host').innerHTML='';incidentShown=null;save();render();find('pause-ops').focus();}});
       find('incident-host').querySelector('button:not(:disabled)')?.focus();
     }
   }
-  const help={auto:'Autopilot schedules observations and downlinks. You remain in command of incident responses.',observe:'Collect observations. Uses payload power and recorder space; does not transmit stored data.',downlink:'Transmit stored data during a ground pass. Science collection pauses while transmitting.',safe:'Reduce power consumption and cool the payload. Science collection and transmission pause.'};
+  const help={charge:'Turn the solar wings toward the Sun and pause the payload.',auto:'Autopilot schedules observations and downlinks. You remain in command of incident responses.',observe:'Collect observations. Uses payload power and recorder space; does not transmit stored data.',downlink:'Transmit stored data during a ground pass. Science collection pauses while transmitting.',safe:'Reduce power consumption and cool the payload. Science collection and transmission pause.'};
   container.querySelectorAll('[data-command]').forEach(b=>b.onclick=()=>{if(command({type:'mode',mode:b.dataset.command})){find('command-help').textContent=help[state.mode];save();render();}});
   container.querySelectorAll('[data-speed]').forEach(b=>b.onclick=()=>{speed=Number(b.dataset.speed);container.querySelectorAll('[data-speed]').forEach(n=>n.setAttribute('aria-pressed',String(n===b)));save();});
   find('pause-ops').onclick=()=>{if(command({type:'pause',paused:!state.paused})){save();render();}};
@@ -147,7 +161,12 @@ export function renderMissionControl(container,data,session,onReport,continuatio
   find('report').onclick=()=>{save();onReport();};
   function sampleClock(){
     const seconds=operationsElapsedSec(state.tick+(state.finished||state.pendingIncident?0:accumulator/1000));
-    view.setTime(seconds,{orbit:state.orbit,paused:state.paused||state.finished||Boolean(state.pendingIncident)});
+    const spacecraft=state.systems, turnTime=seconds-operationsElapsedSec(state.tick);
+    const orient=spacecraft?{...spacecraft,quaternion:spacecraft.quaternion.slice()}:null;
+    if(orient&&turnTime>0&&!state.paused&&state.mode!=='auto'&&state.mode!==orient.intent&&state.batteryWh>0){
+      advancePointing(orient,state.mode,pointingEnvironment(state,seconds),turnTime);
+    }
+    view.setTime(seconds,{orbit:state.orbit,attitude:orient?.quaternion,paused:state.paused||state.finished||Boolean(state.pendingIncident)});
     if(state.orbit){
       const altitude=(Math.hypot(...propagate(state.orbit,seconds))-BODIES[state.orbit.body].radiusM)/1000;
       find('orbit-altitude').textContent=`${altitude.toFixed(1)} km altitude`;

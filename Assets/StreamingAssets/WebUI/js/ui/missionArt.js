@@ -1,6 +1,18 @@
+import {ANCHOR} from '../kepler/keplerConfig.js';
+import {archivedNeighborhood} from '../kepler/keplerSource.js';
 import {missionDestination} from '../campaignAtlas.js';
 import {ATLAS_TEXTURES,atlasTexture} from '../content/atlasTextures.js';
 import {lagrangeChart} from './lagrangeChart.js';
+export const featuredMissions = {
+  m1: {name:'Flood Watch', objective:'Observe a floodplain and send useful data before the deadline.', file:'images/missions/manchar-landsat.jpg', credit:'NASA Earth Observatory / USGS · Landsat 8'},
+  relay: {name:'Far-side Relay', objective:'Get lunar crew messages to Earth before they expire.', file:atlasTexture('earthrise.jpg'), credit:'NASA · Apollo 8 Earthrise'},
+  'mars-scout': {name:'Mars Scout', objective:'Split a Mars flyby between two targets and return the science.', file:'images/missions/mars-viking-globe.jpg', credit:'NASA/JPL-Caltech · Viking mosaic'},
+};
+
+export function featuredArt(id) {
+  const {file, credit} = featuredMissions[id];
+  return `<div class="featured-art featured-art-${id}"><img class="mission-photo" src="${file}" alt=""><span>${credit}</span></div>`;
+}
 export const ATLAS_PORTRAITS={
  mercury:{file:'mercury-portrait.jpg',credit:'MESSENGER enhanced colour · NASA / JHUAPL / Carnegie Institution of Washington'},
  ceres:{file:'ceres-portrait.jpg',credit:'Dawn enhanced colour · NASA / JPL-Caltech / UCLA / MPS / DLR / IDA'},
@@ -31,6 +43,17 @@ export function missionArt(id) {
 }
 export function missionImage(mission) {
   const destination=missionDestination(mission),spec=ATLAS_TEXTURES[destination];
+  if(mission.id === 'dip') {
+    const samples = archivedNeighborhood(ANCHOR);
+    const flux = samples.map(row => row.flux);
+    const low = Math.min(...flux), high = Math.max(...flux);
+    const points = samples.map(({time,flux}) => {
+      const x = 8 + 224 * (time - samples[0].time) / (samples.at(-1).time - samples[0].time);
+      const y = 84 - 64 * (flux - low) / (high - low);
+      return x.toFixed(1) + ',' + y.toFixed(1);
+    }).join(' ');
+    return `<svg class="kepler-curve-art" viewBox="0 0 240 104" role="img" aria-label="Kepler observations showing the star dim and brighten"><rect width="240" height="104" fill="#101c30"/><path d="M8 30H232M8 55H232M8 80H232" fill="none" stroke="#20394b"/><polyline points="${points}" fill="none" stroke="#9adbd8" stroke-width="2.5"/></svg>`;
+  }
   if(destination==='transfer')return lagrangeChart({decorative:true});
   if(mission.id==='lunar-pathfinder'||mission.id==='comet-pass'){
     const file=mission.id==='lunar-pathfinder'?'earthrise.jpg':'comet-67p.jpg';

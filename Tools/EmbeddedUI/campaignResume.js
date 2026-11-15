@@ -1,3 +1,4 @@
+import {profileStorage} from './practiceProfile.js';
 import {flightStorageIssue} from '../flightSession.js';
 import {isMissionUnlocked, isActiveCampaignMission, getNextRecommendedMission} from './campaignPolicy.js';
 
@@ -21,7 +22,7 @@ export function rememberCampaignDraft(screen, params, design) {
   if (!isActiveCampaignMission(design.missionId)) return;
   if (['workshop', 'rocketWorkshop'].includes(screen) && !params.mission) return;
   try {
-    localStorage.setItem(key, JSON.stringify({screen, missionId: design.missionId}));
+    profileStorage().setItem(key, JSON.stringify({screen, missionId: design.missionId}));
   } catch {
     dispatchEvent(new CustomEvent('orbital-storage-issue', {detail: 'The campaign resume location could not be saved. Export your design and check profile permissions or free disk space before restarting.'}));
   }
@@ -29,13 +30,13 @@ export function rememberCampaignDraft(screen, params, design) {
 
 export function clearCampaignDraft() {
   try {
-    localStorage.removeItem(key);
+    profileStorage().removeItem(key);
   } catch {
     dispatchEvent(new CustomEvent('orbital-storage-issue', {detail: 'The previous resume location could not be cleared. The active flight remains available; check profile storage before restarting.'}));
   }
 }
 
-export function campaignDraft(state, data, reportMissionId, storage = globalThis.localStorage) {
+export function campaignDraft(state, data, reportMissionId, storage = profileStorage()) {
   const design = state?.currentDesign;
   if (!design?.flightWorkflow) return null;
   if (!isActiveCampaignMission(design.missionId)) return null;
@@ -45,13 +46,19 @@ export function campaignDraft(state, data, reportMissionId, storage = globalThis
   try {
     stored = JSON.parse(storage?.getItem(key));
   } catch {}
-  if (stored?.missionId !== mission.id && reportMissionId === mission.id) return null;
+  const bookmarked = stored?.missionId === mission.id && Object.hasOwn(screens, stored.screen);
+  // A replay gets its own planning bookmark. Older releases kept the flown design after debrief.
+  if (!bookmarked && (reportMissionId === mission.id || state.completedMissions?.[mission.id])) return null;
   if (stored?.missionId && !isActiveCampaignMission(stored.missionId)) return null;
-  const screen = stored?.missionId === mission.id && Object.hasOwn(screens, stored.screen) ? stored.screen : (mission.id === 'dip' && !design.windowId ? 'brief' : 'workshop');
+  const screen = bookmarked ? stored.screen : (mission.id === 'dip' && !design.windowId ? 'brief' : 'workshop');
   return {screen, missionId: mission.id, label: screens[screen] || 'Spacecraft design'};
 }
 
-export function isReportAcknowledged(runId, storage = globalThis.localStorage) {
+export function unfinishedFlight(flight) {
+  return flight?.design?.missionId && !['report', 'complete', 'failed'].includes(flight.phase) ? flight : null;
+}
+
+export function isReportAcknowledged(runId, storage = profileStorage()) {
   if (!runId) return false;
   try {
     const raw = storage?.getItem(ackKey);
@@ -63,7 +70,7 @@ export function isReportAcknowledged(runId, storage = globalThis.localStorage) {
   }
 }
 
-export function acknowledgeReport(runId, storage = globalThis.localStorage) {
+export function acknowledgeReport(runId, storage = profileStorage()) {
   if (!runId) return;
   try {
     const raw = storage?.getItem(ackKey);
@@ -85,7 +92,7 @@ export function acknowledgeReport(runId, storage = globalThis.localStorage) {
  * 3. Completed but still pending/unacknowledged report for active mission (viewReport)
  * 4. Campaign progression selector with next available unlock (openCampaign)
  */
-export function resolveCampaignContinuation(state, data, flight, storage = globalThis.localStorage) {
+export function resolveCampaignContinuation(state, data, flight, storage = profileStorage()) {
   const storageIssue = flightStorageIssue();
   if (storageIssue) {
     return {
@@ -96,7 +103,7 @@ export function resolveCampaignContinuation(state, data, flight, storage = globa
   }
 
   // 1. Valid unfinished persisted run
-  const activeRun = flight && flight.phase !== 'report' && flight.phase !== 'complete' && flight.phase !== 'failed';
+  const activeRun = unfinishedFlight(flight);
   if (activeRun && flight.design?.missionId) {
     // If the active run is on a retired mission, do not loop into removed content
     if (!isActiveCampaignMission(flight.design.missionId)) {
@@ -123,8 +130,9 @@ export function resolveCampaignContinuation(state, data, flight, storage = globa
   }
 
   // 2. Valid unfinished campaign draft without an active run
-  const stagedDip = state?.currentDesign?.missionId === 'dip' && state?.currentDesign?.windowId;
-  const draft = campaignDraft(state, data, flight?.phase === 'report' ? flight.design?.missionId : null, storage);
+  const stagedDip = state?.currentDesign?.missionId === 'dip' && state.currentDesign.windowId &&
+    !state.completedMissions?.dip && flight?.design?.missionId !== 'dip' && !Object.hasOwn(state.currentDesign, 'flightWorkflow');
+  const draft = campaignDraft(state, data, activeRun ? null : flight?.design?.missionId, storage);
   if (draft && isActiveCampaignMission(draft.missionId)) {
     const mission = data?.missions?.find(m => m.id === draft.missionId);
     const missionName = mission?.name || draft.missionId;

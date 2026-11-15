@@ -73,7 +73,7 @@ export function preview(d, p) {
     (aggregation ? COSTS.aggregate : 0) +
     COSTS.downlink;
 
-  const prepared = aggregation || p.policy === "bracket" ? 4 : 6;
+  const prepared = p.policy === 'three_slot' ? 3 : aggregation || p.policy === "bracket" ? 4 : 6;
   const expected = Math.min(prepared, contract.capacity);
 
   const issues = [...stats.issues];
@@ -295,6 +295,7 @@ export function advance(a) {
           return fail("Native-six policy requires six clean records.");
         }
         const positions =
+          a.plan.policy === "three_slot" ? (a.plan.timestamps || [0, 2, 5]) :
           a.plan.policy === "bracket" ? [0, 2, 3, 5] : [0, 1, 2, 3, 4, 5];
         s.queue = positions.map((i) =>
           packetize([s.stored[i]], `row-${s.stored[i].id}`)

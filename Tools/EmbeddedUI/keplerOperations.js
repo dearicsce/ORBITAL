@@ -6,12 +6,12 @@ import {keplerEvidence} from '../unity/campaignEvidenceView.js';
 import {mountPanel} from '../presentation/mountPanel.js';
 
 const stageActions = {
-  pointing: 'Point the photometer',
+  pointing: 'Observe target · Point the photometer',
   capture: 'Record the observation',
   filter: 'Filter flagged readings',
   aggregate: 'Keep individual readings',
   prepare: 'Prepare downlink packets',
-  downlink: 'Transmit to Earth',
+  downlink: 'Point to Earth · Transmit',
   complete: 'Open science debrief',
 };
 
@@ -21,7 +21,7 @@ export function observationPlan(design) {
     window: design.windowId,
     prediction: ['H1', 'H2'].includes(design.prediction) ? design.prediction : null,
     recipe: 'native',
-    policy: design.keplerPolicy === 'bracket' ? 'bracket' : 'all',
+    policy: design.keplerPolicy === 'three_slot' ? 'three_slot' : design.keplerPolicy === 'bracket' ? 'bracket' : 'all',
     caseId: Object.hasOwn(CASES, design.keplerCase) ? design.keplerCase : 'nominal',
   };
 }
@@ -45,7 +45,7 @@ export function renderKeplerOperations(container, run, report) {
     const attempt = run.keplerAttempt;
     const window = WINDOWS.find(window => window.id === attempt.plan.window);
     const evidence = keplerEvidence(attempt);
-    const policy = attempt.plan.policy === 'bracket' ? 'Bracket Four' : 'All Six';
+    const policy = attempt.plan.policy === 'three_slot' ? 'Three Slot' : attempt.plan.policy === 'bracket' ? 'Bracket Four' : 'All Six';
     return {
       ...evidence,
       name:'Observation and downlink',

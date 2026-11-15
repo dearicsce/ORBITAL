@@ -27,7 +27,7 @@ export function mountPosition(busId,c){
  return [((index%2)-.5)*w*.42,.16+Math.floor(index/4)*h*.115,((Math.floor(index/2)%2)-.5)*d*.42];
 }
 export function metadata(p){
- const internal=['battery','computer','pointing','fuel'].includes(p?.type);
+ const internal=p?.internal===true||['battery','computer','pointing','fuel'].includes(p?.type);
  return {internal,span:p?.mountSpan||(['panel','comms'].includes(p?.type)?.18:.22),bayUnits:p?.bayUnits||1,
   wingLength:p?.wingLength||({panel_s:1.1,panel_m:1.65,panel_l:2.2}[p?.id]||1.1)};
 }

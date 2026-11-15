@@ -192,7 +192,8 @@ export function bindMissionExperiment(container, run, data) {
   trigger.type = 'button';
   trigger.className = 'btn';
   trigger.id = 'open-mission-experiment';
-  trigger.textContent = 'Compare a design change';
+  trigger.textContent = 'Compare';
+  trigger.title = 'Compare a schedule or design change';
   host.append(trigger, dialog);
   let hardware;
   trigger.onclick = () => {

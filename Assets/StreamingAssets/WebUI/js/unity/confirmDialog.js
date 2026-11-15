@@ -1,5 +1,5 @@
 // A promise-based in-game confirmation. Opening it never mutates campaign state.
-export function confirmMissionSwitch(name, {signal} = {}) {
+export function confirmMissionSwitch(name, {signal, flight = false} = {}) {
   if (signal?.aborted) return Promise.resolve(false);
   return new Promise(resolve => {
     const trigger = document.activeElement;
@@ -7,9 +7,9 @@ export function confirmMissionSwitch(name, {signal} = {}) {
     dialog.className = 'orbital-confirm-dialog';
     dialog.setAttribute('aria-labelledby', 'mission-switch-title');
     dialog.setAttribute('aria-describedby', 'mission-switch-copy');
-    dialog.innerHTML = '<p class="orbital-eyebrow">MISSION CONTROL / CHANGE CONTRACT</p>' +
-      '<h2 id="mission-switch-title"></h2><p id="mission-switch-copy">Your current draft will be replaced. Saved spacecraft and completed mission records will remain available.</p>' +
-      '<div class="orbital-confirm-actions"><button type="button" class="btn" data-cancel autofocus>Keep current mission</button><button type="button" class="btn btn-primary" data-confirm>Switch mission</button></div>';
+    dialog.innerHTML = '<h2 id="mission-switch-title"></h2><p id="mission-switch-copy"></p>' +
+      '<div class="orbital-confirm-actions"><button type="button" class="btn" data-cancel autofocus>Keep playing</button><button type="button" class="btn btn-primary" data-confirm>Switch mission</button></div>';
+    dialog.querySelector('#mission-switch-copy').textContent = flight ? 'This ends your unfinished flight.' : 'This replaces your unfinished design.';
     dialog.querySelector('h2').textContent = 'Switch to ' + name + '?';
     let settled = false;
     const finish = accepted => {

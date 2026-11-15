@@ -1,3 +1,4 @@
+import {profileStorage} from './practiceProfile.js';
 import {installDialogFocus} from './dialogFocus.js';
 const campaignKey='space_mission_game_state_v1';
 export function installStorageStatus(){
@@ -15,7 +16,7 @@ export function installStorageStatus(){
 export function guardCampaignStorage(app,loadProgress){
  let raw;
  try{
-  raw=localStorage.getItem(campaignKey);
+  raw=profileStorage().getItem(campaignKey);
   if(raw===null||loadProgress())return true;
  }catch{}
  app.innerHTML='<section class="screen content-screen"><h1>Campaign save needs attention</h1><p id="storage-message"></p></section>';
@@ -36,7 +37,7 @@ export function guardCampaignStorage(app,loadProgress){
  reset.className='btn';reset.textContent='Reset campaign record';
  reset.onclick=()=>{
   if(reset.dataset.confirm!=='yes'){reset.dataset.confirm='yes';reset.textContent='Confirm reset of campaign record';return;}
-  try{localStorage.removeItem(campaignKey);location.reload();}
+  try{profileStorage().removeItem(campaignKey);location.reload();}
   catch{message.textContent='The campaign record could not be reset. Check the profile folder permissions.';}
  };
  app.querySelector('section').append(copy,reset);

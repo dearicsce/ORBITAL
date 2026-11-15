@@ -1,5 +1,6 @@
 import {geometryIssues} from './collision.js';
 import {structure,surfaces,metadata} from './structure.js';
+import {validateRules} from './autonomy.js';
 
 export function assertSerializable(value,path='value'){
  if(value===null||typeof value==='string'||typeof value==='boolean')return;
@@ -20,18 +21,26 @@ export function instance(catalogId,{surface='front',bay=null,position=[0,0,0],ro
 export function migrateAssembly(design,data){
  if(design.assembly)return validateAssembly(copy(design.assembly),data);
  const components=[];
- for(const [field,type]of [['batteryIds','battery'],['fuelIds','fuel'],['instrumentIds','instrument'],['commsId','comms'],['computerId','computer'],['pointingId','pointing']]){
+ for(const [field,type]of [['batteryIds','battery'],['fuelIds','fuel'],['instrumentIds','instrument'],['commsId','comms'],['computerId','computer'],['pointingId','pointing'],['thermalIds','thermal']]){
   const values=Array.isArray(design[field])?design[field]:design[field]?[design[field]]:[];
   for(const [index,id]of values.entries()){const p=catalog(data,id);if(!p)continue;const internal=metadata(p).internal;
-   const installed=instance(id,internal?{bay:`bay-${components.filter(c=>c.bayId).reduce((sum,c)=>sum+metadata(catalog(data,c.catalogId)).bayUnits,0)}`}:{surface:type==='comms'?'top':'front',position:[(values.length>1?(index%2-.5)*.3:0),index>=2?.3:0,0]});if(type==='fuel')installed.configuration.propulsionPort=components.filter(c=>catalog(data,c.catalogId)?.type==='fuel').length;components.push(installed);}
+   const installed=instance(id,internal?{bay:`bay-${components.filter(c=>c.bayId).reduce((sum,c)=>sum+metadata(catalog(data,c.catalogId)).bayUnits,0)}`}:{surface:type==='comms'?'top':type==='thermal'?'back':'front',position:[(values.length>1?(index%2-.5)*.3:0),index>=2?.3:0,0]});if(type==='fuel')installed.configuration.propulsionPort=components.filter(c=>catalog(data,c.catalogId)?.type==='fuel').length;components.push(installed);}
  }
  (design.panelIds||[]).forEach((id,i)=>{for(const surface of ['left','right'])components.push(instance(id,{surface,position:[(design.panelIds||[]).length>1?(i?-.18:.18):0,(i?-.4:.4)*((design.panelIds||[]).length>1?surfaces(design.busId)[surface].size[1]:0),0]}));});
- return {schemaVersion:BLUEPRINT_VERSION,units:{position:'m',rotation:'degrees'},busInstanceId:'bus',busId:design.busId||null,components};
+ return {schemaVersion:BLUEPRINT_VERSION,units:{position:'m',rotation:'degrees'},busInstanceId:'bus',busId:design.busId||null,components,
+  ...(design.autonomy?{autonomy:validateRules(design.autonomy)}:{})};
 }
 
 export function validateAssembly(a,data){
  assertSerializable(a);
  if(!a||a.units?.position!=='m'||a.units?.rotation!=='degrees'||a.schemaVersion!==1||a.busInstanceId!=='bus'||!Array.isArray(a.components)||a.components.length>128)throw Error('Unsupported assembly or more than 128 components');
+ if(a.autonomy!==undefined)validateRules(a.autonomy);
+ if(a.systemTests!==undefined){
+  const t=a.systemTests;
+  if(t?.version!==1||typeof t.identity!=='string'||t.identity.length>60000||!t.results||Array.isArray(t.results)||
+    Object.entries(t.results).some(([key,r])=>!['eclipse','radio','deployment'].includes(key)||typeof r?.passed!=='boolean'||
+      typeof r.message!=='string'||r.message.length>400||typeof r.route!=='string'||r.route.length>200))throw Error('Invalid spacecraft test record');
+ }
  if(a.busId!==null&&(typeof a.busId!=='string'||!a.busId||a.busId.length>100||data?.parts.some(p=>p.id===a.busId&&p.type!=='bus')))throw Error('Invalid bus identity');
  const seen=new Set(['bus']);
  for(const c of a.components){
@@ -52,9 +61,9 @@ export function validateAssembly(a,data){
 
 export function projectAssembly(design,data){
  if(!design.assembly)return design;
- const a=design.assembly,result={...design,busId:a.busId,panelIds:[],batteryIds:[],fuelIds:[],instrumentIds:[],commsId:null,computerId:null,pointingId:null};
+ const a=design.assembly,result={...design,busId:a.busId,panelIds:[],batteryIds:[],fuelIds:[],instrumentIds:[],thermalIds:[],commsId:null,computerId:null,pointingId:null};
  for(const c of a.components){const p=catalog(data,c.catalogId);if(!p)continue;
-  const field={panel:'panelIds',battery:'batteryIds',fuel:'fuelIds',comms:'commsId',computer:'computerId',pointing:'pointingId'}[p.type]||'instrumentIds';
+  const field={panel:'panelIds',battery:'batteryIds',fuel:'fuelIds',comms:'commsId',computer:'computerId',pointing:'pointingId',thermal:'thermalIds'}[p.type]||'instrumentIds';
   if(Array.isArray(result[field]))result[field].push(c.catalogId);else result[field]=c.catalogId;
  }
  return result;

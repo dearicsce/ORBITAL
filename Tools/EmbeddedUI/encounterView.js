@@ -26,7 +26,7 @@ export function encounterFraming(bodyRadius, craftRadius, aspect, fovDegrees) {
 
 // The transfer engine supplies the destination and arrival result. This local
 // view illustrates that result; the transfer map retains the numerical track.
-export function createEncounterView(container, {mission, design, data, captured, arrivalKind=captured?'orbit':'flyby', isPaused=()=>false}) {
+export function createEncounterView(container, {mission, design, data, captured, arrivalKind=captured?'orbit':'flyby', isPaused=()=>false, attitude=()=>null}) {
   const spec = ATLAS_TEXTURES[mission.destination];
   if (!spec?.file) return null;
 
@@ -81,7 +81,9 @@ export function createEncounterView(container, {mission, design, data, captured,
     craft.position.copy(previewPosition);
     // Keep the assembly's centre on the preview trajectory, with a stable
     // body-pointing attitude during orbit and no fabricated orbit on flybys.
-    if(captured)craft.lookAt(0,0,0);
+    const commanded=attitude();
+    if(commanded)craft.quaternion.fromArray(commanded);
+    else if(captured)craft.lookAt(0,0,0);
   }
   let cameraMoved = false;
   const cameraOffset = new THREE.Vector3(0, .18, 1).normalize();

@@ -32,7 +32,9 @@ export function evaluateDesign(design, data) {
   const fuelsMass = fuels.reduce((sum, f) => sum + (f.mass || 0), 0);
   const instrumentsMass = instruments.reduce((sum, inst) => sum + (inst.mass || 0), 0);
 
-  const dryMass = busMass + panelsMass + batteriesMass + commsMass + computerMass + pointingMass + instrumentsMass;
+  const thermal = (design.thermalIds||[]).map(id=>data.parts.find(p=>p.id===id&&p.type==='thermal')).filter(Boolean);
+  const thermalMass = thermal.reduce((sum,p)=>sum+p.mass,0);
+  const dryMass = thermalMass + busMass + panelsMass + batteriesMass + commsMass + computerMass + pointingMass + instrumentsMass;
   const spacecraftMass = dryMass + fuelsMass;
   const service=mission?.transfer&&design.flightPlan?serviceMass(design.flightPlan,spacecraftMass):{wetKg:0,cost:0};
   const launchMass=spacecraftMass+service.wetKg;
@@ -111,7 +113,7 @@ export function evaluateDesign(design, data) {
   const lifetimeFactor = Math.min(1.0, lifetimeAchieved / targetLifetime);
 
   // 7. Cost & Budget
-  const allParts = [bus, comms, computer, pointing, ...panels, ...batteries, ...fuels, ...instruments].filter(Boolean);
+  const allParts = [bus, comms, computer, pointing, ...panels, ...batteries, ...fuels, ...instruments, ...thermal].filter(Boolean);
   const partsCost = allParts.reduce((sum, p) => sum + (p.cost || 0), 0);
 
   const launcherBaseCost = launcher ? (launcher.cost || 0) : 0;
@@ -173,6 +175,7 @@ export function evaluateDesign(design, data) {
     opsCost,
     totalCost,
     budgetUsedFraction,
+    effectiveBudget,
     sciencePoints,
     margins: {
       mass: massMargin,

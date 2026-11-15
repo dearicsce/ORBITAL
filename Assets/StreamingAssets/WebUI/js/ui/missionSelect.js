@@ -11,13 +11,14 @@
  * 4. Selected-stage detail panel with objectives, unlock prerequisite jumps, and authoritative launch actions.
  */
 
-import { getState, setDesign, saveProgress } from '../state.js';
+import { getState, clearDesign, setDesign, saveProgress, setPracticeMode } from '../state.js';
 import { showScreen } from './router.js';
 import { escapeHtml as escape } from './html.js';
 import { missionImage, bindMissionImages } from './missionArt.js';
 import { bodyById, missionDestination, isCoreMission } from '../campaignAtlas.js';
 import { getFlightSession } from '../flightSession.js';
-import { campaignDraft } from '../unity/campaignResume.js';
+import {clearSimulationResults} from './simulation.js';
+import { campaignDraft, unfinishedFlight } from '../unity/campaignResume.js';
 import {
   isActiveCampaignMission,
   getActiveCampaignMissions,
@@ -29,10 +30,12 @@ import {
   STAGE_ORDER_IDS,
   migrateRetiredCampaignState,
 } from '../unity/campaignPolicy.js';
-import { compatibleSavedBuilds } from '../workshop/compatibility.js';
 import { starterDesign } from '../campaign.js';
-import { missionDifficulty } from '../workshop/economy.js';
+import { readEconomy, missionDifficulty } from '../workshop/economy.js';
+import {beginPracticeProfile, leavePracticeProfile} from '../unity/practiceProfile.js';
 import {confirmMissionSwitch} from '../unity/confirmDialog.js';
+import {openSharedScreenRoles} from '../unity/learningTools.js';
+import {featuredMissions, featuredArt} from './missionArt.js';
 
 let activeSelectedId = null;
 let activeChapterId = 'earth';
@@ -47,14 +50,16 @@ export function renderMissionSelect(container, data, { openNext = false, initial
   const rawState = getState();
   // Safe migration of any retired mission drafts/selections
   const { state, notice: migrationNotice } = migrateRetiredCampaignState(rawState, data);
-  if (migrationNotice) saveProgress();
+  if (migrationNotice) { setDesign(state.currentDesign); saveProgress(); }
 
   const completed = state.completedMissions || {};
   const activeMissions = getActiveCampaignMissions(data);
   const progress = getActiveCampaignProgress(state, data);
   const flight = getFlightSession();
-  const draft = campaignDraft(state, data, null);
-  const activeRun = flight && flight.phase !== 'report' && flight.phase !== 'complete' && flight.phase !== 'failed' ? flight : null;
+  const activeRun = unfinishedFlight(flight);
+  const draft = activeRun ? null : campaignDraft(state, data, flight?.design?.missionId);
+  let coins;
+  try { coins = readEconomy().coins; } catch { coins = '—'; }
 
   // Determine authoritative next recommended mission
   const nextMission = getNextRecommendedMission(state, data);
@@ -94,7 +99,7 @@ export function renderMissionSelect(container, data, { openNext = false, initial
 
     let status = 'available';
     let statusLabel = 'Available';
-    if (isCompleted) {
+    if (isCompleted && !isInProgress) {
       status = 'completed';
       statusLabel = 'Completed';
     } else if (isInProgress) {
@@ -146,27 +151,54 @@ export function renderMissionSelect(container, data, { openNext = false, initial
         </div>
 
         <div class="stage-header-actions">
-          <span class="stage-currency" title="Earned mission budget / currency">
+          <span class="stage-currency" title="Equipment coins">
             <span class="currency-icon" aria-hidden="true">◆</span>
-            <span class="currency-val">${state.currency ?? 0}</span>
+            <span class="currency-val">${coins}</span>
             <span class="currency-unit">COINS</span>
           </span>
           <button type="button" class="stage-nav-link" id="stage-academy">Flight Academy</button>
           <button type="button" class="stage-nav-link" id="stage-reference">Reference</button>
+          <button type="button" class="stage-nav-link" id="stage-practice" title="Launch an isolated practice flight for showcase missions">Practice Showcase</button>
+          <button type="button" class="stage-nav-link" id="stage-team-roles" title="Assign shared-screen classroom roles">Team Roles</button>
           ${nextMission ? `<button type="button" class="stage-jump-btn" id="stage-jump-next">Next Stage ★</button>` : ''}
         </div>
       </header>
 
       <!-- Migration / Status Notice if applicable -->
-      ${(migrationNotice || retiredNotice) ? `
+      ${state.practiceMode ? `
+        <div class="stage-notice-banner practice-active-banner" role="status" style="background: rgba(127, 224, 248, 0.12); border-left: 4px solid #7fe0f8; display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 1rem;">
+          <span><strong>Practice flight</strong></span>
+          <button type="button" class="btn btn-sm btn-primary" id="btn-exit-practice">Exit to Campaign</button>
+        </div>
+      ` : (migrationNotice || retiredNotice) ? `
         <div class="stage-notice-banner" role="status">
           <span>${escape(migrationNotice || 'The previous Proxima sail contract has been retired from the active campaign.')}</span>
           <button type="button" class="stage-notice-close" aria-label="Dismiss notice">&times;</button>
         </div>
       ` : ''}
 
+      ${!state.practiceMode ? `<section class="featured-missions" aria-label="Featured missions">
+        <h1>Choose a mission</h1>
+        <div class="featured-grid">${Object.entries(featuredMissions).map(([id, feature]) => {
+          const stage = stageCards.find(s => s.mission.id === id);
+          if (!stage) return '';
+          const flightSaved = activeRun?.design?.missionId === id;
+          const action = stage.isInProgress ? (flightSaved ? 'Resume flight' : 'Resume design')
+            : !stage.isUnlocked ? 'Start practice' : stage.isCompleted ? 'Replay mission' : 'Open briefing';
+          return `<article class="featured-card ${stage.status}">
+            ${featuredArt(id)}
+            <div class="featured-copy">
+              <div class="featured-card-heading"><h2>${feature.name}</h2><span>${stage.isUnlocked || stage.isInProgress ? stage.statusLabel : 'Campaign locked'}</span></div>
+              <p>${feature.objective}</p>
+              <button type="button" class="stage-action-btn ${stage.isUnlocked || stage.isInProgress ? 'primary' : ''}" data-feature-mission="${id}" aria-label="${action} · ${feature.name}">${action} <span aria-hidden="true">→</span></button>
+            </div>
+          </article>`;
+        }).join('')}</div>
+      </section>` : ''}
+
       <!-- 2. Chapter Strip -->
       <nav class="stage-chapter-strip" aria-label="Campaign Chapters">
+        <span class="chapter-caption">Browse chapters</span>
         <div class="chapter-scroll-track" role="tablist">
           ${CAMPAIGN_CHAPTERS.map(chap => {
             const chapMissions = CHAPTER_MISSIONS[chap.id] || [];
@@ -225,13 +257,13 @@ export function renderMissionSelect(container, data, { openNext = false, initial
                 </div>
 
                 <div class="stage-card-footer">
-                  ${s.isCompleted ? `
+                  ${s.status === 'completed' ? `
                     <div class="stage-badge-status completed">
                       <span class="badge-icon">✓</span>
                       <span>COMPLETED</span>
-                      ${s.record?.stars ? `<span class="badge-stars">${'★'.repeat(Math.min(5, Math.floor(s.record.stars)))}</span>` : ''}
+                      ${s.record?.stars ? `<span class="badge-stars">${s.record.stars.toFixed(1)}/6 ★</span>` : ''}
                     </div>
-                  ` : s.isNext ? `
+                  ` : s.status === 'recommended' ? `
                     <div class="stage-badge-status next">
                       <span class="badge-icon">★</span>
                       <span>NEXT MISSION</span>
@@ -273,6 +305,9 @@ export function renderMissionSelect(container, data, { openNext = false, initial
   const prevBtn = container.querySelector('#track-prev');
   const nextBtn = container.querySelector('#track-next');
   bindMissionImages(container);
+  window.addEventListener('orbital-wallet-change', event => {
+    container.querySelector('.currency-val').textContent = event.detail;
+  }, {signal:lifetime.signal});
 
   // Helper: Get selected stage card data
   function getSelectedStage() {
@@ -286,7 +321,7 @@ export function renderMissionSelect(container, data, { openNext = false, initial
     const m = s.mission;
     const destination = bodyById(missionDestination(m));
     const payload = data.instruments?.find(p => p.id === m.payload);
-    const requiresNames = (m.requires || []).map(id => {
+    const requiresNames = (m.requires || []).filter(id => !completed[id]).map(id => {
       const parent = activeMissions.find(p => p.id === id);
       return { id, name: parent?.name || id };
     });
@@ -307,7 +342,7 @@ export function renderMissionSelect(container, data, { openNext = false, initial
         <div class="detail-tags">
           <span class="detail-tag"><strong>Target:</strong> ${escape(destination?.name || 'Earth orbit')}</span>
           ${payload ? `<span class="detail-tag"><strong>Payload:</strong> ${escape(payload.name)}</span>` : ''}
-          <span class="detail-tag"><strong>Budget:</strong> $${m.budget}M</span>
+          <span class="detail-tag"><strong>Budget:</strong> $${Math.round(m.budget * (data.difficulty[state.difficulty]?.budgetMultiplier ?? 1))}M</span>
           <span class="detail-tag"><strong>Difficulty:</strong> ${'★'.repeat(s.difficulty)}</span>
         </div>
       </div>
@@ -319,22 +354,21 @@ export function renderMissionSelect(container, data, { openNext = false, initial
               <span class="callout-icon" aria-hidden="true">🔒</span>
               <strong>Mission Locked</strong>
             </div>
-            <p class="callout-body">Unmet requirement: ${requiresNames.map(r => `<em>${escape(r.name)}</em>`).join(' + ')}</p>
+            <p class="callout-body">Complete ${requiresNames.map(r => `<em>${escape(r.name)}</em>`).join(' and ')}.</p>
             ${requiresNames.length ? `
               <button type="button" class="btn-prereq-jump" data-jump-prereq="${requiresNames[0].id}">
-                View prerequisite: ${escape(requiresNames[0].name)} →
+                View ${escape(requiresNames[0].name)} →
               </button>
             ` : ''}
           </div>
-        ` : isCompleted ? `
+        ` : isCompleted && !isInProgress ? `
           <div class="status-callout completed">
             <div class="callout-header">
               <span class="callout-icon" aria-hidden="true">✓</span>
-              <strong>Contract Fulfilled</strong>
+              <strong>Mission complete</strong>
             </div>
             <p class="callout-body">
-              ${s.record?.stars ? `Best result: ${s.record.stars.toFixed(1)} / 5.0 stars.` : 'All baseline scientific objectives met.'}
-              Replay available (first-clear reward already claimed).
+              ${s.record?.stars ? `Best result: ${s.record.stars.toFixed(1)} / 6 stars.` : 'All baseline scientific objectives met.'}
             </p>
           </div>
         ` : isInProgress ? `
@@ -344,18 +378,10 @@ export function renderMissionSelect(container, data, { openNext = false, initial
               <strong>Active Mission</strong>
             </div>
             <p class="callout-body">
-              ${activeRun?.design?.missionId === m.id ? 'Telemetry live in orbital operations.' : 'Spacecraft configuration draft saved.'}
+              ${activeRun?.design?.missionId === m.id ? 'Flight checkpoint saved.' : 'Spacecraft configuration draft saved.'}
             </p>
           </div>
-        ` : `
-          <div class="status-callout ready">
-            <div class="callout-header">
-              <span class="callout-icon" aria-hidden="true">★</span>
-              <strong>Ready to Launch</strong>
-            </div>
-            <p class="callout-body">All prerequisites satisfied. Proceed to mission briefing and spacecraft construction.</p>
-          </div>
-        `}
+        ` : ''}
       </div>
 
       <div class="detail-col detail-action-box">
@@ -394,7 +420,7 @@ export function renderMissionSelect(container, data, { openNext = false, initial
         </div>
 
         <div class="action-secondary-row">
-          ${!isLocked && m.id !== 'dip' ? `
+          ${!isLocked && !isInProgress && m.id !== 'dip' ? `
             <button type="button" class="stage-starter-btn" id="btn-use-starter" title="Start with recommended educational baseline">
               Use starter design
             </button>
@@ -413,11 +439,7 @@ export function renderMissionSelect(container, data, { openNext = false, initial
 
     // Bind Primary Action Launch / Resume
     const enterBtn = detailPanel.querySelector('#btn-stage-enter');
-    if (enterBtn) {
-      enterBtn.onclick = () => {
-        enterMission(m, null);
-      };
-    }
+    if (enterBtn) enterBtn.onclick = () => openStage(m);
 
     // Bind Starter Design
     const starterBtn = detailPanel.querySelector('#btn-use-starter');
@@ -459,55 +481,152 @@ export function renderMissionSelect(container, data, { openNext = false, initial
     // Scroll selected card into view
     const selectedCard = container.querySelector(`.stage-card[data-stage-id="${missionId}"]`);
     if (selectedCard && track) {
-      const cardRect = selectedCard.getBoundingClientRect();
-      const trackRect = track.getBoundingClientRect();
+      prevBtn.disabled = missionId === stageCards[0].mission.id;
+      nextBtn.disabled = missionId === stageCards.at(-1).mission.id;
       const scrollTarget = selectedCard.offsetLeft - (track.clientWidth / 2) + (selectedCard.clientWidth / 2);
       track.scrollTo({
         left: Math.max(0, scrollTarget),
-        behavior: smoothScroll ? 'smooth' : 'auto',
+        behavior: smoothScroll && !matchMedia('(prefers-reduced-motion: reduce)').matches ? 'smooth' : 'instant',
       });
     }
   }
 
+  function openStage(mission) {
+    if (enteringMission || destroyed) return;
+    if (activeRun?.design?.missionId === mission.id) {
+      if (getState().currentDesign.missionId !== mission.id) setDesign(activeRun.design);
+      showScreen('simulation', {mission:true});
+    } else if (draft?.missionId === mission.id) {
+      showScreen(draft.screen, {mission:true});
+    } else {
+      enterMission(mission);
+    }
+  }
+
   // Authoritative mission launch controller with switch-mission confirmation safeguards
-  async function enterMission(mission, preset = null) {
-    if (enteringMission || destroyed || !isMissionUnlocked(mission, completed)) return;
+  async function enterMission(mission, preset = null, isPractice = false) {
+    if (enteringMission || destroyed || (!isPractice && !isMissionUnlocked(mission, completed))) return;
     enteringMission = true;
 
-    const currentDesign = state.currentDesign;
-    const isDifferentMission = currentDesign?.missionId && currentDesign.missionId !== mission.id;
     const hasActiveWork = (activeRun && activeRun.design?.missionId !== mission.id) || (draft && draft.missionId !== mission.id);
 
-    if (isDifferentMission && hasActiveWork) {
-      if (!await confirmMissionSwitch(mission.name, {signal:lifetime.signal})) {
+    if (hasActiveWork && !isPractice) {
+      if (!await confirmMissionSwitch(mission.name, {signal:lifetime.signal, flight:Boolean(activeRun)})) {
         enteringMission = false;
         return;
       }
     }
     if (destroyed) return;
 
-    // Set authoritative new design
+    if (clearSimulationResults() === false) { enteringMission = false; return; }
+    clearDesign();
     setDesign({
       missionId: mission.id,
       launcherId: null,
       orbitId: null,
       flightWorkflow: true,
       scienceBundleId: null,
-      windowId: mission.id === 'dip' ? currentDesign?.windowId || null : null,
-      prediction: mission.id === 'dip' ? currentDesign?.prediction || null : null,
-      keplerCase: mission.id === 'dip' ? currentDesign?.keplerCase || 'nominal' : null,
-      keplerPolicy: mission.id === 'dip' ? currentDesign?.keplerPolicy || 'all' : null,
       ...(preset || {}),
     });
     saveProgress();
 
-    // Navigate to appropriate starting screen
-    if (mission.id === 'dip') {
-      showScreen('brief');
-    } else {
-      // Normal mission goes to briefing or workshop
-      showScreen('brief');
+    if (preset && !isPractice && mission.id !== 'dip') showScreen('workshop', {mission:true, preset});
+    else showScreen('brief');
+  }
+
+  function launchPractice(missionId) {
+    if (enteringMission || destroyed) return;
+    const m = data.missions.find(entry => entry.id === missionId);
+    if (!m) return;
+    const prerequisites = new Set();
+    const queue = [...(m.requires || [])];
+    for (const id of queue) {
+      if (prerequisites.has(id)) continue;
+      prerequisites.add(id);
+      queue.push(...(data.missions.find(entry => entry.id === id)?.requires || []));
     }
+    beginPracticeProfile([...prerequisites]);
+    setPracticeMode(true, state.currentMissionId);
+    let starter = null;
+    if (missionId === 'dip') {
+      starter = {
+        busId: 'bus_micro',
+        panelIds: ['panel_m'],
+        batteryIds: ['battery_m'],
+        computerId: 'computer_basic',
+        pointingId: 'pointing_reaction_wheels',
+        commsId: 'comms_x_band',
+        fuelIds: ['fuel_s'],
+        instrumentIds: ['optical_camera'],
+        windowId: 'A',
+        prediction: 'H1',
+        keplerPolicy: 'all',
+        keplerRecipe: 'native',
+        keplerCase: 'nominal'
+      };
+    } else {
+      starter = starterDesign(m, data, state.difficulty || 'normal');
+    }
+    enterMission(m, starter, true);
+  }
+
+  container.querySelectorAll('[data-feature-mission]').forEach(button => {
+    button.onclick = () => {
+      const stage = stageCards.find(s => s.mission.id === button.dataset.featureMission);
+      selectStage(stage.mission.id, false);
+      if (stage.isUnlocked || stage.isInProgress) openStage(stage.mission);
+      else launchPractice(stage.mission.id);
+    };
+  });
+
+  function showPracticeModal() {
+    const existing = container.querySelector('.stage-practice-modal-backdrop');
+    if (existing) existing.remove();
+    const modal = document.createElement('dialog');
+    modal.setAttribute('aria-labelledby', 'practice-modal-title');
+    modal.className = 'stage-practice-modal-backdrop';
+    modal.innerHTML = `
+      <div class="stage-practice-modal">
+        <div class="practice-modal-header">
+          <div>
+            <h2 id="practice-modal-title">Practice Showcase Simulator</h2>
+            <p>Choose a mission to try.</p>
+          </div>
+          <button type="button" class="practice-modal-close" id="btn-close-practice-modal" aria-label="Close dialog">&times;</button>
+        </div>
+        <div class="practice-mission-grid">
+          <article class="practice-mission-card">
+            <span class="practice-card-badge">Earth Chapter · Transit</span>
+            <h3 class="practice-card-title">Catch the Next Dip</h3>
+            <p class="practice-card-desc">Choose three star readings that distinguish two predictions.</p>
+            <button type="button" class="btn btn-sm btn-primary practice-card-btn" data-practice-launch="dip">Practice Kepler Transit →</button>
+          </article>
+          <article class="practice-mission-card">
+            <span class="practice-card-badge">Moon Chapter · Store & Forward</span>
+            <h3 class="practice-card-title">Far-side Relay</h3>
+            <p class="practice-card-desc">Get a crew message from the far side of the Moon to Earth.</p>
+            <button type="button" class="btn btn-sm btn-primary practice-card-btn" data-practice-launch="relay">Practice Lunar Relay →</button>
+          </article>
+          <article class="practice-mission-card">
+            <span class="practice-card-badge">Inner Planets · Capture</span>
+            <h3 class="practice-card-title">Mars Reconnaissance</h3>
+            <p class="practice-card-desc">Brake into Mars orbit and photograph the surface again.</p>
+            <button type="button" class="btn btn-sm btn-primary practice-card-btn" data-practice-launch="mars-orbiter">Practice Mars Capture →</button>
+          </article>
+        </div>
+      </div>
+    `;
+    container.appendChild(modal);
+    modal.addEventListener('close', () => modal.remove(), {once:true});
+    modal.showModal();
+    modal.querySelector('#btn-close-practice-modal').onclick = () => modal.close();
+    modal.onclick = (e) => { if (e.target === modal) modal.close(); };
+    modal.querySelectorAll('[data-practice-launch]').forEach(btn => {
+      btn.onclick = () => {
+        modal.close();
+        launchPractice(btn.dataset.practiceLaunch);
+      };
+    });
   }
 
   // Wire Card Click handlers
@@ -560,6 +679,23 @@ export function renderMissionSelect(container, data, { openNext = false, initial
   container.querySelector('#stage-home').onclick = () => showScreen('menu');
   container.querySelector('#stage-academy').onclick = () => showScreen('academy');
   container.querySelector('#stage-reference').onclick = () => showScreen('evidence');
+  const practiceNavBtn = container.querySelector('#stage-practice');
+  if (practiceNavBtn) practiceNavBtn.onclick = () => showPracticeModal();
+  const teamRolesBtn = container.querySelector('#stage-team-roles');
+  if (teamRolesBtn) teamRolesBtn.onclick = () => openSharedScreenRoles(container, data, activeSelectedId);
+  const exitPracticeBtn = container.querySelector('#btn-exit-practice');
+  if (exitPracticeBtn) {
+    exitPracticeBtn.onclick = () => {
+      if (leavePracticeProfile()) return;
+      // Older releases saved practice directly in the campaign slot.
+      setPracticeMode(false);
+      clearSimulationResults();
+      clearDesign();
+      setDesign({missionId:state.practiceOrigin || 'm1', flightWorkflow:false});
+      saveProgress();
+      renderMissionSelect(container, data);
+    };
+  }
 
   // Wire Notice Dismiss
   const noticeClose = container.querySelector('.stage-notice-close');

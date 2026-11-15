@@ -2,7 +2,7 @@
   "launchers": [
     {
       "id": "kestrel",
-      "name": "Falcon 9",
+      "name": "Vector 5",
       "cost": 12,
       "capacity": {
         "leo": 300,
@@ -14,7 +14,7 @@
     },
     {
       "id": "condor",
-      "name": "Atlas V",
+      "name": "Stratus 3",
       "cost": 45,
       "capacity": {
         "leo": 1500,
@@ -26,7 +26,7 @@
     },
     {
       "id": "albatross",
-      "name": "Ares I",
+      "name": "Summit 1",
       "cost": 110,
       "capacity": {
         "leo": 6000,
@@ -38,7 +38,7 @@
     },
     {
       "id": "roc",
-      "name": "Atlas V (extended scenario)",
+      "name": "Horizon Heavy",
       "cost": 250,
       "capacity": {
         "leo": 18000,
@@ -687,6 +687,157 @@
         "fuelKg": "kg"
       },
       "balanceStatus": "Authored educational balance; not measured flight hardware"
+    },
+    {
+      "id": "thermal_radiator",
+      "name": "Radiator panel",
+      "mass": 9,
+      "cost": 1.65,
+      "dimensionsM": [
+        0.42,
+        0.067,
+        0.34
+      ],
+      "mountSpan": 0.42,
+      "externalHalfWidthM": 0.211,
+      "externalHeightM": 0.068,
+      "externalDepthM": 0.171,
+      "radiatorWPerK": 0.67,
+      "description": "A finned exterior panel releases payload heat.",
+      "intendedStrengths": "Adds 0.67 W/°C of payload heat rejection. Draws 0 W.",
+      "limitations": "Uses a mounting face and can make the battery colder in eclipse.",
+      "type": "thermal",
+      "category": "thermal",
+      "subcategory": "passive thermal",
+      "schemaVersion": 2,
+      "visualId": "thermal_radiator",
+      "unlock": "start",
+      "unlockPrice": 0,
+      "unlockPrerequisites": [],
+      "balanceStatus": "educational",
+      "attachmentRequirements": {
+        "kind": "exterior_face"
+      },
+      "units": {
+        "mass": "kg",
+        "cost": "million USD",
+        "power": "W"
+      },
+      "power": 0,
+      "resources": {
+        "massKg": 9,
+        "costUsd": 1650000,
+        "generatedPowerW": 0,
+        "basePowerW": 0,
+        "operatingPowerW": 0,
+        "batteryCapacityJ": 0,
+        "recorderCapacityBit": 0,
+        "processingBitPerSec": 0,
+        "instrumentBitPerSec": 0,
+        "transmitPowerW": 0,
+        "standbyPowerW": 0,
+        "propellantKg": 0
+      }
+    },
+    {
+      "id": "thermal_blanket",
+      "name": "Insulation blanket",
+      "mass": 3.5,
+      "cost": 0.72,
+      "dimensionsM": [
+        0.38,
+        0.035,
+        0.32
+      ],
+      "mountSpan": 0.38,
+      "externalHalfWidthM": 0.191,
+      "externalHeightM": 0.036,
+      "externalDepthM": 0.161,
+      "insulationFraction": 0.34,
+      "description": "A quilted foil panel slows heat exchange with space.",
+      "intendedStrengths": "Reduces baseline heat loss by 34%. Draws 0 W.",
+      "limitations": "Slows cooldown when the payload is working hard.",
+      "type": "thermal",
+      "category": "thermal",
+      "subcategory": "passive thermal",
+      "schemaVersion": 2,
+      "visualId": "thermal_blanket",
+      "unlock": "start",
+      "unlockPrice": 0,
+      "unlockPrerequisites": [],
+      "balanceStatus": "educational",
+      "attachmentRequirements": {
+        "kind": "exterior_face"
+      },
+      "units": {
+        "mass": "kg",
+        "cost": "million USD",
+        "power": "W"
+      },
+      "power": 0,
+      "resources": {
+        "massKg": 3.5,
+        "costUsd": 720000,
+        "generatedPowerW": 0,
+        "basePowerW": 0,
+        "operatingPowerW": 0,
+        "batteryCapacityJ": 0,
+        "recorderCapacityBit": 0,
+        "processingBitPerSec": 0,
+        "instrumentBitPerSec": 0,
+        "transmitPowerW": 0,
+        "standbyPowerW": 0,
+        "propellantKg": 0
+      }
+    },
+    {
+      "id": "thermal_heater",
+      "name": "Battery heater",
+      "mass": 2.4,
+      "cost": 0.9,
+      "dimensionsM": [
+        0.235,
+        0.081,
+        0.168
+      ],
+      "bayUnits": 1,
+      "internal": true,
+      "heaterW": 12,
+      "description": "An internal thermostat warms the battery when needed.",
+      "intendedStrengths": "Starts at 8 °C and switches off at 13 °C.",
+      "limitations": "Uses one bay and up to 12 W when heating.",
+      "type": "thermal",
+      "category": "thermal",
+      "subcategory": "heater",
+      "schemaVersion": 2,
+      "visualId": "thermal_heater",
+      "unlock": "start",
+      "unlockPrice": 0,
+      "unlockPrerequisites": [],
+      "balanceStatus": "educational",
+      "attachmentRequirements": {
+        "kind": "internal_bay"
+      },
+      "units": {
+        "mass": "kg",
+        "cost": "million USD",
+        "power": "W"
+      },
+      "power": 12,
+      "resources": {
+        "massKg": 2.4,
+        "costUsd": 900000,
+        "generatedPowerW": 0,
+        "basePowerW": 0,
+        "operatingPowerW": 12,
+        "batteryCapacityJ": 0,
+        "recorderCapacityBit": 0,
+        "processingBitPerSec": 0,
+        "instrumentBitPerSec": 0,
+        "transmitPowerW": 0,
+        "standbyPowerW": 0,
+        "propellantKg": 0
+      }
     }
   ],
   "instruments": [

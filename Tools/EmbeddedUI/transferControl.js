@@ -12,6 +12,8 @@ import {transferDestination} from '../unity/missionRoute.js';
 import {escapeHtml} from './html.js';
 import {loadData} from '../data.js';
 import {mountEvidenceTimeline} from '../unity/campaignEvidenceView.js';
+import {mountMarsDecision} from '../unity/featuredFlight.js';
+import {INTENTS} from '../unity/spacecraftSystems.js';
 
 const pendingCopy={
  departure:'Departure opportunity acquired. Command the burn from the Earth parking orbit.',
@@ -66,6 +68,9 @@ export function renderCruise(container,session,onReport){
  <aside class="glass cruise-telemetry"><div class="program-panel-art">${missionImage(session.mission)}</div><div><h2>${t.target.name}</h2><p>${t.conditions}</p><dl><dt>Battery</dt><dd id="cruise-battery"></dd><dt>Generation / cruise draw</dt><dd id="cruise-power"></dd><dt>Trim propellant</dt><dd id="cruise-fuel"></dd><dt>Recorder / confirmed</dt><dd id="cruise-data"></dd><dt>Conservative link distance</dt><dd>${t.speculative?t.target.distanceLy.toFixed(3)+' light-years':(t.distanceM/1e9).toFixed(2)+' million km'}</dd><dt>Signal delay</dt><dd>${t.speculative?(t.lightMinutes/525960).toFixed(2)+' years':t.lightMinutes.toFixed(1)+' min'} one way</dd></dl></div></aside></div>
  <div class="glass cruise-commands"><p id="cruise-brief" aria-live="polite"></p>${state.evidence?scienceBrief(state.missionId)+`<label>Encounter schedule <select id="cruise-plan">${Object.entries(OBSERVE_PLANS).map(([id,name])=>`<option value="${id}">${name}</option>`).join('')}</select></label> <small>${state.evidence.scenario.targets.join(' → ')} · ${state.evidence.scenario.hours} h total</small>`: ''}<output id="cruise-navigation"></output><div class="cruise-buttons">${state.physical?'<button class="btn" data-cruise-command="navigate">Track again (one interval)</button><button class="btn" data-cruise-command="wait-nav">Correct later (12 intervals)</button><button class="btn" data-cruise-command="abandon">Abandon encounter</button><button class="btn" data-cruise-command="flyby">Accept flyby; give up orbit</button>':''}<button class="btn btn-primary" data-cruise-command="depart">${t.speculative?'Deploy beamed sail':'Execute departure burn'}</button><button class="btn btn-primary" data-cruise-command="correct">Apply mid-course correction</button><button class="btn" data-cruise-command="coast">Coast without correction</button><button class="btn btn-primary" data-cruise-command="acquire">${state.arrivalType==='crossing'?'Confirm boundary crossing':state.arrivalType==='flyby'?'Acquire flyby target':state.arrivalType==='rendezvous'?'Match target velocity':'Execute capture burn'}</button><button class="btn btn-primary" data-cruise-command="observe">Collect encounter science</button><button class="btn btn-primary" data-cruise-command="transmit">Begin downlink</button><button class="btn btn-primary" id="cruise-report">View flight report →</button></div><div class="cruise-buttons" role="group" aria-label="Cruise time acceleration">${[1,4,16].map(n=>`<button class="btn" data-cruise-speed="${n}" aria-pressed="${n===speed}">${n}×</button>`).join('')}</div><p id="cruise-log" role="status"></p><div id="cruise-evidence-panel"></div></div></section>`;
  const find=id=>container.querySelector('#cruise-'+id);
+ const systemsStatus=document.createElement('p');
+ systemsStatus.id='cruise-systems';systemsStatus.hidden=!state.systems;
+ find('power').parentElement.after(systemsStatus);
  const main=container.querySelector('.cruise-main');
  const trajectory=main.querySelector('.cruise-trajectory');
  const positionStrip=document.createElement('div');
@@ -91,7 +96,8 @@ export function renderCruise(container,session,onReport){
     const mount=document.createElement('div');mount.className='transfer-encounter-model';encounter.prepend(mount);
     const captured=state.arrivalType==='capture'&&(!state.physical||state.physical.arrivalKind==='orbit');
     const arrivalKind=state.physical?.arrivalKind||(captured?'orbit':state.arrivalType);
-    localView=createEncounterView(mount,{mission:session.mission,design:session.design,data,captured,arrivalKind,isPaused:()=>state.paused||viewMode!=='encounter'});
+    localView=createEncounterView(mount,{mission:session.mission,design:session.design,data,captured,arrivalKind,
+     isPaused:()=>state.paused||viewMode!=='encounter',attitude:()=>state.systems?.quaternion});
     encounter.querySelector('.transfer-encounter-label small').textContent=(captured?'Orbit preview · 1 revolution / 36 s':arrivalKind==='rendezvous'?'Rendezvous preview · relative position held':'Flyby preview · unbound pass')+' · illustrative scale · scroll to zoom';
     const rendered=localView?.rendered&&await localView.ready;
     if(!alive)return;
@@ -136,9 +142,11 @@ export function renderCruise(container,session,onReport){
   find('flown').setAttribute('points',flown.map(p=>p.join(',')).join(' '));
   if(find('eta'))find('eta').textContent=remain<DAY_SEC?(remain/3600).toFixed(1)+' h':(remain/DAY_SEC).toFixed(1)+' d';
  }
+ const refreshMarsDecision=mountMarsDecision(container,state);
  const evidencePanel=state.evidence?mountEvidenceTimeline(find('evidence-panel'),()=>state):null;
  function render(){
   evidencePanel?.refresh();
+  refreshMarsDecision();
   const position=transferPosition(t,state.tick/120);
   renderTrack(state.tick);
   if(state.arrived&&!seenArrival){seenArrival=true;viewMode='encounter';}
@@ -157,6 +165,12 @@ export function renderCruise(container,session,onReport){
   find('power').textContent=generationAt(h,sunAu,state.elapsedSec).toFixed(1)+' / '+h.hotelW.toFixed(1)+' W';
   find('fuel').textContent=state.trimKg.toFixed(2)+' kg';
   find('data').textContent=state.storageGb.toFixed(3)+' / '+state.deliveredGb.toFixed(3)+' GB';
+  if(state.systems){
+   const s=state.systems;
+   systemsStatus.textContent=INTENTS[s.intent]+' · '+Math.round(s.batteryC)+' °C battery · '+Math.round(s.payloadC)+' °C payload'+
+    (s.heaterOn?' · Heater on':'')+(s.lastReason?' · '+s.lastReason:'')+
+    (state.uplink?' · Ground command arrives in '+duration(state.uplink.arrivesSec-state.elapsedSec):'');
+  }
   find('progress').value=state.tick;
   find('pause').textContent=state.paused?'Resume':'Pause';find('pause').disabled=state.finished;
   find('report').hidden=!state.finished;
@@ -167,8 +181,9 @@ export function renderCruise(container,session,onReport){
   container.querySelectorAll('[data-cruise-command]').forEach(b=>{
    const id=b.dataset.cruiseCommand;
    b.hidden=state.finished||id==='observe'&&!state.arrived||!(commands[state.pending]?.includes(id)||id==='transmit'&&state.phase==='return');
-   b.disabled=state.paused||id==='navigate'&&state.physical?.observations>=3;
-   if(id==='transmit')b.textContent=state.transmit?'Pause downlink':'Begin downlink';
+   b.disabled=state.paused||id==='navigate'&&state.physical?.observations>=3||id==='transmit'&&Boolean(state.uplink);
+   if(id==='transmit')b.textContent=state.uplink?'Ground command en route':
+    state.pending!=='downlink'&&(state.transmit||state.systems?.recorder&&!state.groundHold)?'Pause downlink':state.systems?'Point to Earth and transmit':'Begin downlink';
   });
  }
  container.querySelectorAll('[data-cruise-command]').forEach(b=>b.onclick=()=>{
@@ -179,7 +194,7 @@ export function renderCruise(container,session,onReport){
   container.querySelectorAll('[data-cruise-speed]').forEach(item=>item.setAttribute('aria-pressed',String(item===b)));
   save();
  });
- if(find('plan'))find('plan').onchange=event=>{if(selectEncounterPlan(state,event.target.value))save();};
+ if(find('plan'))find('plan').onchange=event=>{if(selectEncounterPlan(state,event.target.value)){save();refreshMarsDecision();}};
  find('pause').onclick=()=>{cruiseCommand(state,'pause');save();render();};
  find('report').onclick=()=>{save();onReport();};
  const timer=setInterval(()=>{

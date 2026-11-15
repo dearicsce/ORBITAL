@@ -78,7 +78,7 @@ export function createFlightFrame(scene,camera,craft,globe,orbitId,orbit,input=n
   origin,
   setCamera(id,northVisible){if(lagrange&&id==='fixed')id='inertial';if(Object.hasOwn(CAMERA_MODES,id)){if(id!==mode){input?.reset();smoothPosition=smoothAim=smoothUp=null;}mode=id;targetId=id==='solar'?'system':id==='follow'?'craft':lunar?'moon':'earth';}showNorth=Boolean(northVisible);},
   focusTarget,onTargetSelected(callback){onSelected=callback;},
-  sample(elapsedSec,activeOrbit=orbit,paused=false){
+  sample(elapsedSec,activeOrbit=orbit,paused=false,commandedAttitude=null){
    const now=performance.now()/1000,dt=previousWall===null?0:Math.max(0,Math.min(.1,now-previousWall));previousWall=now;
    const reduced=typeof matchMedia==='function'&&matchMedia('(prefers-reduced-motion: reduce)').matches;
    const systemSeconds=elapsedSec+(activeOrbit?.epochS??0);
@@ -100,6 +100,7 @@ export function createFlightFrame(scene,camera,craft,globe,orbitId,orbit,input=n
    if(lagrange)tangent.crossVectors(north,local).normalize();
    else tangent.copy(operationPoint(orbitId,elapsedSec+1,activeOrbit)).sub(operationPoint(orbitId,elapsedSec-1,activeOrbit)).normalize();
    radial.copy(local).normalize();tangent.addScaledVector(radial,-tangent.dot(radial)).normalize();if(tangent.lengthSq()<1e-8)tangent.set(0,0,1);normal.crossVectors(radial,tangent).normalize();craft.quaternion.setFromRotationMatrix(attitude.makeBasis(tangent,normal,radial));
+   if(commandedAttitude)craft.quaternion.fromArray(commandedAttitude);
    // Workshop models use the launch-adapter base as their origin. In orbit,
    // place the BUS centre on the path; keep all mounted part coordinates intact.
    if(!busCenter){const bus=craft.getObjectByName('enclosed_bus');if(bus?.geometry){bus.geometry.computeBoundingBox();bus.updateWorldMatrix(true,false);busCenter=craft.worldToLocal(bus.localToWorld(bus.geometry.boundingBox.getCenter(new THREE.Vector3())));}}
@@ -133,7 +134,14 @@ export function createFlightFrame(scene,camera,craft,globe,orbitId,orbit,input=n
    }else if(mode==='follow'){aim.copy(anchor);ideal.copy(aim).addScaledVector(radial,3.7).addScaledVector(normal,1.2).addScaledVector(tangent,.8);}
    else{aim.copy(origin);ideal.copy(home);if(mode==='fixed')ideal.applyAxisAngle(north,spin);ideal.add(origin);}
    const offset=input?input.offset(ideal.clone().sub(aim),up):ideal.clone().sub(aim);ideal.copy(aim).add(offset);
-   const blend=reduced?1:1-Math.exp(-dt*7);
+   // Follow in the spacecraft frame, including after a time skip. Interpolating
+   // world positions cuts a chord through the planet as the vehicle moves.
+   if (mode === 'follow') {
+    const fromBody = ideal.clone().sub(origin);
+    const clearance = 4 + camera.near * 2;
+    if (fromBody.length() < clearance) ideal.copy(origin).add(fromBody.setLength(clearance));
+   }
+   const blend=reduced || mode==='follow' ? 1 : 1-Math.exp(-dt*7);
    if(!smoothPosition){smoothPosition=ideal.clone();smoothAim=aim.clone();smoothUp=up.clone();}else{smoothPosition.lerp(ideal,blend);smoothAim.lerp(aim,blend);smoothUp.lerp(up,blend).normalize();}
    camera.position.copy(smoothPosition);camera.up.copy(smoothUp);camera.lookAt(smoothAim);camera.updateMatrixWorld();
    hardwareLight.position.copy(camera.position);craft.traverse(node=>{if(node.isMesh)node.layers.enable(1);});

@@ -36,10 +36,10 @@ export function showScreen(name,params={},fromHistory=false) {
  if(name==='report'&&getSimulationResults()?.phase!=='report')name=mission?'design':'menu';
  const savedReport=name==='report';
  if(!savedReport&&!['menu','missionSelect','evidence','workshop','academy','rocketWorkshop'].includes(name)&&!mission)name='menu';
- if(!savedReport&&mission&&mission.id!=='tutorial'){
+ if(!savedReport&&!state.practiceMode&&mission&&mission.id!=='tutorial'){
   if(!isMissionUnlocked(mission,state.completedMissions)&&!['menu','missionSelect','evidence','workshop','academy','rocketWorkshop'].includes(name))name='missionSelect';
  }
- if(!savedReport&&mission&&!['menu','missionSelect','brief','evidence','workshop','academy','rocketWorkshop'].includes(name)){
+ if(!savedReport&&!state.practiceMode&&mission&&!['menu','missionSelect','brief','evidence','workshop','academy','rocketWorkshop'].includes(name)){
   const u=getUnlocked(worldData,Object.keys(state.completedMissions));
   if(!mission.launchers.includes(design.launcherId)||!u.launchers.includes(design.launcherId)){setDesign({launcherId:mission.launchers.find(id=>u.launchers.includes(id))||null});if(mission.id!=='tutorial')name='rocketSelect';}
   if(!['rocketSelect','orbitSelect'].includes(name)&&!design.orbitId)name='orbitSelect';

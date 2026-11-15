@@ -1,9 +1,11 @@
+import {confirmMissionSwitch} from '../unity/confirmDialog.js';
+import {clearSimulationResults} from '../ui/simulation.js';
 import {getFlightSession, flightStorageIssue} from '../flightSession.js';
 import {getState, setDesign, setSettings, saveProgress} from '../state.js';
 import {showScreen} from '../ui/router.js';
 import {escapeHtml} from '../ui/html.js';
 import {startEarth, stopEarth} from '../three/earth.js';
-import {campaignDraft, resolveCampaignContinuation, acknowledgeReport} from '../unity/campaignResume.js';
+import {campaignDraft, unfinishedFlight, resolveCampaignContinuation, acknowledgeReport} from '../unity/campaignResume.js';
 import {ANCHOR, WINDOWS, PERIOD, CASES, DURATION_HOURS} from '../kepler/keplerConfig.js';
 import {archivedNeighborhood, MEDIAN} from '../kepler/keplerSource.js';
 import {predictionAt} from '../kepler/keplerPredictions.js';
@@ -30,7 +32,7 @@ const predictionTracks = ['H1', 'H2'].map((id, index) => ({
   hypothesisSummary: 'A dip recurs every ' + (PERIOD * (index + 1)).toFixed(2) + ' days.',
 }));
 
-export function createLiveAdapterFacade(container, data, screen) {
+export function createLiveAdapterFacade(container, data, screen, signal) {
   const listeners = new Set();
   let isNavigating = false;
   let showingSharedExample = true;
@@ -110,7 +112,8 @@ export function createLiveAdapterFacade(container, data, screen) {
     }
   }
 
-  function start() {
+  async function start() {
+    if (isNavigating) return;
     const current = getState().currentDesign;
     if (flightStorageIssue()) {
       notice = 'The saved flight could not be read. Check the profile before starting another mission.';
@@ -118,10 +121,15 @@ export function createLiveAdapterFacade(container, data, screen) {
       return;
     }
     const flight = getFlightSession();
-    const active = flight && flight.phase !== 'report' ? flight : null;
-    const draft = campaignDraft(getState(), data, null);
-    if (current.missionId !== 'dip' && (active || draft) &&
-        !window.confirm('Start Catch the Next Dip? This replaces the active campaign selection. Named spacecraft designs remain available.')) return;
+    const active = unfinishedFlight(flight);
+    const draft = campaignDraft(getState(), data, active ? null : flight?.design?.missionId);
+    if ((active || draft) && (active?.design?.missionId ?? draft?.missionId) !== 'dip') {
+      isNavigating = true;
+      const accepted = await confirmMissionSwitch('Catch the Next Dip', {signal, flight:Boolean(active)});
+      isNavigating = false;
+      if (!accepted) return;
+    }
+    if (current.missionId !== 'dip' && clearSimulationResults() === false) return;
 
     if (current.missionId !== 'dip' && !updateDesign({
       missionId: 'dip', evidencePlan: null, busId: null, assembly: null, panelIds: [], batteryIds: [],
@@ -182,7 +190,7 @@ export function createLiveAdapterFacade(container, data, screen) {
     toggleTimeSystemNote() {showingTimeSystemNote = !showingTimeSystemNote; refresh();},
     selectPredictionTrack(id) {if (['H1', 'H2'].includes(id)) updateDesign({prediction: snapshot.selectedTrackId === id ? null : id});},
     selectCandidateDate(id) {if (WINDOWS.some(window => window.id === id)) updateDesign({windowId: id});},
-    choosePolicy(id) {if (['all', 'bracket'].includes(id)) updateDesign({keplerPolicy: id});},
+    choosePolicy(id) {if (['all', 'bracket', 'three_slot'].includes(id)) updateDesign({keplerPolicy: id});},
     chooseCase(id) {if (Object.hasOwn(CASES, id)) updateDesign({keplerCase: id});},
     useStarterSpacecraft() {
       if (!snapshot.selectedDateId || !updateDesign({flightWorkflow: true})) return;
@@ -201,9 +209,11 @@ export function createLiveAdapterFacade(container, data, screen) {
 }
 
 export function mountMissionDeck(container, data, screen) {
-  window.OrbitalAdapter = createLiveAdapterFacade(container, data, screen);
+  const lifetime = new AbortController();
+  window.OrbitalAdapter = createLiveAdapterFacade(container, data, screen, lifetime.signal);
   const unmount = window.mountOrbitalUI(container, screen);
   return () => {
+    lifetime.abort();
     unmount();
     delete window.OrbitalAdapter;
   };

@@ -7,7 +7,7 @@ export function referenceRocket(mission){
  const lunar=mission?.destination==='moon';
  const expedition=Boolean(mission?.transfer&&!lunar);
  const frontier=expedition&&['ceres','jupiter','europa','saturn','uranus','neptune','frontier','precursor'].includes(mission.destination);
- rocket.name=helio?'ORBITAL Heliopause':lunar?'ORBITAL Lunar Courier':frontier?'ORBITAL Frontier':expedition?'ORBITAL Expedition':'ORBITAL Courier';
+ rocket.name=helio?'Horizon Escape':lunar?'Stratus Lunar':frontier?'Horizon Deep Space':expedition?'Summit Transfer':'Vector 1 Custom';
  rocket.parts={
   coreTank:helio?'core-helio':lunar?'core-28':frontier?'core-frontier':expedition?'core-methane':'core-18',
   coreEngine:helio?'core-helio-engine':lunar?'core-k3':frontier?'core-frontier-engine':expedition?'core-m3':'core-k1',

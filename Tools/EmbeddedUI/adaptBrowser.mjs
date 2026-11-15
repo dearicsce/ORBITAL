@@ -10,6 +10,9 @@ import {adaptLauncherAndLayout} from './adaptLauncherAndLayout.mjs';
 import {adaptCampaignPresentation} from './adaptCampaignPresentation.mjs';
 import {adaptSceneRepair} from './adaptSceneRepair.mjs';
 import {adaptMissionLocations} from './adaptMissionLocations.mjs';
+import {adaptSpacecraftSystems} from './adaptSpacecraftSystems.mjs';
+import {adaptFlightPresentation} from './adaptFlightPresentation.mjs';
+import {LAUNCHER_NAMES} from './launcherAdditions.js';
 
 // Apply small, checked edits to preserved reference modules. A changed upstream
 // anchor requires review instead of silently returning to the old behavior.
@@ -109,8 +112,18 @@ export function adaptBrowser(target){
  adaptLauncherAndLayout(edit);
  adaptSceneRepair(edit);
  adaptMissionLocations(edit);
+ adaptSpacecraftSystems(edit);
+ adaptFlightPresentation(edit);
+ edit('js/engine/evaluate.js', ['    budgetUsedFraction,', '    budgetUsedFraction,\n    effectiveBudget,']);
+ edit('js/engine/unlocks.js',
+  ['export function getUnlocked(data, completedMissions = []) {', "import {practicePrerequisites} from '../unity/practiceProfile.js';\nexport function getUnlocked(data, completedMissions = []) {\n  completedMissions = [...completedMissions, ...practicePrerequisites()];"]);
+ edit('js/ui/missionControl.js',
+  ["import {mountEvidenceTimeline}", "import {mountFeaturedOperations} from '../unity/featuredFlight.js';\nimport {mountEvidenceTimeline}"],
+  ["  const evidencePanel=state.evidence?", "  const refreshFeatured=mountFeaturedOperations(container,mission.id,()=>render());\n  const evidencePanel=state.evidence?"],
+  ["    evidencePanel?.refresh();", "    evidencePanel?.refresh();\n    refreshFeatured(state);"],
+  ["preview.innerHTML=operationsPreviewMarkup(state);if(opened)preview.querySelector('details').open=true;", "if(!preview.closest('.featured-advanced')||preview.closest('.featured-advanced').open){preview.innerHTML=operationsPreviewMarkup(state);if(opened)preview.querySelector('details').open=true;}"]);
  edit('js/ui/agencyMedia.js', ['<summary>Imagery and background</summary>', '<summary>Imagery and background</summary><p>Spaceflight sky: <a href="https://svs.gsfc.nasa.gov/3895/" target="_blank" rel="noopener">NASA SVS / Ernie Wright · Deep Star Maps (2012), 8K</a></p>']);
- edit('js/academy.js', ['Falcon 9', 'Kestrel']);
- edit('js/ui/academy.js', ['Falcon 9', 'Kestrel']);
+ edit('js/academy.js', ['Falcon 9', LAUNCHER_NAMES.kestrel]);
+ edit('js/ui/academy.js', ['Falcon 9', LAUNCHER_NAMES.kestrel]);
  return files;
 }

@@ -8,26 +8,34 @@ export function selectEncounterPlan(state, plan) {
   return true;
 }
 
+export function encounterAllocation(scenario, plan, shortened=false) {
+  const primary = Math.min(.70, scenario.primaryShare + (plan === 'priority' ? .14 : 0));
+  const duration = scenario.hours * 3600 * (shortened ? .5 : 1);
+  return scenario.targets.map((target, index) => ({
+    target, seconds: duration * (index === 0 ? primary : 1 - primary),
+  }));
+}
+
 export function collectEncounter(state, powerInterval) {
   const {evidence: e, hardware: h, trajectory: t} = state;
-  const {scenario: s} = e;
-  const share = Math.min(.70, s.primaryShare + (state.observationPlan === 'priority' ? .14 : 0));
-  const fractions = [share, 1 - share];
+  const shortened = state.physical?.arrivalKind === 'flyby' && state.arrivalType === 'capture';
+  const allocation = encounterAllocation(e.scenario, state.observationPlan, shortened);
+  if(state.missionId==='mars-scout')state.encounterAllocation=allocation;
+  const total = allocation.reduce((sum, entry) => sum + entry.seconds, 0);
   let poweredAny = false;
-  for (const [index, target] of s.targets.entries()) {
-    // Failed capture can retain a finite flyby, with half the scheduled time.
-    const seconds = s.hours * 3600 * fractions[index]*(state.physical?.arrivalKind==='flyby'&&state.arrivalType==='capture'?.5:1);
+  for (const {target, seconds} of allocation) {
     const powered = powerInterval(state, seconds, t.target.au || 1, h.hotelW + h.payloadW);
+    const integration = state.systems ? state.usefulIntervalSec : powered ? seconds : 0;
     state.elapsedSec += seconds;
-    if (!powered || !e.instrument) {
+    if (integration<=0 || !e.instrument) {
       note(e, powered ? 'instrument' : 'power', state.elapsedSec, {target, batteryWh: state.batteryWh});
       continue;
     }
     poweredAny = true;
-    const rawGb = h.dataGbDay * seconds / 86400;
-    const generatedGb = t.speculative ? Math.min(rawGb, state.deliveredTarget * 1.5 * fractions[index]) : rawGb;
+    const rawGb = h.dataGbDay * integration / 86400;
+    const generatedGb = t.speculative ? Math.min(rawGb, state.deliveredTarget * 1.5 * seconds / total) : rawGb;
     const storedGb = Math.min(generatedGb, Math.max(0, h.recorderGb - state.storageGb));
-    acquire(e, target, state.elapsedSec, seconds, generatedGb, storedGb, (seconds / 60).toFixed(1) + ' min integration');
+    acquire(e, target, state.elapsedSec, integration, generatedGb, storedGb, (integration / 60).toFixed(1) + ' min integration');
     state.collectedGb += generatedGb;
     state.storageGb += storedGb;
     state.lostGb += generatedGb - storedGb;

@@ -1,4 +1,5 @@
 import {createOperations, chooseMode, stepOperations, resolveIncident, operationSummary, operationEnvironment, INCIDENTS} from '../engine/operations.js';
+import {forecastIncidentChoice} from './systemsOperations.js';
 import {createCruise, cruiseCommand, stepCruise, cruiseSummary} from '../transfer/cruise.js';
 import {selectEncounterPlan} from './scienceTransfer.js';
 import {SCIENCE_VERSION} from './scienceScenarios.js';
@@ -73,7 +74,7 @@ export function rerunExperiment(run, data, input = {}) {
   if (run.operations) {
     const trialOrbit=scope==='full-mission'&&['leo','sso'].includes(design.orbitId)?fullLaunch.orbit:initial.orbit;
     const placed = trialOrbit ? {...design, orbitElements: trialOrbit} : design;
-    state = createOperations(placed, data, evalResult,{relayTraffic:!!initial.relayTraffic});
+    state = createOperations(placed, data, evalResult,{relayTraffic:!!initial.relayTraffic,systems:Boolean(initial.systems)});
     initializeOperations(trialRun,state);
     if (schedule === 'observe') {chooseMode(state, 'observe');commands.push({tick:0,type:'mode',mode:'observe'});}
     const end = Math.max(...state.evidence.scenario.windows.map(([, , endTick]) => endTick));
@@ -88,8 +89,8 @@ export function rerunExperiment(run, data, input = {}) {
         const recorded = initial.resolvedIncidents.find(c => c.id === incident.id && c.tick === state.tick);
         const endedHere = recordedCommands.some(c => c.type === 'end');
         if (recorded || !endedHere) {
-          const fallback = INCIDENTS[incident.id].choices.find(c => state.fuelKg >= 3 || !['burn','maneuver'].includes(c.id));
-          resolve(recorded?.choice ?? fallback.id);
+          const fallback = forecastIncidentChoice(state,INCIDENTS);
+          resolve(recorded?.choice ?? fallback);
         }
       }
       for (const c of recordedCommands) {
@@ -125,7 +126,7 @@ export function rerunExperiment(run, data, input = {}) {
     summary = operationSummary(state);
   } else {
     state = attachPhysicalCruise(createCruise(design, mission, data, evalResult,
-      {assumptions: SAIL_ASSUMPTIONS[assumption]}),trialRun);
+      {assumptions: SAIL_ASSUMPTIONS[assumption],systems:Boolean(initial.systems)}),trialRun);
     if (perturbation) state.hardware.rateGbDay *= perturbation.rateFactor;
     selectEncounterPlan(state, plan ?? initial.observationPlan);
     const recorded = initial.experimentCommands ?? [];

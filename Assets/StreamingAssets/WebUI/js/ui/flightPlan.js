@@ -1,5 +1,6 @@
 import {transferDestination, operatingLocation, orbitLocationIssue} from '../unity/missionRoute.js';
 import {NAV_VERSION} from '../unity/navigation.js';
+import {renderPlanReadiness} from '../unity/planReadiness.js';
 import {escapeHtml as escape} from './html.js';
 import {resolveFlightDesign} from '../flightConfiguration.js';
 import {getState,setDesign,saveProgress} from '../state.js';
@@ -12,16 +13,17 @@ import {showScreen} from './router.js';
 
 const duration=seconds=>seconds>=365.25*DAY_SEC?(seconds/DAY_SEC/365.25).toFixed(2)+' years':(seconds/DAY_SEC).toFixed(1)+' days';
 
-export function renderFlightPlan(container,data){
+export function renderFlightPlan(container,data,{planDraft}={}){
  const state=getState(),selected=resolveFlightDesign(state.currentDesign),mission=data.missions.find(m=>m.id===selected.missionId);
  if(orbitLocationIssue(mission,selected,data.orbits)){queueMicrotask(()=>showScreen('orbitSelect'));return;}
  const destination = mission.transfer ? transferDestination(mission) : null;
  const orbit=data.orbits.find(o=>o.id===selected.orbitId),launcher=launcherFor(selected,data);
- const plan=selected.flightPlan?structuredClone(selected.flightPlan):recommendedPlan(mission,selected.orbitId,state.completedMissions);
+ const prior=planDraft?.missionId===mission.id&&planDraft.orbitId===selected.orbitId?planDraft:selected.flightPlan;
+ const plan=prior?structuredClone(prior):recommendedPlan(mission,selected.orbitId,state.completedMissions);
  const access=getUnlocked(data,Object.keys(state.completedMissions)),allowed=[...access.parts,...access.instruments];
  container.innerHTML=`<section class="screen content-screen planning-screen" data-screen="flightPlan"><header class="screen-top"><button class="btn" id="plan-back">← ${destination?'Earth departure orbit':'Operating location'}</button><div><p class="orbital-eyebrow">ORBITAL / FLIGHT DYNAMICS</p><h1>${destination?'Plan transfer to '+escape(destination.name):'Flight plan'}</h1></div></header>
  <h2>${mission.name}</h2>${destination?`<p class="mission-route-summary">Earth parking orbit <span aria-hidden="true">→</span> ${escape(destination.name)} · ${escape(destination.arrival)}</p>`:''}<p>${escape(launcher?.name||'Select a launcher')} ·  ${escape(orbit?.name||'Choose an orbit')}</p>${selected.spacecraftName?`<p>Spacecraft · ${escape(selected.spacecraftName)}</p>`:''}
- <div class="plan-layout"><section class="glass" id="plan-options"><h3>${mission.transfer?'Transfer configuration':'Orbital insertion'}</h3>
+ <section class="plan-readiness" id="plan-readiness" aria-live="polite"></section><div class="plan-layout"><section class="glass" id="plan-options"><h3>${mission.transfer?'Transfer configuration':'Orbital insertion'}</h3>
  ${mission.transfer?`${['moon','mars'].includes(mission.destination)?'<label><input id="plan-physical" type="checkbox"> Use dated circular-body / Lambert route (requires actual upper-stage reserve)</label><label>Launch calendar date / TDB <input id="plan-date" type="date" min="2026-11-01" max="2027-12-31" value="2026-11-11"></label><p>Moon dates use authored phase geometry. Earth/Mars longitudes start from a pinned Horizons reference and follow circular motion; no operational ephemeris accuracy. Legacy route remains explicitly simplified.</p>':''}<label>Departure opportunity<select id="plan-window">${Object.entries(WINDOW_OFFSETS).map(([id,day])=>`<option value="${id}">${id==='nominal'?'Nominal opportunity':id==='early'?'Early window · '+day+' days':'Late window · +'+day+' days'}</option>`).join('')}</select></label>
  <label>Cruise power and autonomy<select id="plan-power">${Object.entries(CRUISE_MODULES).filter(([id])=>id!=='beamed'||mission.destination==='proxima').map(([id,m])=>`<option value="${id}" ${m.requires&&!state.completedMissions[m.requires]?'disabled':''}>${m.name}${m.requires&&!state.completedMissions[m.requires]?' · Locked':''}</option>`).join('')}</select></label>
  <label>Arrival hardware<select id="plan-arrival">${Object.entries(ARRIVAL_KITS).map(([id,m])=>`<option value="${id}">${m.name}</option>`).join('')}</select></label>
@@ -29,31 +31,55 @@ export function renderFlightPlan(container,data){
  </section><section class="glass" id="plan-telemetry" aria-label="Transfer and engineering checks"></section></div>
  <p id="plan-status" role="status"></p><footer class="screen-actions"><button class="btn" id="plan-rocket">Change launcher</button><button class="btn" id="plan-workshop">Change spacecraft</button><button class="btn btn-primary" id="plan-confirm">Confirm flight plan →</button></footer></section>`;
  const find=id=>container.querySelector('#plan-'+id);
+ function onFix(action){
+  if(action==='custom'){showScreen('rocketWorkshop',{mission:true,planDraft:structuredClone(plan)});return;}
+  if(action==='rockets'||action==='orbit'||action==='workshop'){
+   showScreen({rockets:'rocketSelect',orbit:'orbitSelect',workshop:'workshop'}[action],{mission:true});
+   return;
+  }
+  const input=container.querySelector('#'+action);
+  input?.focus();
+  input?.scrollIntoView({block:'center'});
+ }
  function update(){
   const design={...selected,planId:plan.id,flightPlan:plan};
   const evaluation=evaluateDesign(design,data);
   const failed=checkLaunchGate(design,data,allowed,state.completedMissions).filter(check=>!check.ok);
-  let rows=[['Loaded spacecraft and service stack',evaluation.launchMass.toFixed(1)+' kg'],['Estimated mission cost','$'+evaluation.totalCost.toFixed(1)+'M']];
+  let rows=[['mass','Loaded spacecraft and service stack',evaluation.launchMass.toFixed(1)+' kg'],['cost','Estimated mission cost','$'+evaluation.totalCost.toFixed(1)+'M']];
   if(mission.transfer){
    const t=transferTrajectory(mission,design,plan),h=cruiseHardware(plan,design,data,evaluation,t);
    const service=serviceMass(plan,h.spacecraftKg);
    const demand=requiredLaunchDv(orbit?.id,orbit?.launcherClass)+t.departureDv;
    const performance=design.rocketBlueprint?rocketEngineering(design.rocketBlueprint,evaluation.launchMass,{requirement:demand}):null;
    rows=rows.concat([
-    ['Departure opportunity','Scenario day '+t.departureDay+' · phase '+t.phaseDeg.toFixed(1)+'°'],
-    ['Opportunity recurrence',t.speculative?'Beaming alignment · scenario schedule':t.synodicDays.toFixed(0)+' days'],
-    ['Departure burn',t.speculative?'External beamed sail · 5% of light speed':Math.round(t.departureDv)+' m/s from parking orbit'],
-    ['Stack delta-v demand',Math.round(demand)+' m/s'+(performance?' · '+Math.round(performance.deltaV)+' available':'')],
-    ['Cruise duration',duration(t.travelSec)],['Mid-course allowance',t.correctionDv+' m/s'],
-    ['Arrival',mission.tag+' · '+Math.round(t.arrivalDv)+' m/s braking'],
-    ['Conditions',t.conditions],['Planning link distance',t.speculative?t.target.distanceLy.toFixed(3)+' light-years':(t.distanceM/1e9).toFixed(2)+' million km'],
-    ['One-way signal time',t.speculative?duration(t.lightMinutes*60):t.lightMinutes.toFixed(2)+' min'],
-    ['Downlink at planning distance',h.rateGbDay.toFixed(3)+' GB/day'],
-    ['Farthest generation / cruise draw',generationAt(h,t.lunar?1:Math.max(1,t.target.au),t.travelSec).toFixed(1)+' / '+h.hotelW.toFixed(1)+' W'],
-    ['Equipment lifetime',h.lifetimeYears+' years'],['Trim / arrival propellant',h.trimFuelKg.toFixed(1)+' / '+service.fuelKg.toFixed(1)+' kg']
+    ['','Departure opportunity','Scenario day '+t.departureDay+' · phase '+t.phaseDeg.toFixed(1)+'°'],
+    ['','Opportunity recurrence',t.speculative?'Beaming alignment · scenario schedule':t.synodicDays.toFixed(0)+' days'],
+    ['','Departure burn',t.speculative?'External beamed sail · 5% of light speed':Math.round(t.departureDv)+' m/s from parking orbit'],
+    ['stackDv','Stack delta-v demand',Math.round(demand)+' m/s'+(performance?' · '+Math.round(performance.deltaV)+' available':'')],
+    ['','Cruise duration',duration(t.travelSec)],['','Mid-course allowance',t.correctionDv+' m/s'],
+    ['arrival','Arrival',mission.tag+' · '+Math.round(t.arrivalDv)+' m/s braking'],
+    ['','Conditions',t.conditions],['','Planning link distance',t.speculative?t.target.distanceLy.toFixed(3)+' light-years':(t.distanceM/1e9).toFixed(2)+' million km'],
+    ['','One-way signal time',t.speculative?duration(t.lightMinutes*60):t.lightMinutes.toFixed(2)+' min'],
+    ['radio','Downlink at planning distance',h.rateGbDay.toFixed(3)+' GB/day'],
+    ['farPower','Farthest generation / cruise draw',generationAt(h,t.lunar?1:Math.max(1,t.target.au),t.travelSec).toFixed(1)+' / '+h.hotelW.toFixed(1)+' W'],
+    ['lifetime','Equipment lifetime',h.lifetimeYears+' years'],['trim','Trim / arrival propellant',h.trimFuelKg.toFixed(1)+' / '+service.fuelKg.toFixed(1)+' kg']
    ]);
   }
-  find('telemetry').innerHTML=`<h3>Engineering and trajectory</h3><dl>${rows.map(([name,value])=>`<dt>${name}</dt><dd>${escape(value)}</dd>`).join('')}</dl>${failed.length?`<h4>Open checks</h4><ul class="text-red">${failed.map(c=>`<li>${escape(c.message)}</li>`).join('')}</ul>`:'<p class="text-green">All checks passed.</p>'}`;
+  const measurements={
+   power:['solar','Solar generation','W'], eclipse:['reserve','Usable battery reserve','Wh'],
+   slots:['slots','Payload slots used','slots'], computer:['processing','Daily data to process','GB/day'],
+   pointing:['pointing','Installed attitude control',''], comms:['radio','Communications installed',''],
+   fuel:['trim','Carried insertion propellant','kg']
+  };
+  for(const check of failed){
+   const measurement=measurements[check.id];
+   if(measurement&&!rows.some(([key])=>key===measurement[0])){
+    const [key,label,unit]=measurement;
+    const value=check.id==='comms'?'None':typeof check.value==='number'?check.value.toFixed(1)+' '+unit:String(check.value);
+    rows.push([key,label,value]);
+   }
+  }
+  renderPlanReadiness({status:find('readiness'),telemetry:find('telemetry'),rows,failed,onFix});
   find('confirm').disabled=mission.transfer&&failed.length>0;
   return failed.length===0;
  }

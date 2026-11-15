@@ -1,17 +1,21 @@
 import {physicalCommand,stepPhysical,afterPhysicalStep} from '../unity/physicalCruise.js';
 import {createEvidence,evidenceSummary,scienceObjectives,scienceCompletion,send,receive,note} from '../unity/scienceEvidence.js';
 import {collectEncounter} from '../unity/scienceTransfer.js';
+import {createSystems} from '../unity/spacecraftSystems.js';
+import {systemsSummary} from '../unity/systemsOperations.js';
+import {cruiseSystemsPower,queueCruiseTransmit} from '../unity/systemsCruise.js';
 import {ARRIVAL_KITS} from './catalogue.js';
 import {DAY_SEC,AU_M,transferTrajectory,cruiseHardware,transferPosition,generationAt,fuelForDv,serviceMass} from './planning.js';
 
 const CRUISE_STEPS=120, CORRECTION_TICK=51, SCIENCE_HOURS=2, DOWNLINK_STEP_HOURS=6, DOWNLINK_TICKS=16;
 const limit=(value,max)=>Math.min(max,Math.max(0,value));
 
-export function createCruise(design,mission,data,evaluation,{science=true,assumptions}={}){
+export function createCruise(design,mission,data,evaluation,{science=true,assumptions,systems=mission.destination!=='proxima'}={}){
  const plan=design.flightPlan;
  const trajectory=transferTrajectory(mission,design,plan,assumptions);
  const hardware=cruiseHardware(plan,design,data,evaluation,trajectory,assumptions);
  return {
+  ...(systems?{systems:createSystems(design,data),uplink:null,groundHold:false,usefulIntervalSec:0}:{}),
   evidence:createEvidence(mission.id,data.instruments.filter(p=>design.instrumentIds.includes(p.id)),hardware.batteryWh,science),observationPlan:design.evidencePlan==='focused'?'priority':'balanced',experimentCommands:[],
   version:1,missionId:mission.id,phase:'departure',pending:'departure',tick:0,downlinkTicks:0,elapsedSec:0,paused:false,finished:false,
   trajectory,hardware,arrivalType:mission.transfer.type,plan:structuredClone(plan),deliveredTarget:mission.profile.delivered,
@@ -31,6 +35,7 @@ function fail(state,text){
 
 function powerInterval(state,seconds,sunAu,loadW){
  const generation=generationAt(state.hardware,sunAu,state.elapsedSec);
+ if(state.systems)return cruiseSystemsPower(state,seconds,sunAu,loadW,generation);
  const net=(generation-loadW)*seconds/3600;
  if(net<0&&state.batteryWh+net<0){
   const missingWh=-(state.batteryWh+net);
@@ -85,7 +90,7 @@ export function cruiseCommand(state,command){
   const powered=powerInterval(state,seconds,t.target.au||1,h.hotelW+h.payloadW);
   state.elapsedSec+=seconds;
   if(!powered){fail(state,'Power reserve failed during the observation window.');return true;}
-  state.collectedGb=h.dataGbDay*SCIENCE_HOURS/24;
+  state.collectedGb=h.dataGbDay*(state.systems?state.usefulIntervalSec:seconds)/86400;
   state.storageGb=Math.min(state.collectedGb,h.recorderGb);
   state.lostGb=state.collectedGb-state.storageGb;
   }
@@ -93,8 +98,12 @@ export function cruiseCommand(state,command){
   state.pending='downlink';state.phase='return';
   record(state,'Observation complete. Recorder holds '+state.storageGb.toFixed(3)+' GB.');
  }else if(command==='transmit'&&state.phase==='return'){
+  if(state.systems){
+   if(!queueCruiseTransmit(state))return false;
+  }else{
   state.transmit=!state.transmit;state.pending=null;
   record(state,state.transmit?'Earth downlink started.':'Earth downlink paused.');
+  }
  }else return false;
  if(state.evidence&&state.experimentCommands.length<250)state.experimentCommands.push(event);
  return true;
@@ -122,8 +131,8 @@ export function stepCruise(state){
   if(state.evidence)state.evidence.contactSec+=seconds;
   const radioOn=state.transmit&&state.storageGb>0;
   const powered=powerInterval(state,seconds,t.target.au||1,h.hotelW+(radioOn?h.radioW:0));
-  if(powered&&radioOn){
-   const sent=Math.min(state.storageGb,h.rateGbDay*hours/24);
+  if(state.systems?state.usefulIntervalSec>0:powered&&radioOn){
+   const sent=Math.min(state.storageGb,h.rateGbDay*(state.systems?state.usefulIntervalSec:seconds)/86400);
    state.storageGb-=sent;state.inFlight.push({amount:sent,...(state.evidence?{fragments:send(state.evidence,sent)}:{}),receivedAtSec:state.elapsedSec+seconds+t.lightMinutes*60});
   }
   state.elapsedSec+=seconds;state.downlinkTicks++;
@@ -150,7 +159,7 @@ export function cruiseSummary(state){
   ...scienceObjectives(state.evidence)
  ];
  const passed=state.finished&&state.phase==='complete'&&state.corrected&&objectives.every(o=>o.passed);
- return {...evidenceSummary(state.evidence),missionId:state.missionId,finished:state.finished,windowCompleted:state.finished,passed,objectives,
+ return {...evidenceSummary(state.evidence),...systemsSummary(state.systems),missionId:state.missionId,finished:state.finished,windowCompleted:state.finished,passed,objectives,
   scienceFactor:state.evidence?scienceCompletion(state.evidence):Number(passed),deliveredGb:state.deliveredGb,collectedGb:state.collectedGb,lostGb:state.lostGb,storageGb:state.storageGb,unconfirmedGb:unconfirmed,batteryWh:state.batteryWh,
   fuelKg:state.trimKg,decisions:state.log.length-1,log:state.log.map(e=>({...e})),elapsedMinutes:state.elapsedSec/60};
 }
@@ -165,6 +174,8 @@ export function validateCruise(state,design,mission){
  }
  for(const key of ['paused','finished','corrected','arrived','transmit'])if(typeof state[key]!=='boolean')throw Error('Invalid transfer flag');
  if(!Array.isArray(state.log)||state.log.length>1000||state.log.some(event=>typeof event.text!=='string'||!Number.isFinite(event.elapsedSec)))throw Error('Invalid transfer log');
+ if(state.systems&&(typeof state.groundHold!=='boolean'||!Number.isFinite(state.usefulIntervalSec)||state.usefulIntervalSec<0||
+   (state.uplink!==null&&(typeof state.uplink?.transmit!=='boolean'||!Number.isFinite(state.uplink?.arrivesSec)||state.uplink.arrivesSec<state.elapsedSec))))throw Error('Invalid cruise uplink checkpoint');
  if(!Array.isArray(state.inFlight)||state.inFlight.length>DOWNLINK_TICKS||state.inFlight.some(p=>!Number.isFinite(p.amount)||p.amount<0||!Number.isFinite(p.receivedAtSec)||p.receivedAtSec<=state.elapsedSec))throw Error('Invalid in-transit science packet');
  const inTransit=state.inFlight.reduce((sum,p)=>sum+p.amount,0);
  if(!state.hardware||!state.trajectory||state.deliveredTarget!==mission.profile.delivered||state.batteryWh>state.hardware.batteryWh+1e-7||

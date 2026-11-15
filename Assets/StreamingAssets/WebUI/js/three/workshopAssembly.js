@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import {createModularBus,createModularEquipment} from './modularBus.js';
+import {loadThermalModel} from './thermalModels.js';
 import {createSolarWing} from './solarWing.js';
 import {disposeObject} from './sceneKit.js';
 import {catalog} from '../workshop/blueprint.js';
@@ -21,6 +22,11 @@ export function createWorkshopAssembly(group){
      const stand=metadata(p).wingLength*.19+.08;
      const mount=new THREE.Mesh(new THREE.BoxGeometry(stand,.10,.10),new THREE.MeshStandardMaterial({color:0x9ba9b5,metalness:.7,roughness:.4}));mount.position.x=stand/2;root.add(mount);
      const hinge=new THREE.Group();hinge.name='deployment_hinge';hinge.position.x=stand;hinge.add(createSolarWing(p.visualId||c.catalogId.replace('panel_','solar_wing_'),metadata(p).wingLength));root.add(hinge);root.userData.hinge=hinge;
+    }else if(p.type==='thermal'){
+     loadThermalModel(p.id).then(model=>{
+      if(instances.get(c.instanceId)!==root){disposeObject(model);return;}
+      root.add(model);
+     }).catch(error=>console.error('Thermal hardware could not load:',error));
     }else if(metadata(p).internal){
      const size=p.type==='fuel'?[.18,.1,.18]:[.24,.08,.18];for(let unit=0;unit<metadata(p).bayUnits;unit++){const mesh=new THREE.Mesh(p.type==='fuel'?new THREE.CylinderGeometry(.085,.085,.1,16):new THREE.BoxGeometry(...size),new THREE.MeshStandardMaterial({color:p.type==='battery'?0x5a8598:p.type==='fuel'?0xb4a482:0x60756a,metalness:.45,roughness:.5}));mesh.userData.internalVolume=true;root.add(mesh);}
      if(p.type==='fuel'){const nozzle=new THREE.Group();nozzle.userData.thrusterPort=true;const bell=new THREE.Mesh(new THREE.CylinderGeometry(.055,.022,.18,20,1,true),new THREE.MeshStandardMaterial({color:0x7d929f,metalness:.75,roughness:.35,side:THREE.DoubleSide}));bell.position.y=.09;nozzle.add(bell);root.add(nozzle);}

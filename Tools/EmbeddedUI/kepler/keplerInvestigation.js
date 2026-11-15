@@ -206,6 +206,15 @@ export function diagnoseCausalLimiter(attempt, evidence, plan, caseId = "nominal
       };
     }
     if (firstFail?.stage === "capture") {
+      const msg = String(firstFail.message || "");
+      if (msg.toLowerCase().includes("span") || msg.toLowerCase().includes("long-look")) {
+        return {
+          firstCausalLimiter: "Capture cadence span exceeds profile allowance.",
+          downstreamConsequence: "Snapshot profile permits up to 8 cadences; this recipe spans more cadences across the observation window.",
+          consequentialAction: "Upgrade to Long-look profile (Albatross launcher) or select Native six recipe.",
+          fixCommand: { type: "kepler/setDesign", payload: { profile: "long", launcherId: "albatross" } },
+        };
+      }
       return {
         firstCausalLimiter: "Raw cadence slot overflow before curation filtering.",
         downstreamConsequence: "Storage capacity exceeded; acquisition aborted atomically with no energy debited.",

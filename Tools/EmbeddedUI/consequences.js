@@ -3,8 +3,9 @@ import {createOperations,stepOperations,resolveIncident,operationSummary,INCIDEN
 import {escapeHtml as escape} from '../ui/html.js';
 import {placementIssues} from '../workshop/blueprint.js';
 import {SCENARIOS} from './scienceScenarios.js';
+import {forecastIncidentChoice} from './systemsOperations.js';
 
-export const FORECAST_VERSION = 'forecast-cooperative-3';
+export const FORECAST_VERSION = 'forecast-cooperative-4';
 
 function* forecastSteps(design,data){
  if(design.assembly&&placementIssues(design.assembly,data).length)throw Error('Resolve component placement before forecasting.');
@@ -17,7 +18,7 @@ function* forecastSteps(design,data){
   const state=createOperations(design,data,e,{relayTraffic:true});
   if(state.evidence?.bundle){state.evidence.sourceEvidenceModel='unique-target-1';state.evidence.sourcePolicy='broad';state.evidence.targetSeconds={};}
   while(!state.finished){
-   if(state.pendingIncident){const choice=INCIDENTS[state.pendingIncident.id].choices.find(c=>!['burn','maneuver'].includes(c.id)||state.fuelKg>=3);if(!resolveIncident(state,choice.id))throw Error('Forecast incident unavailable');}
+   if(state.pendingIncident&&!resolveIncident(state,forecastIncidentChoice(state,INCIDENTS)))throw Error('Forecast incident unavailable');
    stepOperations(state);
    yield;
   }
@@ -29,8 +30,13 @@ function* forecastSteps(design,data){
   values.targetMinutes=Object.values(state.evidence?.deliveredSeconds??{}).reduce((s,v)=>s+v,0)/60;
   values.contactMinutes=(state.evidence?.contactSec??0)/60;
   values.eclipseMinutes=state.history.reduce((s,p)=>s+(1-(p.sunlitFraction??1))*4.5,0);
+  if(state.systems){
+   values.minimumBatteryC=state.systems.minBatteryC;
+   values.peakPayloadC=state.systems.peakPayloadC;
+   values.heaterWh=state.systems.heaterWh;
+  }
  }
- return {modelVersion:FORECAST_VERSION,values,summary,scope:summary?'Planning estimate · operations only · launch and transfer feasibility not evaluated':'Engineering estimate only · encounter forecast is in flight planning',assumptions:'Estimate from selected orbit and full initial battery with Autopilot, broad source priorities, a 600 s useful-integration cap per source location, current two-link relay queues, and the first affordable listed incident choice. Launch electrical use and achieved insertion are excluded. Actual ascent, player commands and incident decisions can change this result. This operations estimate cannot establish launch/transfer feasibility; transfer/arrival forecasts remain in flight planning.'};
+ return {modelVersion:FORECAST_VERSION,values,summary,scope:summary?'Planning estimate · operations only · launch and transfer feasibility not evaluated':'Engineering estimate only · encounter forecast is in flight planning',assumptions:'Estimate from selected orbit and full initial battery with saved Autopilot rules, broad source priorities, a 600 s useful-integration cap per source location, and direct recovery actions. Launch electrical use and achieved insertion are excluded. Actual ascent, player commands and incident decisions can change this result. Transfer and arrival forecasts remain in flight planning.'};
 }
 // Both APIs consume identical model steps; yielding never changes simulated time.
 export function designForecast(design,data){
@@ -68,6 +74,11 @@ export function createForecastService(data){
  },clear(){cache.clear();}};
 }
 const labels={targetMinutes:['Useful received integration','min','Requires target access, instrument suitability and timely receipt'],contactMinutes:['Earth contact','min','Spherical contact geometry'],eclipseMinutes:['Time in shadow','min','Battery reserve must cover these intervals'],massKg:['Launch mass','kg','More mass uses launch capacity'],costM:['Mission cost','$M','More cost uses budget'],generationW:['Solar generation','W','Power when illuminated'],loadW:['Average requested load','W','Power demand'],batteryWh:['Usable stored energy','Wh','Energy for shadow'],recorderGb:['Recorder capacity','GB','Space for recorded bytes'],downlinkGbDay:['Forecast downlink','GB/day','Contact and power constrain actual receipt'],minimumWh:['Lowest reserve','Wh','Higher reserve gives more margin'],peakRecorderGb:['Peak recorder use','GB','Higher use can approach capacity'],usefulGb:['Useful evidence received','GB','Receipt before the mission deadline'],deliveredGb:['Raw bytes received','GB','Volume alone does not ensure useful evidence']};
+Object.assign(labels,{
+ minimumBatteryC:['Coldest battery','°C','Battery protection limits operations at −12 °C'],
+ peakPayloadC:['Hottest payload','°C','Cooling pauses observing when the configured limit is reached'],
+ heaterWh:['Battery heater energy','Wh','Included in the same battery reserve as the flight electronics']
+});
 
 export function createConsequencesPanel(host,data,initialBaseline=null){
  let baseline=initialBaseline?structuredClone(initialBaseline):null,baselineForecast=null,current=null,timer=null,revision=0,dead=false,controller=null;

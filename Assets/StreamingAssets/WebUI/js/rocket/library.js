@@ -1,7 +1,8 @@
 import {validateRocket} from './engineering.js';
 const KEY='orbital_rocket_library_v1';
 
-export function rocketLibrary(storage=globalThis.localStorage){
+import {profileStorage} from '../unity/practiceProfile.js';
+export function rocketLibrary(storage=profileStorage()){
  const list=()=>{
   const items=JSON.parse(storage?.getItem(KEY)||'[]');
   if(!Array.isArray(items)||items.length>60)throw Error('Invalid rocket library');

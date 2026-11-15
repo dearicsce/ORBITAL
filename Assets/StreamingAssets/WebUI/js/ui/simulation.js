@@ -19,7 +19,11 @@ import { renderOperations } from './operations.js';
 import {createMissionRun,designFingerprint} from '../contracts/missionRun.js';
 let session=null;
 export function getSimulationResults(){return session||getFlightSession();}
-export function clearSimulationResults(){session=null;clearFlightSession();}
+export function clearSimulationResults(){
+ if(clearFlightSession()===false)return false;
+ session=null;
+ return true;
+}
 export function renderSimulation(container,data,{reviewedDesign}={}) {
  const selected=getState().currentDesign;
  const previous=getFlightSession();

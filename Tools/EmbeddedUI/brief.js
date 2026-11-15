@@ -3,7 +3,8 @@ import {difficultyLabel, REWARDS, missionDifficulty} from '../workshop/economy.j
 import {getState, setDesign, saveProgress} from '../state.js';
 import {showScreen} from './router.js';
 import {starterDesign, missionPrerequisite} from '../campaign.js';
-import {missionImage, bindMissionImages} from './missionArt.js';
+import {missionImage, bindMissionImages, featuredMissions, featuredArt} from './missionArt.js';
+import {leavePracticeProfile} from '../unity/practiceProfile.js';
 import {mountMissionDeck} from '../presentation/liveAdapterFacade.js';
 import {mountPanel} from '../presentation/mountPanel.js';
 import {missionBriefing} from '../unity/campaignPresentation.js';
@@ -32,6 +33,8 @@ export function renderBrief(container, data, choices = {}) {
       panel.update(snapshot());
     },
     starter: () => workshop({preset}),
+    'adapt-m2': () => workshop({adaptFrom:'m2'}),
+    'adapt-scout': () => workshop({adaptFrom:'mars-scout'}),
     next: () => workshop(priorSelection ? choices : {}),
     'my-satellites': () => workshop({library:true}),
     'new-satellite': () => workshop({newBuild:true}),
@@ -58,7 +61,9 @@ export function renderBrief(container, data, choices = {}) {
         {label:'First-clear reward', value:(state.completedMissions[mission.id] ? 0 : REWARDS[missionDifficulty(mission)][0]) + ' coins'},
       ],
       actions: [
-        {id:'starter', label:'Use mission preset', primary:!priorSelection},
+        {id:'starter', label:'Use mission preset', primary:!priorSelection && mission.id !== 'relay' && mission.id !== 'mars-orbiter'},
+        ...(mission.id === 'relay' ? [{id:'adapt-m2', label:'Adapt Remote Links Spacecraft →', primary:true}] : []),
+        ...(mission.id === 'mars-orbiter' ? [{id:'adapt-scout', label:'Adapt Mars Scout Spacecraft →', primary:true}] : []),
         {id:'next', label:choices.blueprint ? 'Continue with ' + choices.blueprint.name : choices.library ? 'Choose your spacecraft' : 'Continue current build', primary:Boolean(priorSelection)},
         {id:'my-satellites', label:'My Satellites (' + compatible + ' compatible)'},
         {id:'new-satellite', label:'Build a new satellite'},
@@ -66,13 +71,20 @@ export function renderBrief(container, data, choices = {}) {
     };
   }
   const reference=referenceForMission(mission.id);
+  const adaptNotice = mission.id === 'relay'
+    ? '<div class="adaptation-brief-callout" style="margin: 0.8rem 0; padding: 0.8rem; background: rgba(127, 224, 248, 0.08); border-left: 3px solid #7fe0f8; border-radius: 4px;"><h4 style="margin: 0 0 0.3rem; color: #7fe0f8; font-size: 0.9rem;">Inherited Design Adaptation Available</h4><p style="margin: 0; font-size: 0.82rem; color: #a7b7c4; line-height: 1.4;">This mission can inherit the spacecraft design from <strong>Remote Links (Earth LEO)</strong>. Translunar departure and far-side lunar occultation will require upgrading battery Wh, recorder capacity, and propulsion mass.</p></div>'
+    : mission.id === 'mars-orbiter'
+      ? '<div class="adaptation-brief-callout" style="margin: 0.8rem 0; padding: 0.8rem; background: rgba(127, 224, 248, 0.08); border-left: 3px solid #7fe0f8; border-radius: 4px;"><h4 style="margin: 0 0 0.3rem; color: #7fe0f8; font-size: 0.9rem;">Inherited Design Adaptation Available</h4><p style="margin: 0; font-size: 0.82rem; color: #a7b7c4; line-height: 1.4;">This mission can inherit the spacecraft design from <strong>Mars Scout (Flyby)</strong>. Entering Martian orbit rather than flying by requires retro-propulsion capture fuel, larger solar arrays (43% solar flux at 1.52 AU), and recorder upgrades.</p></div>'
+      : '';
   container.innerHTML = '<section class="campaign-brief" data-screen="brief">' +
-    '<header class="orbital-topbar"><button class="orbital-button" id="back">← Mission map</button><span>Mission briefing</span></header>' +
+    '<header class="orbital-topbar"><button class="orbital-button" id="back">'+(state.practiceMode?'← Return to campaign':'← Mission map')+'</button><span>'+(state.practiceMode?'Isolated practice':'Mission briefing')+'</span></header>' +
     '<div class="campaign-brief-body">' + (reference?'<aside id="mission-reference-model"></aside>':
-      '<div class="campaign-brief-art">' + missionImage(mission) + '</div>') +
-    '<main><div id="campaign-brief-panel"></div>' + sourceCard(mission.id) + '</main></div></section>';
+      '<div class="campaign-brief-art">' + (featuredMissions[mission.id]?featuredArt(mission.id):missionImage(mission)) + '</div>') +
+    '<main><div id="campaign-brief-panel"></div>' + adaptNotice + sourceCard(mission.id) + '</main></div></section>';
   bindMissionImages(container);
-  container.querySelector('#back').onclick = () => showScreen('missionSelect');
+  container.querySelector('#back').onclick = () => {
+    if (!state.practiceMode || !leavePracticeProfile()) showScreen('missionSelect');
+  };
   const panel = mountPanel(container.querySelector('#campaign-brief-panel'), 'brief', snapshot(), actions);
   const cleanReference=reference?mountReferenceCraft(container.querySelector('#mission-reference-model'),reference):null;
   return ()=>{panel.destroy();cleanReference?.();};

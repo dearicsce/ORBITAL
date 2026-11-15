@@ -1,4 +1,6 @@
 import {createLifecycle,validateLifecycle,synchronizeLifecycle} from '../unity/missionLifecycle.js';
+import {validateSystems,MODES} from '../unity/spacecraftSystems.js';
+import {SYSTEM_INCIDENTS} from '../unity/systemsOperations.js';
 import {validateRelay} from '../unity/relayTraffic.js';
 import {validatePhysical} from '../unity/physicalCruise.js';
 import {validateMissionEnd} from '../unity/missionEnd.js';
@@ -36,13 +38,14 @@ export function validateCommand(command) {
   assertSerializable(command);
   if(command.schemaVersion!==2||!['mode','pause','incident','end'].includes(command.type))throw new Error('Unknown command schema/type');
   number(command.tick,'command tick',{integer:true,max:120});number(command.sequence,'command sequence',{integer:true});
-  if(command.type==='mode'&&!['auto','observe','downlink','safe'].includes(command.mode))throw new Error('Invalid command mode');
+  if(command.type==='mode'&&!MODES.includes(command.mode))throw new Error('Invalid command mode');
   if(command.type==='pause'&&typeof command.paused!=='boolean')throw new Error('Pause command requires a boolean');
-  if(command.type==='incident'&&(typeof command.choiceId!=='string'||!Object.values(INCIDENTS).some(i=>i.choices.some(c=>c.id===command.choiceId))))throw new Error('Unknown incident choice');
+  if(command.type==='incident'&&(typeof command.choiceId!=='string'||![...Object.values(INCIDENTS),...Object.values(SYSTEM_INCIDENTS)].some(i=>i.choices.some(c=>c.id===command.choiceId))))throw new Error('Unknown incident choice');
   return command;
 }
 export function validateMissionRun(run,data) {
   assertSerializable(run);
+  validateSystems(run.operations?.systems);validateSystems(run.cruise?.systems);
   validateLifecycle(run);validateRelay(run.operations);validatePhysical(run.cruise);validateMissionEnd(run);
   if(run.sourceBundle){const entry=validateBundleIdentity(run.sourceBundle);if(run.sourceBundle.id!==run.design.scienceBundleId)throw Error('Source bundle/design mismatch');if(JSON.stringify(run.sourceProducts)!==JSON.stringify(entry.products))throw Error('Source attribution snapshot mismatch');}
   else if(run.design?.scienceBundleId)throw Error('Missing pinned source bundle');
@@ -122,7 +125,7 @@ export function validateMissionRun(run,data) {
     for(const key of ['storageGb','storageCapacityGb','collectedGb','deliveredGb','lostGb','batteryWh','batteryCapacityWh','fuelKg','outageMinutes','observedMinutes','serviceMinutes'])number(o[key],key);
     number(o.temperature,'temperature',{min:-273.15,max:1000});
     if(o.batteryWh>o.batteryCapacityWh+1e-7||o.storageGb>o.storageCapacityGb+1e-7||Math.abs(o.collectedGb-o.deliveredGb-o.storageGb-o.lostGb)>1e-7)throw new Error('Resource conservation failure');
-    if(!['auto','observe','downlink','safe'].includes(o.mode)||typeof o.paused!=='boolean'||typeof o.finished!=='boolean'||!Array.isArray(o.history)||!Array.isArray(o.log)||!Array.isArray(o.resolvedIncidents))throw new Error('Invalid operations state');
+    if(!MODES.includes(o.mode)||typeof o.paused!=='boolean'||typeof o.finished!=='boolean'||!Array.isArray(o.history)||!Array.isArray(o.log)||!Array.isArray(o.resolvedIncidents))throw new Error('Invalid operations state');
     if(!o.hardware||!o.profile)throw new Error('Missing operational hardware/profile');
     for(const key of ['panelW','baseW','payloadW','dataGbDay','downlinkGbDay','orbitFit'])number(o.hardware[key],'hardware '+key);
     for(const key of ['radioTransmitW','radioStandbyW','instantDownlinkGbDay'])if(o.hardware[key]!==undefined)number(o.hardware[key],'hardware '+key);

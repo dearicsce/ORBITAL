@@ -128,42 +128,52 @@ export function fuelForDv(deltaV,wetKg,isp=305){
  return wetKg*(-Math.expm1(-deltaV/(G0*isp)));
 }
 
-export function planChecks(plan,design,mission,data,evaluation,completed){
+export function planChecks(plan,design,mission,data,evaluation,completed,{structured=false}={}){
  const issues=[];
+ const issue=(code,message,limitLabel)=>structured?{code,message,...(limitLabel?{limitLabel}:{})}:message;
+ const fail=(code,message,limitLabel)=>issues.push(issue(code,message,limitLabel));
  if(!mission.transfer)return issues;
- if(!plan)return ['Confirm a transfer flight plan.'];
+ if(!plan)return [issue('transfer-plan','Confirm a transfer flight plan.')];
  try{
   validatePlan(plan);
-  if(plan.missionId!==mission.id||plan.orbitId!==design.orbitId)return ['The saved flight plan belongs to a different mission or orbit.'];
-  if(design.orbitId!=='leo')return ['Use the assigned low Earth departure orbit.'];
+  if(plan.missionId!==mission.id||plan.orbitId!==design.orbitId)return [issue('transfer-plan','The saved flight plan belongs to a different mission or orbit.')];
+  if(design.orbitId!=='leo')return [issue('transfer-plan','Use the assigned low Earth departure orbit.')];
   if(design.orbitElements){
    const orbit=presetOrbit('leo');
-   if(Math.abs(design.orbitElements.semiMajorAxisM-orbit.semiMajorAxisM)>1000||design.orbitElements.eccentricity>.001||Math.abs(design.orbitElements.inclinationRad-orbit.inclinationRad)>.005)issues.push('Restore the published circular departure orbit.');
+   if(Math.abs(design.orbitElements.semiMajorAxisM-orbit.semiMajorAxisM)>1000||design.orbitElements.eccentricity>.001||Math.abs(design.orbitElements.inclinationRad-orbit.inclinationRad)>.005)fail('transfer-plan','Restore the published circular departure orbit.');
   }
   const t=transferTrajectory(mission,design,plan),h=cruiseHardware(plan,design,data,evaluation,t);
   const module=CRUISE_MODULES[plan.powerModule],kit=ARRIVAL_KITS[plan.arrivalKit];
-  if(module.requires&&completed&&!completed[module.requires])issues.push(module.name+' unlocks after '+(data.missions.find(m=>m.id===module.requires)?.name||module.requires)+'.');
-  if(t.speculative&&plan.powerModule!=='beamed')issues.push('The stellar flyby requires the speculative beamed-sail and optical system.');
-  if(!t.speculative&&plan.powerModule==='beamed')issues.push('Reserve the experimental beamed-sail module for the stellar flyby.');
-  if((t.travelSec+(t.downlinkStepHours||6)*3600*16)/DAY_SEC/365.25>h.lifetimeYears)issues.push('The voyage exceeds the selected computer and autonomy lifetime.');
-  if(t.target.jovian&&!h.radHard)issues.push('Jupiter operations require a radiation-hardened computer.');
+  if(module.requires&&completed&&!completed[module.requires])fail('transfer-module',module.name+' unlocks after '+(data.missions.find(m=>m.id===module.requires)?.name||module.requires)+'.');
+  if(t.speculative&&plan.powerModule!=='beamed')fail('transfer-module','The stellar flyby requires the speculative beamed-sail and optical system.');
+  if(!t.speculative&&plan.powerModule==='beamed')fail('transfer-module','Reserve the experimental beamed-sail module for the stellar flyby.');
+  if((t.travelSec+(t.downlinkStepHours||6)*3600*16)/DAY_SEC/365.25>h.lifetimeYears)fail('transfer-lifetime','The voyage exceeds the selected computer and autonomy lifetime.');
+  if(t.target.jovian&&!h.radHard)fail('transfer-radiation','Jupiter operations require a radiation-hardened computer.');
   const farPower=generationAt(h,t.lunar?1:Math.max(1,t.target.au),t.travelSec);
-  if(h.batteryWh+2*(farPower-h.hotelW-h.payloadW)<0)issues.push('Battery and generation cannot sustain the two-hour science window.');
-  if(farPower<h.hotelW)issues.push('Cruise generation cannot support the bus at its farthest solar distance.');
+  if(h.batteryWh+2*(farPower-h.hotelW-h.payloadW)<0)fail('transfer-science-power','Battery and generation cannot sustain the two-hour science window.');
+  if(farPower<h.hotelW)fail('transfer-cruise-power','Cruise generation cannot support the bus at its farthest solar distance.');
   const interval=t.downlinkStepHours||6;
   const transmitDays=Math.max(0,Math.floor((16*interval-t.lightMinutes/60)/interval)*interval/24);
-  if(h.rateGbDay*transmitDays+1e-9<mission.profile.delivered)issues.push('The distance-limited radio cannot return enough data in the encounter window.');
-  if(h.recorderGb<mission.profile.delivered||h.dataGbDay/12<mission.profile.delivered)issues.push('Recorder or payload output cannot satisfy the encounter target.');
-  if(fuelForDv(t.correctionDv,h.stackKg)>h.trimFuelKg)issues.push('Spacecraft propellant cannot cover the mid-course correction allowance.');
+  if(h.rateGbDay*transmitDays+1e-9<mission.profile.delivered)fail('transfer-radio','The distance-limited radio cannot return enough data in the encounter window.');
+  if(h.recorderGb<mission.profile.delivered||h.dataGbDay/12<mission.profile.delivered)fail('transfer-recorder','Recorder or payload output cannot satisfy the encounter target.');
+  if(fuelForDv(t.correctionDv,h.stackKg)>h.trimFuelKg)fail('transfer-correction','Spacecraft propellant cannot cover the mid-course correction allowance.');
   const service=serviceMass(plan,h.spacecraftKg);
   const capability=kit.isp?G0*kit.isp*Math.log(h.stackKg/(h.stackKg-service.fuelKg)):0;
-  if(capability<t.arrivalDv)issues.push('Add a compatible braking stage with enough arrival delta-v.');
-  if(t.arrivalDv===0&&plan.arrivalKit!=='none')issues.push('Choose the flyby configuration for this encounter.');
+  if(capability<t.arrivalDv)fail('transfer-arrival','The selected braking stage cannot supply the required arrival delta-v.',Math.floor(capability).toLocaleString('en-US')+' m/s available');
+  if(t.arrivalDv===0&&plan.arrivalKit!=='none')fail('transfer-flyby','Choose the flyby configuration for this encounter.');
   if(!design.rocketBlueprint&&!t.speculative){
    const preset=data.launchers.find(l=>l.id===design.launcherId);
    const available=preset?.departureCapability??({albatross:13100,roc:14400})[preset?.id]??0;
-   if(9350+t.departureDv>available||(preset?.capacity.tli||0)<h.stackKg)issues.push('This preset cannot provide the departure energy and transfer stack mass. Build a suitable custom launcher.');
+   const departureMass=preset?.capacity.tli||0;
+   const required=9350+t.departureDv;
+   const number=n=>Math.round(n).toLocaleString('en-US');
+   if(required>available)fail('departure-energy',
+     'Departure needs '+number(required)+' m/s. The selected launcher supplies '+number(available)+' m/s for this transfer.',
+     available?number(available)+' m/s available':'Preset has no rated departure capability');
+   if(departureMass<h.stackKg)fail('departure-mass',
+     'The loaded stack is '+h.stackKg.toFixed(1)+' kg. This launcher is rated for '+number(departureMass)+' kg on departure.',
+     number(departureMass)+' kg departure limit');
   }
- }catch(error){issues.push(error.message);}
+ }catch(error){fail('transfer-plan',error.message);}
  return issues;
 }

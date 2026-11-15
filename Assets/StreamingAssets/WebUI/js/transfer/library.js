@@ -1,7 +1,8 @@
 import {validatePlan} from './planning.js';
 const KEY='orbital_flight_plans_v1';
 
-export function planLibrary(storage=globalThis.localStorage){
+import {profileStorage} from '../unity/practiceProfile.js';
+export function planLibrary(storage=profileStorage()){
  function read(){
   const plans=JSON.parse(storage?.getItem(KEY)||'[]');
   if(!Array.isArray(plans)||plans.length>50)throw Error('Invalid flight plan library');

@@ -61,7 +61,7 @@ export function createLaunchScene(container,{launcherId,launchResult,data,design
  const finish=()=>{if(finished)return;finished=true;onDone({success:launchResult.success});};
  kit.draw=(dt,t)=>{
   const presentationDt=Math.max(0,t-lastPresentationTime);lastPresentationTime=t;
-  if(operations){space.updateOperations(0,dt,t,{orbit:operations.orbit,elapsedSec:operations.elapsedSec,paused:operations.paused});stars.position.copy(kit.camera.position);return;}
+  if(operations){space.updateOperations(0,dt,t,operations);stars.position.copy(kit.camera.position);return;}
   if(finished||loading||!rocket)return;
   const flightDt=paused?0:presentationDt;
   if(space){if(space.ready)spaceElapsed=Math.min(DEPLOYMENT_SECONDS,spaceElapsed+flightDt);const p=Math.min(1,spaceElapsed/DEPLOYMENT_SECONDS);space.update(p);stars.position.copy(kit.camera.position);onTelemetry({elapsed:elapsed+spaceElapsed,progress:.6+p*.4,stage:transferCoast?'Parking-orbit insertion':'Payload deployment'});onPhase(space.caption?.(p)||'Orbital deployment');if(p===1)finish();return;}
@@ -88,6 +88,6 @@ export function createLaunchScene(container,{launcherId,launchResult,data,design
  };
  if(!kit.renderer)onPhase('3D unavailable · Use Skip to continue');
  const destroy=()=>{finished=true;operations=null;horizon.userData.stopTexture();space?.destroy();if(!space)assembly?.destroy();kit.destroy();};
- return {getOrbitView(){if(!space?.ready)return null;operations={elapsedSec:0,orbit:null,paused:false};const sample=()=>space.updateOperations(0,0,performance.now()/1000,operations);sample();return {setTime(seconds,{orbit=null,paused=false}={}){operations.elapsedSec=seconds;operations.orbit=orbit;operations.paused=paused;sample();},setProgress(p,options){this.setTime(Math.max(0,Math.min(1,p))*OPERATION_WINDOW_SEC,options);},setCamera(mode,north){space.setCamera(mode,north);sample();},focusTarget(id){space.focusTarget(id);sample();},onTargetSelected(callback){space.onTargetSelected(callback);},flash(type){space.flash(type);},destroy};},getCheckpoint,togglePause(){paused=!paused;lastPresentationTime=performance.now()/1000;},getMetrics:()=>({...kit.metrics,drawCalls:kit.renderer?.info.render.calls||0}),skip(){if(space?.ready)space.update(1);finish();},destroy};
+ return {getOrbitView(){if(!space?.ready)return null;operations={elapsedSec:0,orbit:null,paused:false,attitude:null};const sample=()=>space.updateOperations(0,0,performance.now()/1000,operations);sample();return {setTime(seconds,{orbit=null,paused=false,attitude=null}={}){operations={elapsedSec:seconds,orbit,paused,attitude};sample();},setProgress(p,options){this.setTime(Math.max(0,Math.min(1,p))*OPERATION_WINDOW_SEC,options);},setCamera(mode,north){space.setCamera(mode,north);sample();},focusTarget(id){space.focusTarget(id);sample();},onTargetSelected(callback){space.onTargetSelected(callback);},flash(type){space.flash(type);},destroy};},getCheckpoint,togglePause(){paused=!paused;lastPresentationTime=performance.now()/1000;},getMetrics:()=>({...kit.metrics,drawCalls:kit.renderer?.info.render.calls||0}),skip(){if(space?.ready)space.update(1);finish();},destroy};
 }
 

@@ -8,10 +8,10 @@ const masked = new Map();
 const listeners = new Map();
 export function send(type, payload = {}) {
   const commandId=epoch+'-'+ ++sequence;
-  window.chrome.webview.postMessage({protocol: 1, commandId, type, payload});
+  window.chrome?.webview?.postMessage({protocol: 1, commandId, type, payload});
   return commandId;
 }
-window.chrome.webview.addEventListener('message', event => {
+window.chrome?.webview?.addEventListener('message', event => {
   const message = event.data;
   if(typeof message==='string'&&message.startsWith('orbital-export:')){
     let status=document.querySelector('#orbital-export-status');

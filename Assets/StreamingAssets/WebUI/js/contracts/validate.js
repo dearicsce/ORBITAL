@@ -6,6 +6,7 @@ export {assertSerializable} from './serializable.js';
 import {validateAssembly,projectAssembly} from '../workshop/blueprint.js';
 import {validateOrbit,presetOrbit,EARTH_STATIONS} from '../engine/orbitalGeometry.js';
 import {INCIDENTS} from '../engine/operations.js';
+import {validateRules} from '../unity/spacecraftSystems.js';
 export const SCHEMA_VERSION=2;
 export function number(value,name,{min=0,max=Infinity,integer=false}={}) {
   if(!Number.isFinite(value)||value<min||value>max||(integer&&!Number.isSafeInteger(value)))throw new Error(`${name} is outside its valid range`);
@@ -59,6 +60,7 @@ export function migrateDesign(input,data,{strictSlots=true}={}) {
   assertSerializable(input);
   if(!input||typeof input!=='object'||Array.isArray(input)||input.schemaVersion!==undefined&&![1,2].includes(input.schemaVersion))throw new Error('Unsupported spacecraft schema');
   let design={...structuredClone(input),schemaVersion:2};
+  if(design.autonomy!==undefined)design.autonomy=validateRules(design.autonomy);
   if(design.evidencePlan!=null&&!['balanced','focused'].includes(design.evidencePlan))throw Error('Invalid evidence plan');
   if(design.scienceBundleId!=null&&(typeof design.scienceBundleId!=='string'||!/^[a-z0-9-]{1,80}$/.test(design.scienceBundleId)))throw Error('Invalid science bundle selection');
   for(const key of ['rocketId','planId'])if(design[key]!=null&&(typeof design[key]!=='string'||!/^[a-z0-9-]{1,80}$/i.test(design[key])))throw Error('Invalid '+key);
@@ -71,9 +73,9 @@ export function migrateDesign(input,data,{strictSlots=true}={}) {
   for(const [field,type] of [['busId','bus'],['commsId','comms'],['computerId','computer'],['pointingId','pointing']]){
     const id=design[field];if(id!=null&&(typeof id!=='string'||data&&!data.parts.some(p=>p.id===id&&p.type===type)))throw new Error(`Invalid ${field}`);
   }
-  for(const [field,type] of [['panelIds','panel'],['batteryIds','battery'],['fuelIds','fuel'],['instrumentIds','instrument']]){
+  for(const [field,type] of [['panelIds','panel'],['batteryIds','battery'],['fuelIds','fuel'],['instrumentIds','instrument'],['thermalIds','thermal']]){
     design[field] ??= [];
-    if(!Array.isArray(design[field])||design[field].length>(design.assembly?128:type==='instrument'?100:2))throw new Error(`Impossible quantity: ${field}`);
+    if(!Array.isArray(design[field])||design[field].length>(design.assembly?128:type==='instrument'?100:type==='thermal'?24:2))throw new Error(`Impossible quantity: ${field}`);
     if(design[field].some(id=>typeof id!=='string'||data&&!(type==='instrument'?data.instruments:data.parts.filter(p=>p.type===type)).some(p=>p.id===id)))throw new Error(`Invalid ${field} ID`);
   }
   for(const [field,list] of [['launcherId','launchers'],['orbitId','orbits']])if(design[field]!=null&&(typeof design[field]!=='string'||data&&!data[list].some(p=>p.id===design[field])))throw new Error(`Invalid ${field}`);

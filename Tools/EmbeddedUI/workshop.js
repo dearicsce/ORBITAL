@@ -15,12 +15,18 @@ import {createLibrary} from '../workshop/library.js';
 import {metadata,structure,FACE_NAMES,surfaces} from '../workshop/structure.js';
 import {readEconomy,purchase,difficultyLabel} from '../workshop/economy.js';
 import {createWorkshopView} from '../three/workshopView.js';
+import {starterDesign} from '../campaign.js';
+import {DEFAULT_RULES,RULE_PRESETS,validateRules} from '../unity/spacecraftSystems.js';
+import {TESTS,testDesignIdentity,runSpacecraftTest} from '../unity/spacecraftTests.js';
 
-const categories=[['all','All'],['bus','Buses'],['panel','Solar wings'],['battery','Batteries'],['comms','Communications'],['computer','Computers'],['pointing','Attitude'],['fuel','Propulsion'],['instrument','Payloads']];
+const categories=[['all','All'],['bus','Buses'],['panel','Solar wings'],['battery','Batteries'],['comms','Communications'],['computer','Computers'],['pointing','Attitude'],['fuel','Propulsion'],['instrument','Payloads'],['thermal','Thermal']];
 
 export function renderWorkshop(container,data,params={}){
  const training=params.academy;
- const library=createLibrary(data);let build,notice='',saved=null,selected=null,tab='all',query='',availableOnly=false,compatibleOnly=false,comparisons=[],mission=params.mission?data.missions.find(m=>m.id===getState().currentDesign.missionId):null,preview=null,alive=true;
+ const targetMissionId = params.missionId || (params.adaptFrom ? (params.adaptFrom === 'm2' ? 'relay' : params.adaptFrom === 'mars-scout' ? 'mars-orbiter' : getState().currentDesign.missionId) : getState().currentDesign.missionId);
+ let build,notice='',saved=null,selected=null,tab=categories.some(([id])=>id===params.category)?params.category:'all',query='',availableOnly=false,compatibleOnly=false,comparisons=[],mission=params.mission?data.missions.find(m=>m.id===targetMissionId):null,preview=null,alive=true;
+ let candidateId=null;
+ const library=createLibrary(data, undefined, mission?.id);
  try{build=library.recover();}catch(error){notice='Draft recovery failed: '+error.message;}
  if(!build)build=makeBlueprint(getState().currentDesign,data,'My satellite');
  if(params.fresh)build=makeBlueprint(getState().currentDesign,data,'New satellite');
@@ -29,6 +35,14 @@ export function renderWorkshop(container,data,params={}){
   const deployment={...params.preset};
   setDesign({...deployment,assembly:null,rocketId:null,rocketBlueprint:null,planId:null,flightPlan:null});
   build=makeBlueprint(deployment,data,mission.name+' satellite');
+ }
+ if(params.adaptFrom){
+  const sourceMissionId = params.adaptFrom;
+  const sourceMission = data.missions.find(m => m.id === sourceMissionId);
+  const baseline = starterDesign(sourceMission, data, getState().difficulty || 'normal');
+  const deployment = {...baseline, missionId: targetMissionId, assembly:null, rocketId:null, rocketBlueprint:null, planId:null, flightPlan:null};
+  setDesign(deployment);
+  build = makeBlueprint(deployment, data, (sourceMissionId === 'm2' ? 'Remote Links Adapted' : 'Mars Scout Adapted'));
  }
  if(params.blueprint)build=copy(params.blueprint);
  if(training){build=academyBlueprint(training,data);mission=data.missions.find(m=>m.id==='tutorial');}
@@ -42,7 +56,33 @@ export function renderWorkshop(container,data,params={}){
  <aside class="ws-inspector"><section id="ws-selected"></section><details open><summary>Installed components <span id="ws-installed-count"></span></summary><div id="ws-installed"></div></details><details open><summary>Engineering & readiness</summary><div id="ws-fit-panel"></div><div id="ws-engineering"></div></details><details><summary>Blueprint role tags & notes</summary><label>Role tags (comma separated)<input id="ws-tags" maxlength="2000"></label><label>Design notes<textarea id="ws-description" maxlength="10000" rows="4"></textarea></label></details></aside></div>
  <footer class="ws-actions"><div id="ws-mission"></div><button class="btn btn-primary" id="ws-review">Continue to launch review →</button></footer><div id="ws-dialog"></div></section>`;
 
+ const layout=container.querySelector('.ws-layout');
+ if(getState().practiceMode)container.querySelector('.ws-eyebrow').textContent='Satellite Workshop · Practice';
+ layout.prepend(layout.querySelector('.ws-centre'));
+ function expandTools(label,items){
+  const details=document.createElement('details');
+  details.className='ws-advanced';
+  const summary=document.createElement('summary');
+  summary.textContent=label;
+  items[0].before(details);
+  details.append(summary,...items);
+  return details;
+ }
+ if(!training){
+  expandTools('View & placement tools',[...layout.querySelectorAll('.ws-camera,.ws-view-options,.ws-snap,.ws-centre > p')]);
+ }
  const find=id=>container.querySelector('#'+id);let importEpoch=0;
+ expandTools('Filters & comparison',[find('ws-available').parentElement,find('ws-compatible').parentElement,find('ws-compare')]);
+ find('ws-view').insertAdjacentHTML('afterend', '<section id="ws-resources" class="ws-resources" aria-label="Spacecraft resources"><div id="ws-meters" class="ws-meters"></div><div class="ws-preview-note"><p id="ws-candidate-status" role="status"></p><button class="btn" id="ws-cancel-candidate" hidden>Cancel preview</button></div></section>');
+ find('ws-cancel-candidate').onclick=()=>clearCandidate(true);
+ if(!training){
+  const tools=document.createElement('div');tools.className='spacecraft-workshop-tools';
+  tools.innerHTML='<button class="btn" id="ws-tests">Test spacecraft</button> <button class="btn" id="ws-autonomy">Autopilot rules</button><span id="ws-test-status" role="status"></span>';
+  layout.querySelector('.ws-inspector').append(tools);
+  expandTools('Tests & autopilot',[tools]);
+  find('ws-tests').onclick=showTests;
+  find('ws-autonomy').onclick=showRules;
+ }
  const fitPanel=mountPanel(find('ws-fit-panel'),'fit',{name:'Stowed dimensions'});
  if(training){
   for(const id of ['ws-save','ws-save-as','ws-export','ws-library','ws-new','ws-missions-top','ws-review-top','ws-deployment','ws-missions','ws-review','ws-wallet']){const el=find(id);if(el)el.hidden=true;}
@@ -68,6 +108,68 @@ export function renderWorkshop(container,data,params={}){
  function save(as=false){if(training)return false;find('ws-status').textContent='Saving…';try{const next=copy(build);next.name=find('ws-name').value.trim()||'Untitled satellite';if(as){next.id=uid();next.createdAt=new Date().toISOString();}next.thumbnail=view.thumbnail();const stored=library.save(next);build=stored;if(as)history=createHistory(build);else history.replaceCurrent(build);saved=JSON.stringify(stored);dirty=false;notice='Satellite saved.';persistDraft();render();return true;}catch(error){notice='Save failed: '+error.message;find('ws-status').textContent='Save error';find('ws-notice').textContent=notice;return false;}}
 
  function dialog(title,body,buttons){importEpoch++;const returnFocus=document.activeElement,host=find('ws-dialog');host.innerHTML=`<div class="ws-modal-backdrop"><section class="ws-modal" role="dialog" aria-modal="true" aria-labelledby="ws-modal-title"><h2 id="ws-modal-title">${escape(title)}</h2>${body}<div class="ws-modal-actions">${buttons.map((b,i)=>`<button class="btn" data-choice="${i}">${escape(b[0])}</button>`).join('')}</div></section></div>`;buttons.forEach((b,i)=>host.querySelector(`[data-choice="${i}"]`).onclick=()=>{host.innerHTML='';importEpoch++;b[1]?.();if(!host.children.length&&returnFocus?.isConnected)returnFocus.focus();});host.querySelector('button')?.focus();}
+ function currentTestDesign(){return {...getState().currentDesign,assembly:copy(build.assembly),missionId:mission?.id||getState().currentDesign.missionId};}
+ function showTests(){
+  const snapshot=currentTestDesign(), identity=testDesignIdentity(snapshot,data), prior=build.assembly.systemTests;
+  const results=prior?.identity===identity?copy(prior.results):{};
+  dialog('Test spacecraft','<p>Tests use a copy of this design. Launch readiness still uses the regular checks.</p><button class="btn" id="ws-run-all">Run all</button><div id="ws-test-list"></div>',[['Close']]);
+  const list=find('ws-test-list'), all=find('ws-run-all'), epoch=importEpoch;
+  let running=[];
+  function refresh(){
+   list.innerHTML=Object.entries(TESTS).map(([id,test])=>{
+    const r=results[id], status=running.includes(id)?'Running':r?r.passed?'Passed':'Needs attention':prior?.results[id]?'Needs rerun':'Ready';
+    return `<article class="spacecraft-test"><h3>${test.label} <span role="status">${status}</span></h3><p>${test.fixture}</p>
+     ${r?`<p>${escape(r.message)}</p>`:''}<button class="btn" data-test="${id}" ${running.length?'disabled':''}>Run test</button>
+     ${r?.route?`<button class="btn" data-test-route="${id}">Open ${r.route==='launcher'?'launcher':categories.find(([key])=>key===r.route)?.[1]||'mount'}</button>`:''}</article>`;
+   }).join('');
+   all.disabled=running.length>0;
+   list.querySelectorAll('[data-test]').forEach(button=>button.onclick=()=>run([button.dataset.test],button.dataset.test));
+   list.querySelectorAll('[data-test-route]').forEach(button=>button.onclick=()=>{
+    const route=results[button.dataset.testRoute].route;
+    find('ws-dialog').querySelector('[data-choice]').click();
+    if(route==='launcher'){continueToLauncher();return;}
+    const category=categories.find(([key])=>key===route);
+    if(category){tab=route;query='';find('ws-search').value='';catalogue();find('ws-tabs').querySelector('[data-category="'+route+'"]')?.focus();}
+    else {selected=route;view.select(selected);inspector();find('ws-installed').closest('details').open=true;
+     [...find('ws-installed').querySelectorAll('[data-select]')].find(b=>b.dataset.select===route)?.focus();}
+   });
+  }
+  function run(ids,focus){
+   running=ids;refresh();
+   setTimeout(()=>{
+    if(!alive||epoch!==importEpoch)return;
+    for(const id of ids)results[id]=runSpacecraftTest(id,snapshot,data);
+    running=[];
+    mutate(b=>{b.assembly.systemTests={version:1,identity,results:copy(results)};});
+    refresh();
+    (focus?list.querySelector('[data-test="'+focus+'"]'):all).focus();
+   },75);
+  }
+  all.onclick=()=>run(Object.keys(TESTS));refresh();
+ }
+ function showRules(){
+  const initial=validateRules(build.assembly.autonomy);
+  const labels={reserve:'Low battery → Safe mode',hot:'Hot payload → Pause observation',recorder:'Recorder near full + contact → Transmit'};
+  const units={reserve:'%',hot:' °C',recorder:'%'};
+  dialog('Autopilot rules',`<p>Battery and heat protection come first. Urgent downlinks come before planned observation.</p>
+   <div id="ws-rules">${Object.entries(RULE_PRESETS).map(([id,options])=>`<fieldset><legend>${labels[id]}</legend>
+   <label><input type="checkbox" data-rule="${id}" ${initial[id]?'checked':''}> Enabled</label>
+   <label>Trigger / recover <select data-preset="${id}">${Object.entries(options).map(([name,[a,b]])=>`<option ${name===initial[id+'Preset']?'selected':''} value="${name}">${name} · ${a}${units[id]} / ${b}${units[id]}</option>`).join('')}</select></label></fieldset>`).join('')}</div>
+   <button class="btn" id="ws-rule-defaults">Restore defaults</button>`,[['Close']]);
+  function store(rules){mutate(b=>{b.assembly.autonomy=validateRules(rules);});}
+  const host=find('ws-rules');
+  host.onchange=()=>{
+   const rules={};
+   for(const input of host.querySelectorAll('[data-rule]'))rules[input.dataset.rule]=input.checked;
+   for(const input of host.querySelectorAll('[data-preset]'))rules[input.dataset.preset+'Preset']=input.value;
+   store(rules);
+  };
+  find('ws-rule-defaults').onclick=()=>{
+   for(const input of host.querySelectorAll('[data-rule]'))input.checked=DEFAULT_RULES[input.dataset.rule];
+   for(const input of host.querySelectorAll('[data-preset]'))input.value=DEFAULT_RULES[input.dataset.preset+'Preset'];
+   store(DEFAULT_RULES);
+  };
+ }
  function guard(action){if(!dirty){action();return;}dialog('Unsaved changes','<p>Save this named satellite before continuing?</p>',[['Save and continue',()=>{if(save())action();}],['Discard changes and continue',()=>{build=saved?JSON.parse(saved):makeBlueprint({busId:null},data,'New satellite');history=createHistory(build);selected=null;dirty=false;persistDraft();setDesign(projectAssembly({...getState().currentDesign,assembly:build.assembly},data));saveProgress();action();}],['Cancel',()=>find('ws-name').focus()]]);}
  function load(b,isNamed=true){build=copy(b);selected=null;history=createHistory(build);saved=isNamed?JSON.stringify(b):null;dirty=!isNamed;persistDraft();render();}
 
@@ -81,18 +183,122 @@ export function renderWorkshop(container,data,params={}){
   find('ws-import').onchange=async e=>{const token=++importEpoch;try{const file=e.target.files[0];if(!file)return;if(file.size>2e6)throw Error('Import exceeds 2 MB');const source=await file.text();if(token!==importEpoch||!host.querySelector('#ws-import'))return;const b=library.import(source);b.id=uid();host.innerHTML='';guard(()=>{load(b,false);dirty=true;notice='Imported working draft. Save to add it to My Satellites.';render();});}catch(error){notice='Import failed: '+error.message;find('ws-notice').textContent=notice;const feedback=host.querySelector('#ws-import-error')||document.createElement('p');feedback.id='ws-import-error';feedback.setAttribute('role','alert');feedback.textContent=notice;host.querySelector('.ws-modal')?.append(feedback);}};
  }
 
- function add(id){const p=catalog(data,id);if(!unlocked().includes(id))return;if(p.type==='bus'){
-  const candidate=copy(build.assembly);candidate.busId=id;const conflicts=placementIssues(candidate,data);const unresolved=new Set(conflicts.map(i=>i.instanceId));
-  const apply=()=>mutate(b=>{b.assembly.busId=id;for(const c of b.assembly.components)if(unresolved.has(c.instanceId))c.placementStatus='needs-placement';});
-  if(build.assembly.busId&&build.assembly.busId!==id)dialog('Replace bus?',`<p>All ${build.assembly.components.length} component identities and placements will be retained. ${build.assembly.components.length-[...unresolved].filter(v=>v!=='bus').length} components keep valid mounts. Undo restores the complete previous bus.</p><ul>${conflicts.map(i=>'<li>'+escape(catalog(data,candidate.components.find(c=>c.instanceId===i.instanceId)?.catalogId)?.name||'Bus')+': '+escape(i.message)+'</li>').join('')||'<li>All current placements fit.</li>'}</ul>`,[['Replace bus',apply],['Cancel',()=>{}]]);else apply();return;
+ function proposeInstallation(part){
+  const assembly=copy(build.assembly);
+  if(part.type==='bus'){
+   assembly.busId=part.id;
+   const conflicts=placementIssues(assembly,data);
+   const unresolved=new Set(conflicts.map(issue=>issue.instanceId));
+   for(const component of assembly.components)if(unresolved.has(component.instanceId))component.placementStatus='needs-placement';
+   return {assembly,conflicts};
+  }
+  if(!assembly.busId)return {blocked:'Choose a bus first.'};
+  if(['computer','pointing','comms'].includes(part.type)&&assembly.components.some(c=>catalog(data,c.catalogId)?.type===part.type)){
+   return {blocked:'Remove the current '+part.type+' system before adding another.'};
+  }
+  const internal=metadata(part).internal;
+  const occupied=new Set(assembly.components.filter(c=>c.bayId).flatMap(c=>
+   Array.from({length:metadata(catalog(data,c.catalogId)).bayUnits},(_,i)=>Number(c.bayId.split('-')[1])+i)));
+  let bay=0;
+  while(occupied.has(bay))bay++;
+  const count=assembly.components.filter(c=>!c.bayId).length;
+  const surface=part.type==='panel'?(count%2?'left':'right'):part.type==='comms'?'top':'front';
+  const component=instance(part.id,internal?{bay:'bay-'+bay}:{surface,position:[0,0,0]});
+  if(part.type==='fuel'){
+   const used=new Set(assembly.components.filter(c=>catalog(data,c.catalogId)?.type==='fuel').map(c=>c.configuration.propulsionPort));
+   let port=0;
+   while(used.has(port))port++;
+   component.configuration.propulsionPort=port;
+  }
+  assembly.components.push(component);
+  if(part.type==='thermal'&&!internal){
+   for(const face of ['back','top','front','left','right']){
+    component.attachmentSurfaceId=face;
+    if(!placementIssues(assembly,data).some(issue=>issue.partIds?.includes(component.instanceId)))break;
+   }
+  }
+  return {assembly,component};
  }
- if(!build.assembly.busId){notice='Choose a bus first.';render();return;}
- if(['computer','pointing','comms'].includes(p.type)&&build.assembly.components.some(c=>catalog(data,c.catalogId)?.type===p.type)){notice='Remove the current '+p.type+' system before adding another.';render();return;}
- mutate(b=>{const internal=metadata(p).internal;const occupied=new Set(b.assembly.components.filter(c=>c.bayId).flatMap(c=>Array.from({length:metadata(catalog(data,c.catalogId)).bayUnits},(_,i)=>Number(c.bayId?.split('-')[1]||0)+i)));let n=0;while(occupied.has(n))n++;const count=b.assembly.components.filter(c=>!c.bayId).length;const c=instance(id,internal?{bay:'bay-'+n}:{surface:p.type==='panel'?(count%2?'left':'right'):p.type==='comms'?'top':'front',position:[0,0,0]});if(p.type==='fuel'){const used=new Set(b.assembly.components.filter(v=>catalog(data,v.catalogId)?.type==='fuel').map(v=>v.configuration.propulsionPort));let port=0;while(used.has(port))port++;c.configuration.propulsionPort=port;}b.assembly.components.push(c);if(training&&p.type==='panel')training.wings[c.instanceId]=[c.attachmentSurfaceId,...c.localPosition];selected=c.instanceId;}); }
+
+ function add(id){
+  const part=catalog(data,id);
+  if(!part||!unlocked().includes(id))return;
+  const {assembly,component,blocked,conflicts}=proposeInstallation(part);
+  if(blocked){notice=blocked;render();return;}
+  const apply=()=>mutate(next=>{
+   candidateId=null;
+   next.assembly=assembly;
+   if(component){
+    if(training&&part.type==='panel')training.wings[component.instanceId]=[component.attachmentSurfaceId,...component.localPosition];
+    selected=component.instanceId;
+   }
+  });
+  if(part.type==='bus'&&build.assembly.busId&&build.assembly.busId!==id){
+   dialog('Replace bus?',`<p>All ${assembly.components.length} components are retained. Mounts with conflicts need repositioning.</p><ul>${conflicts.map(issue=>'<li>'+escape(issue.message)+'</li>').join('')||'<li>All current placements fit.</li>'}</ul>`,[['Replace bus',apply],['Cancel']]);
+  }else apply();
+ }
+
+ function engineering(assembly){
+  const design=training?academyDesign(assembly,data):resolveFlightDesign(projectAssembly({
+   ...getState().currentDesign,assembly,missionId:mission?.id||null,
+  },data));
+  return {design,estimate:evaluateDesign(design,data)};
+ }
+
+ function renderResources(current=engineering(build.assembly)){
+  const part=candidateId?catalog(data,candidateId):null;
+  const proposal=part?proposeInstallation(part):null;
+  const projected=proposal?.assembly?engineering(proposal.assembly):null;
+  const budget=current.estimate.effectiveBudget;
+  const remaining=sample=>Number.isFinite(budget)?budget-sample.estimate.totalCost:NaN;
+  const {estimate:e}=current;
+  const recorderRate=sample=>catalog(data,sample.design.computerId)?.maxDataGbDay||0;
+  const rows=[
+   {key:'mass',label:'Mass',unit:'kg',read:s=>s.estimate.launchMass,limit:e.capacity,tip:'Spacecraft and any planned transfer hardware. Limit is for the selected launcher and orbit.'},
+   {key:'power',label:'Power draw',unit:'W',read:s=>s.estimate.averageLoad,limit:e.panelPower,projectedLimit:projected?.estimate.panelPower,tip:'Average modeled load against nominal solar generation. Eclipse reserve is in Engineering & readiness.'},
+   {key:'budget',label:'Budget left',unit:'$M',read:remaining,limit:budget,budget:true,tip:'Mission budget minus modeled parts, launch and operations cost. Equipment unlocks use coins.'},
+   {key:'data',label:'Data processed',unit:'GB/day',read:s=>s.estimate.dataPerDay,limit:recorderRate(current),projectedLimit:projected&&recorderRate(projected),tip:'Modeled payload data rate after computer processing limits. Earth receipt depends on contact and radio.'},
+  ];
+  const format=value=>Number.isFinite(value)?Number(value.toFixed(2)).toLocaleString('en-US'):'—';
+  const signed=(value,unit)=>`${value>0?'+':''}${format(value)} ${unit}`;
+  find('ws-meters').innerHTML=rows.map(row=>{
+   const value=row.read(current), next=projected?row.read(projected):null;
+   const delta=next===null?null:next-value;
+   const limit=row.limit, nextLimit=row.projectedLimit??limit;
+   const fill=(number,cap)=>cap>0&&Number.isFinite(number)?Math.min(100,Math.max(0,100*number/cap)):0;
+   const warn=row.budget?value<0:row.key==='power'?value>limit:limit>0&&value>limit;
+   return `<div class="ws-meter${warn?' over-limit':''}" data-resource="${row.key}" data-value="${value}" ${next===null?'':`data-proposed="${next}"`} title="${escape(row.tip)}">
+    <span>${row.label}</span><strong>${format(value)} <small>${row.unit}</small></strong>
+    <span class="ws-meter-limit">${limit>0?(row.budget?'of ':row.key==='power'?'of ':'limit ')+format(limit)+' '+row.unit:row.key==='mass'?'Launcher limit pending':'—'}</span>
+    <span class="ws-meter-track" aria-hidden="true"><i style="width:${fill(value,limit)}%"></i>${next!==null&&nextLimit>0?`<b style="left:${fill(next,nextLimit)}%"></b>`:''}</span>
+    ${next===null?'':`<span class="ws-meter-delta">→ ${format(next)} ${row.unit} <small>(${signed(delta,row.unit)})</small>${nextLimit!==limit?`<small class="ws-new-limit">${row.key==='power'?'Solar':'Limit'} ${format(nextLimit)} ${row.unit} (${signed(nextLimit-limit,row.unit)})</small>`:''}</span>`}
+   </div>`;
+  }).join('');
+  const allowed=part&&unlocked().includes(part.id);
+  const issues=proposal?.assembly?placementIssues(proposal.assembly,data):[];
+  const issueCount=proposal?.conflicts?.length??issues.length;
+  const status=[part?'Preview · '+part.name:'Installed design',part&&!allowed?'Locked · '+(part.unlockPrice||100)+' coins to unlock':'',proposal?.blocked||'',issueCount?issueCount+' placement '+(issueCount===1?'check':'checks')+' need attention':''].filter(Boolean);
+  find('ws-candidate-status').textContent=status.join(' · ');
+  find('ws-cancel-candidate').hidden=!part;
+ }
+
+ function showCandidate(id){
+  candidateId=id;
+  for(const button of find('ws-cards').querySelectorAll('[data-preview]')){
+   button.setAttribute('aria-pressed',String(id===button.dataset.preview));
+  }
+  renderResources();
+ }
+
+ function clearCandidate(restoreFocus=false){
+  const prior=candidateId;
+  showCandidate(null);
+  if(restoreFocus)[...find('ws-cards').querySelectorAll('[data-preview]')].find(b=>b.dataset.preview===prior)?.focus({preventScroll:true});
+ }
 
  function catalogue(){const allowed=unlocked();let coins=0;try{coins=readEconomy().coins;}catch(error){notice=error.message;}find('ws-wallet').textContent=coins+' coins · unlock once, install repeatedly';find('ws-tabs').innerHTML=categories.map(([id,name])=>`<button class="btn" data-category="${id}" aria-pressed="${tab===id}">${name}</button>`).join('');
   const items=[...data.parts,...data.instruments].filter(p=>(!training||allowed.includes(p.id))&&(!compatibleOnly||p.type==='bus'||(metadata(p).internal?metadata(p).bayUnits<=structure(build.assembly.busId).bays:metadata(p).span<=Math.min(...Object.values(structure(build.assembly.busId)).slice(0,3))))&&(tab==='all'||(data.instruments.includes(p)?'instrument':p.type)===tab)&&(!availableOnly||allowed.includes(p.id))&&(`${p.name} ${p.id}`).toLowerCase().includes(query.toLowerCase()));
-  find('ws-cards').innerHTML=items.map(p=>{const locked=!allowed.includes(p.id),half=p.type==='panel'?.5:1,price=p.unlockPrice||100;return `<article class="ws-card ${locked?'locked':''}"><h3>${escape(p.name)}${half===.5?' · single wing':''}</h3><p>${(p.mass*half).toFixed(1)} kg · $${(p.cost*half).toFixed(2)}M${p.power?' · '+(p.power*half).toFixed(0)+' W':''}${p.capacityWh?' · '+p.capacityWh+' Wh':''}</p><small>${p.type==='bus'?structure(p.id).bays+' internal bays':metadata(p).internal?'Internal bay module':'Exterior surface mount'}${locked?' · LOCKED':''}</small><label><input type="checkbox" data-compare="${p.id}" ${comparisons.includes(p.id)?'checked':''}> Compare</label><details><summary>Specifications</summary><p>${escape(p.description||p.tip||'Scaled educational component.')} ${p.dataPerDay?'Data: '+p.dataPerDay+' GB/day. ':''}${p.recorderCapacityGb?'Recorder: '+p.recorderCapacityGb+' GB. ':''}${p.maxDataGbDay?'Processing: '+p.maxDataGbDay+' GB/day. ':''}${p.fuelKg?'Propellant: '+p.fuelKg+' kg. ':''}${p.baseDownlinkGbDay?'Link: '+p.baseDownlinkGbDay+' GB/day reference. ':''}${p.quality?'Pointing: '+p.quality+'. ':''}${p.requiredPointing?'Requires '+p.requiredPointing+' pointing. ':''}</p><p>${escape(p.intendedStrengths)} ${escape(p.limitations)}</p><p>${p.dimensionsM?'Dimensions: '+p.dimensionsM.map(n=>n.toFixed(2)).join(' × ')+' m':'Installation: '+p.bayUnits+' bay units / '+p.installationVolumeM3.toFixed(4)+' m³ module envelope'}. Parent: bus. Prerequisites: none${p.unlock?.startsWith('after_')?'; campaign grant '+escape(p.unlock):''}.</p></details><button class="btn" data-preview="${p.id}">Preview equipment</button>${locked?`<button class="btn" data-buy="${p.id}" ${coins<price?'disabled':''}>Unlock · ${price} coins → ${Math.max(0,coins-price)} left</button>`:`<button class="btn" data-add="${p.id}">${p.type==='bus'?'Choose bus':'Install'}</button>`}</article>`;}).join('')||'<p>No equipment matches.</p>';
+  find('ws-cards').innerHTML=items.map(p=>{const locked=!allowed.includes(p.id),half=p.type==='panel'?.5:1,price=p.unlockPrice||100;return `<article class="ws-card ${locked?'locked':''}"><h3>${escape(p.name)}${half===.5?' · single wing':''}</h3><p>${(p.mass*half).toFixed(1)} kg · $${(p.cost*half).toFixed(2)}M${p.power?' · '+(p.power*half).toFixed(0)+' W':''}${p.capacityWh?' · '+p.capacityWh+' Wh':''}</p>${p.type==='thermal'?'<p>'+escape(p.intendedStrengths)+'</p>':''}<small>${p.type==='bus'?structure(p.id).bays+' internal bays':metadata(p).internal?'Internal bay module':'Exterior surface mount'}${locked?' · LOCKED':''}</small><label><input type="checkbox" data-compare="${p.id}" ${comparisons.includes(p.id)?'checked':''}> Compare</label><details><summary>Specifications</summary><p>${escape(p.description||p.tip||'Scaled educational component.')} ${p.dataPerDay?'Data: '+p.dataPerDay+' GB/day. ':''}${p.recorderCapacityGb?'Recorder: '+p.recorderCapacityGb+' GB. ':''}${p.maxDataGbDay?'Processing: '+p.maxDataGbDay+' GB/day. ':''}${p.fuelKg?'Propellant: '+p.fuelKg+' kg. ':''}${p.baseDownlinkGbDay?'Link: '+p.baseDownlinkGbDay+' GB/day reference. ':''}${p.quality?'Pointing: '+p.quality+'. ':''}${p.requiredPointing?'Requires '+p.requiredPointing+' pointing. ':''}</p><p>${escape(p.intendedStrengths)} ${escape(p.limitations)}</p><p>${p.dimensionsM?'Dimensions: '+p.dimensionsM.map(n=>n.toFixed(2)).join(' × ')+' m':'Installation: '+p.bayUnits+' bay units / '+p.installationVolumeM3.toFixed(4)+' m³ module envelope'}. Parent: bus. Prerequisites: none${p.unlock?.startsWith('after_')?'; campaign grant '+escape(p.unlock):''}.</p></details><div class="ws-card-actions"><button class="btn" data-preview="${p.id}" aria-pressed="${candidateId===p.id}">Preview</button>${locked?`<button class="btn" data-buy="${p.id}" ${coins<price?'disabled':''}>Unlock · ${price} coins → ${Math.max(0,coins-price)} left</button>`:`<button class="btn" data-add="${p.id}">${p.type==='bus'?'Choose bus':'Install'}</button>`}</div></article>`;}).join('')||'<p>No equipment matches.</p>';
  }
 
  function formatLocation(c){
@@ -138,8 +344,16 @@ export function renderWorkshop(container,data,params={}){
 
  function render(){if(!alive)return;
   find('ws-name').value=build.name;find('ws-tags').value=build.tags.join(', ');find('ws-description').value=build.description;find('ws-status').textContent=dirty?'Unsaved named design':'Saved';find('ws-notice').textContent=notice;find('ws-undo').disabled=!history.canUndo;find('ws-redo').disabled=!history.canRedo;catalogue();view.update(build.assembly);view.select(selected);inspector();coach();
-  const design=training?academyDesign(build.assembly,data):resolveFlightDesign(projectAssembly({...getState().currentDesign,assembly:build.assembly,missionId:mission?.id||null},data)),e=evaluateDesign(design,data),issues=placementIssues(build.assembly,data,unlocked()),checks=mission?checkLaunchGate(design,data).filter(c=>!c.ok&&!c.id.startsWith('placement-')):[];
+  const current=engineering(build.assembly),{design,estimate:e}=current;
+  renderResources(current);
+  const issues=placementIssues(build.assembly,data,unlocked());
+  const checks=mission?checkLaunchGate(design,data).filter(c=>!c.ok&&!c.id.startsWith('placement-')):[];
   const launcher=launcherFor(design,data);
+  if(!training){
+   const t=build.assembly.systemTests, status=find('ws-test-status');
+   status.textContent=!t?'':t.identity!==testDesignIdentity(design,data)?'Tests need a rerun':
+    Object.values(t.results).some(r=>!r.passed)?'Test warning · Needs attention':Object.keys(t.results).length+' / 3 tests passed';
+  }
   const fairingIssues=launcher?geometryIssues(build.assembly,data,launcher).filter(i=>i.code?.startsWith('fairing')): [];
   
   // Separate into 4 distinct checks
@@ -162,7 +376,69 @@ export function renderWorkshop(container,data,params={}){
   const warnings=[];if(e.margins.power>=0&&e.margins.power<.15)warnings.push('Low solar power margin.');if(e.margins.battery>=0&&e.margins.battery<.15)warnings.push('Low eclipse battery margin.');if(e.margins.downlink<0)warnings.push('Payload production exceeds forecast downlink; schedule transmissions and protect the recorder.');if(mission&&(mission.orbitFit?.[design.orbitId]||0)<.7)warnings.push('This destination has poor suitability for the mission.');if(!mission){if(!design.computerId)warnings.push('Add a flight computer.');if(!design.commsId)warnings.push('Add communications.');if(!design.pointingId)warnings.push('Add attitude control.');if(!design.instrumentIds.length)warnings.push('Choose a payload for a mission role.');if(e.panelPower<e.averageLoad*1.1)warnings.push('Solar power is below the general engineering reserve.');if(e.batteryUsableWh<=0)warnings.push('Add battery reserve.');}for(const c of build.assembly.components)if(catalog(data,c.catalogId)?.type==='panel'&&Math.abs(Math.cos(c.localRotation[1]*Math.PI/180))<.95)warnings.push((catalog(data,c.catalogId)?.name||'Solar wing')+' ('+formatLocation(c)+') collects '+((.65+.35*Math.abs(Math.cos(c.localRotation[1]*Math.PI/180)))*100).toFixed(0)+'% of nominal output at this mounting angle.');
   const bayUsage=build.assembly.components.filter(c=>c.bayId).reduce((s,c)=>s+metadata(catalog(data,c.catalogId)).bayUnits,0);
 
-  find('ws-engineering').innerHTML=`<dl><dt>${issues.some(i=>i.message.includes('Unknown'))?'Known mass only':'Launch mass'}</dt><dd>${e.launchMass.toFixed(1)} kg</dd><dt>Construction</dt><dd>$${e.partsCost.toFixed(2)}M</dd><dt>Power / load</dt><dd>${e.panelPower.toFixed(0)} / ${e.averageLoad.toFixed(0)} W</dd><dt>Usable battery</dt><dd>${e.batteryUsableWh.toFixed(0)} Wh · ${e.averageLoad?(e.batteryUsableWh/e.averageLoad).toFixed(1):'∞'} h endurance</dd><dt>Recorder</dt><dd>${catalog(data,design.computerId)?.recorderCapacityGb||0} GB</dd><dt>Payload interfaces</dt><dd>${design.instrumentIds.length} / ${data.parts.find(p=>p.id===design.busId)?.slots||0}</dd><dt>Data / downlink</dt><dd>${e.dataPerDay.toFixed(1)} / ${e.downlinkPerDay.toFixed(1)} GB/day</dd><dt>Internal bays</dt><dd>${bayUsage} / ${structure(build.assembly.busId).bays}</dd><dt>Fuel / lifetime</dt><dd>${e.fuelKg.toFixed(0)} kg / ${mission?e.lifetimeAchieved.toFixed(1)+' years':'choose mission'}</dd></dl><p>${mission?'Mission cost: $'+e.totalCost.toFixed(2)+'M':'No mission selected · General engineering only'}</p>
+  let adaptationHtml = '';
+  if (params.adaptFrom) {
+    const sourceMissionId = params.adaptFrom;
+    const sourceMission = data.missions.find(m => m.id === sourceMissionId);
+    const priorBaseline = sourceMission ? starterDesign(sourceMission, data, getState().difficulty || 'normal') : null;
+    const priorResolved = priorBaseline ? resolveFlightDesign(priorBaseline, data) : null;
+    const priorE = priorResolved ? evaluateDesign(priorResolved, data) : null;
+    
+    if (priorE) {
+      const deltaMass = e.launchMass - priorE.launchMass;
+      const deltaCost = e.partsCost - priorE.partsCost;
+      const deltaPower = e.panelPower - priorE.panelPower;
+      const deltaBat = e.batteryUsableWh - priorE.batteryUsableWh;
+      const priorStorage = catalog(data, priorBaseline.computerId)?.recorderCapacityGb || 0;
+      const currentStorage = catalog(data, design.computerId)?.recorderCapacityGb || 0;
+      const deltaStorage = currentStorage - priorStorage;
+      const deltaFuel = e.fuelKg - priorE.fuelKg;
+
+      const isLunar = mission?.id === 'relay';
+      const isMars = mission?.id === 'mars-orbiter';
+      const reasonText = isLunar
+        ? 'Far-side Relay requires storing telemetry during Earth occultation (recorder capacity), enduring prolonged lunar night/eclipses (increased battery Wh), and carrying lunar capture propellant. The original LEO satellite lacks the battery endurance, recorder buffer, and lunar delta-V.'
+        : isMars
+          ? 'Mars Reconnaissance Orbiter requires capture retro-propulsion (~1200+ m/s ΔV) to enter Mars orbit rather than flying past, expanded solar array area due to lower solar irradiance (43% of Earth levels at 1.52 AU), and upgraded recorder capacity for multi-orbit high-resolution imaging.'
+          : 'Adapting spacecraft for deep-space mission requirements.';
+
+      // Launcher re-evaluation
+      const currentLauncher = launcherFor(design, data);
+      const isLauncherInadequate = !currentLauncher || (mission?.transfer && ['kestrel', 'sprint'].includes(currentLauncher.id));
+      const launcherAlert = isLauncherInadequate
+        ? `<div class="adaptation-launcher-alert">
+             <span>⚠ <strong>Launcher Inadequate:</strong> ${escape(currentLauncher?.name || 'Selected rocket')} cannot lift this heavier craft to ${escape(mission?.name || 'destination')}.</span>
+             <button type="button" class="btn btn-sm btn-primary" id="btn-adapt-nav-launcher">Change Launcher →</button>
+           </div>`
+        : `<div class="adaptation-table" style="color: #86cfaa; padding: 4px 8px;">✓ Launcher Lift: ${escape(currentLauncher?.name || 'Rocket')} is compatible with the adapted departure mass.</div>`;
+
+      adaptationHtml = `
+        <div class="ws-adaptation-panel adaptation-analysis-panel">
+          <div class="adaptation-header">
+            <h3 class="adaptation-title">Spacecraft Adaptation: ${escape(sourceMission?.name || sourceMissionId)} → ${escape(mission?.name || '')}</h3>
+            <span class="adaptation-badge">Design Evolution</span>
+          </div>
+          <table class="adaptation-table">
+            <thead>
+              <tr><th>Metric</th><th>Prior Craft</th><th>Adapted Craft</th><th>Delta</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Launch Mass</td><td>${priorE.launchMass.toFixed(1)} kg</td><td>${e.launchMass.toFixed(1)} kg</td><td class="${deltaMass > 0 ? 'delta-warn' : 'delta-good'}">${deltaMass >= 0 ? '+' : ''}${deltaMass.toFixed(1)} kg</td></tr>
+              <tr><td>Hardware Cost</td><td>$${priorE.partsCost.toFixed(2)}M</td><td>$${e.partsCost.toFixed(2)}M</td><td class="${deltaCost > 0 ? 'delta-warn' : 'delta-good'}">${deltaCost >= 0 ? '+' : ''}$${deltaCost.toFixed(2)}M</td></tr>
+              <tr><td>Solar Power</td><td>${priorE.panelPower.toFixed(0)} W</td><td>${e.panelPower.toFixed(0)} W</td><td class="${deltaPower >= 0 ? 'delta-good' : 'delta-warn'}">${deltaPower >= 0 ? '+' : ''}${deltaPower.toFixed(0)} W</td></tr>
+              <tr><td>Usable Battery</td><td>${priorE.batteryUsableWh.toFixed(0)} Wh</td><td>${e.batteryUsableWh.toFixed(0)} Wh</td><td class="${deltaBat >= 0 ? 'delta-good' : 'delta-warn'}">${deltaBat >= 0 ? '+' : ''}${deltaBat.toFixed(0)} Wh</td></tr>
+              <tr><td>Data Recorder</td><td>${priorStorage} GB</td><td>${currentStorage} GB</td><td class="${deltaStorage >= 0 ? 'delta-good' : 'delta-warn'}">${deltaStorage >= 0 ? '+' : ''}${deltaStorage} GB</td></tr>
+              <tr><td>Propulsion Fuel</td><td>${priorE.fuelKg.toFixed(0)} kg</td><td>${e.fuelKg.toFixed(0)} kg</td><td class="${deltaFuel >= 0 ? 'delta-good' : 'delta-warn'}">${deltaFuel >= 0 ? '+' : ''}${deltaFuel.toFixed(0)} kg</td></tr>
+            </tbody>
+          </table>
+          <p class="adaptation-reason">${reasonText}</p>
+          ${launcherAlert}
+        </div>
+      `;
+    }
+  }
+
+  find('ws-engineering').innerHTML=`${adaptationHtml}<dl><dt>${issues.some(i=>i.message.includes('Unknown'))?'Known mass only':'Launch mass'}</dt><dd>${e.launchMass.toFixed(1)} kg</dd><dt>Construction</dt><dd>$${e.partsCost.toFixed(2)}M</dd><dt>Power / load</dt><dd>${e.panelPower.toFixed(0)} / ${e.averageLoad.toFixed(0)} W</dd><dt>Usable battery</dt><dd>${e.batteryUsableWh.toFixed(0)} Wh · ${e.averageLoad?(e.batteryUsableWh/e.averageLoad).toFixed(1):'∞'} h endurance</dd><dt>Recorder</dt><dd>${catalog(data,design.computerId)?.recorderCapacityGb||0} GB</dd><dt>Payload interfaces</dt><dd>${design.instrumentIds.length} / ${data.parts.find(p=>p.id===design.busId)?.slots||0}</dd><dt>Data / downlink</dt><dd>${e.dataPerDay.toFixed(1)} / ${e.downlinkPerDay.toFixed(1)} GB/day</dd><dt>Internal bays</dt><dd>${bayUsage} / ${structure(build.assembly.busId).bays}</dd><dt>Fuel / lifetime</dt><dd>${e.fuelKg.toFixed(0)} kg / ${mission?e.lifetimeAchieved.toFixed(1)+' years':'choose mission'}</dd></dl><p>${mission?'Mission cost: $'+e.totalCost.toFixed(2)+'M':'No mission selected · General engineering only'}</p>
   
   <div class="ws-checks-panel">
     <h3>Engineering clearance & fit checks</h3>
@@ -228,6 +504,8 @@ export function renderWorkshop(container,data,params={}){
   find('ws-engineering').querySelectorAll('[data-action="navLauncher"]').forEach(btn => {
    btn.onclick = continueToLauncher;
   });
+  const btnAdaptNavLauncher = find('ws-engineering').querySelector('#btn-adapt-nav-launcher');
+  if (btnAdaptNavLauncher) btnAdaptNavLauncher.onclick = continueToLauncher;
 
   const totalGeometryErrors = issues.length + check4_fairing.length;
   if(totalGeometryErrors > 0) {
@@ -274,10 +552,10 @@ export function renderWorkshop(container,data,params={}){
  find('ws-compare').onclick=()=>{const parts=comparisons.map(id=>catalog(data,id));if(parts.length!==2){notice='Select two catalogue components to compare.';find('ws-notice').textContent=notice;return;}const fields=[['Mass','mass','kg'],['Construction cost','cost','$M'],['Power generation / draw','power','W'],['Battery capacity','capacityWh','Wh'],['Recorder','recorderCapacityGb','GB'],['Processing','maxDataGbDay','GB/day'],['Reference downlink','baseDownlinkGbDay','GB/day'],['Payload data','dataPerDay','GB/day'],['Propellant','fuelKg','kg'],['Bus load','baseLoad','W'],['Payload interfaces','slots',''],['Pointing','quality',''],['Internal bay units','bayUnits','']];dialog('Component comparison','<p>Single-wing values shown for solar equipment.</p><table><tr><th>Property</th>'+parts.map(p=>'<th>'+escape(p.name)+'</th>').join('')+'</tr>'+fields.map(([name,key,unit])=>'<tr><th>'+name+'</th>'+parts.map(p=>{let value=p[key];if(p.type==='panel'&&['mass','cost','power'].includes(key))value/=2;return '<td>'+escape(value??'—')+' '+unit+'</td>';}).join('')+'</tr>').join('')+'</table>',[['Close',()=>find('ws-compare').focus()]]);};
  find('ws-tabs').onclick=e=>{const b=e.target.closest('[data-category]');if(b){tab=b.dataset.category;catalogue();find('ws-tabs').querySelector('[data-category="'+tab+'"]')?.focus();}};
 
- find('ws-cards').onclick=async e=>{const compare=e.target.closest('[data-compare]');if(compare){const id=compare.dataset.compare;if(compare.checked){if(comparisons.length>=2){compare.checked=false;notice='Choose up to two components for comparison.';find('ws-notice').textContent=notice;return;}comparisons.push(id);}else comparisons=comparisons.filter(v=>v!==id);find('ws-compare').textContent='Compare selected ('+comparisons.length+'/2)';return;}const addButton=e.target.closest('[data-add]');if(addButton){add(addButton.dataset.add);return;}const previewButton=e.target.closest('[data-preview]');if(previewButton){const p=catalog(data,previewButton.dataset.preview);let previewView;dialog(p.name,'<p>Preview only — no coins spent and no equipment installed.</p><div id="ws-equipment-preview" style="height:320px;position:relative"></div>',[['Close',()=>previewView?.destroy()]]);const model=instance(p.id,metadata(p).internal?{bay:'bay-0'}:{surface:'right'});if(p.type==='fuel')model.configuration.propulsionPort=0;previewView=createWorkshopView(find('ws-equipment-preview'),data,{});previewView.update({schemaVersion:1,units:{position:'m',rotation:'degrees'},busInstanceId:'bus',busId:p.type==='bus'?p.id:build.assembly.busId||'bus_micro',components:p.type==='bus'?[]:[model]});previewView.interior(metadata(p).internal);return;}const buy=e.target.closest('[data-buy]');if(buy){const p=catalog(data,buy.dataset.buy);buy.disabled=true;try{const result=await purchase(p.id,p.unlockPrice||100);notice='Unlocked '+p.name+' · '+result.coins+' coins remaining.';}catch(error){notice=error.message;}if(alive)render();}};
+ find('ws-cards').onclick=async e=>{const compare=e.target.closest('[data-compare]');if(compare){const id=compare.dataset.compare;if(compare.checked){if(comparisons.length>=2){compare.checked=false;notice='Choose up to two components for comparison.';find('ws-notice').textContent=notice;return;}comparisons.push(id);}else comparisons=comparisons.filter(v=>v!==id);find('ws-compare').textContent='Compare selected ('+comparisons.length+'/2)';return;}const addButton=e.target.closest('[data-add]');if(addButton){add(addButton.dataset.add);return;}const previewButton=e.target.closest('[data-preview]');if(previewButton){showCandidate(previewButton.dataset.preview);return;}const buy=e.target.closest('[data-buy]');if(buy){const p=catalog(data,buy.dataset.buy);buy.disabled=true;try{const result=await purchase(p.id,p.unlockPrice||100);notice='Unlocked '+p.name+' · '+result.coins+' coins remaining.';}catch(error){notice=error.message;}if(alive)render();}};
  container.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{view.preset(b.dataset.view);if(training&&build.assembly.busId&&b.dataset.view!=='Free'&&!training.faces.includes(b.dataset.view)){training.faces.push(b.dataset.view);saveAcademy(training);coach();}});find('ws-interior').onchange=e=>view.interior(e.target.checked);find('ws-stowed').onchange=e=>{view.fold(e.target.checked?1:0);if(training){if(e.target.checked)training.folded=true;else if(training.folded)training.unfolded=true;saveAcademy(training);coach();}};find('ws-surfaces').onchange=e=>view.surfaces(e.target.checked);
 
- const key=e=>{const modal=find('ws-dialog').querySelector('[role=dialog]');if(modal){if(e.key==='Escape'){e.preventDefault();[...modal.querySelectorAll('.ws-modal-actions button')].at(-1)?.click();return;}if(e.key==='Tab'){const focusable=[...modal.querySelectorAll('button:not(:disabled),input,select')];const first=focusable[0],last=focusable.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus();}}return;}if(/INPUT|TEXTAREA|SELECT/.test(e.target.tagName))return;if((e.ctrlKey||e.metaKey)&&e.key==='z'){e.preventDefault();find(e.shiftKey?'ws-redo':'ws-undo').click();}if((e.ctrlKey||e.metaKey)&&e.key==='s'){e.preventDefault();save();}if(e.key==='Delete'&&selected&&selected!=='bus')find('ws-selected').querySelector('[data-tool="remove"]')?.click();};window.addEventListener('keydown',key);
+ const key=e=>{const modal=find('ws-dialog').querySelector('[role=dialog]');if(modal){if(e.key==='Escape'){e.preventDefault();[...modal.querySelectorAll('.ws-modal-actions button')].at(-1)?.click();return;}if(e.key==='Tab'){const focusable=[...modal.querySelectorAll('button:not(:disabled),input,select')];const first=focusable[0],last=focusable.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus();}}return;}if(e.key==='Escape'&&candidateId){e.preventDefault();clearCandidate(true);return;}if(/INPUT|TEXTAREA|SELECT/.test(e.target.tagName))return;if((e.ctrlKey||e.metaKey)&&e.key==='z'){e.preventDefault();find(e.shiftKey?'ws-redo':'ws-undo').click();}if((e.ctrlKey||e.metaKey)&&e.key==='s'){e.preventDefault();save();}if(e.key==='Delete'&&selected&&selected!=='bus')find('ws-selected').querySelector('[data-tool="remove"]')?.click();};window.addEventListener('keydown',key);
  find('ws-surface-snap').onchange=e=>view.snap(e.target.checked);find('ws-grid').onchange=e=>view.grid(Number(e.target.value));find('ws-angle').onchange=e=>view.angle(Number(e.target.value));
  const storage=()=>{if(alive)catalogue();};window.addEventListener('storage',storage);render();if(params.library)showLibrary();
  if(params.preset||params.newBuild||params.blueprint)persistDraft();

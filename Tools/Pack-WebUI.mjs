@@ -4,6 +4,8 @@ import crypto from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import {execFileSync} from 'node:child_process';
 import {adaptBrowser} from './EmbeddedUI/adaptBrowser.mjs';
+import {thermalParts} from './EmbeddedUI/thermalCatalogue.mjs';
+import {LAUNCHER_NAMES} from './EmbeddedUI/launcherAdditions.js';
 import {inventory,sha256,publishPackage} from './WebUIPackage.mjs';
 
 const source = path.resolve(process.argv.slice(2).find(a=>!a.startsWith('--')) || 'F:/space-mission-gaame_v_0.3');
@@ -61,6 +63,12 @@ for (const relative of runtime) copy(relative);
 copy('docs/REALISM_AND_SPACE_APPS_AUDIT.md');
 const modelManifestPath=path.join(target,'models/manifest.json');
 const modelManifest=JSON.parse(fs.readFileSync(modelManifestPath));
+const worldPath=path.join(target,'data/world1.json');
+const world=JSON.parse(fs.readFileSync(worldPath));
+world.parts.push(...thermalParts);
+for(const launcher of world.launchers)if(LAUNCHER_NAMES[launcher.id])launcher.name=LAUNCHER_NAMES[launcher.id];
+fs.writeFileSync(worldPath,JSON.stringify(world,null,2)+'\n');
+for(const part of thermalParts)modelManifest[part.id]={file:'models/thermal/'+part.id+'.glb',credit:'ORBITAL original Blender model'};
 for(const entry of Object.values(modelManifest)){
  if(unresolvedModels.has(entry.file)){entry.externalReference={...entry,sourceRelativePath:entry.file,shipped:false};delete entry.externalReference.file;entry.file=null;entry.credit='ORBITAL procedural educational launch tower; external reference model omitted pending rights verification';}
  if(entry.preservedReference&&unresolvedModels.has(entry.preservedReference.file)){entry.externalReference={...entry.preservedReference,sourceRelativePath:entry.preservedReference.file,shipped:false};delete entry.externalReference.file;delete entry.preservedReference;}
@@ -96,7 +104,7 @@ if (fs.existsSync(keplerJsonPath)) {
     throw new Error('Kepler dataset origin checksum mismatch: ' + keplerParsed.source?.sha256);
   }
 }
-const journeyModules=['menu','campaignResume','campaignPolicy','observations','operationsPreview','journeyBar','dialogFocus'];
+const journeyModules=['menu','practiceProfile','campaignResume','campaignPolicy','observations','operationsPreview','journeyBar','dialogFocus'];
 for(const name of ['sourceData','sourceUI','consequences','missionGuide',...journeyModules])fs.copyFileSync(path.join(project,'Tools/EmbeddedUI',name+'.js'),path.join(target,'js/unity',name+'.js'));
 const workshop=fs.readFileSync(path.join(source,'js/three/workshopView.js'),'utf8')
   .replace("from './sceneKit.js'", "from '../unity/nativeSceneKit.js'")
@@ -105,7 +113,7 @@ fs.writeFileSync(path.join(target,'js/three/workshopView.js'),workshop);
 const controls=fs.readFileSync(path.join(source,'vendor/three/addons/controls/OrbitControls.js'),'utf8')
   .replaceAll('rotateUp( 2 * Math.PI * rotateDelta.y / element.clientHeight );','rotateUp( - 2 * Math.PI * rotateDelta.y / element.clientHeight );');
 fs.writeFileSync(path.join(target,'js/unity/OrbitControls.js'),controls);
-const adaptations=['js/ui/speech.js','models/manifest.json','js/three/earth.js','js/three/workshopView.js','js/unity/bridge.js','js/unity/nativeSceneKit.js',
+const adaptations=['js/ui/speech.js','models/manifest.json','data/world1.json','js/three/earth.js','js/three/workshopView.js','js/unity/bridge.js','js/unity/nativeSceneKit.js',
   'js/unity/OrbitControls.js','js/flightSession.js','js/unity/storageStatus.js','js/unity/floodwatch.js',
   'js/unity/scienceScenarios.js','js/unity/scienceEvidence.js','js/unity/scienceOperations.js','js/unity/scienceTransfer.js','js/unity/missionExperiment.js','js/unity/scienceUI.js',
   ...['navigation','physicalCruise','missionLifecycle','relayTraffic','missionEnd'].map(n=>'js/unity/'+n+'.js'),
@@ -116,6 +124,10 @@ for (const [name,destination] of Object.entries({
   ...Object.fromEntries(['kestrel','condor','albatross','roc','skylark','meridian','vanguard','sprint','asterion','leviathan'].map(id=>['launcher-models/'+id+'.glb','models/launchers/'+id+'.glb'])),
   ...Object.fromEntries(['icesat-2','lro','cassini'].map(id=>['nasa-models/'+id+'.glb','models/nasa/'+id+'.glb'])),
   'launcherAdditions.js':'js/rocket/launcherAdditions.js','launcherModels.js':'js/three/launcherModels.js',
+  ...Object.fromEntries(thermalParts.map(({id})=>['thermal-models/'+id+'.glb','models/thermal/'+id+'.glb'])),
+  'thermalModels.js':'js/three/thermalModels.js',
+  'planReadiness.js':'js/unity/planReadiness.js',
+  ...Object.fromEntries(['spacecraftSystems','systemsOperations','spacecraftTests','systemsCruise'].map(name=>[name+'.js','js/unity/'+name+'.js'])),
   'rocketCarousel.js':'js/three/rocketCarousel.js','referenceCraft.js':'js/three/referenceCraft.js',
   'ascent.js':'js/engine/ascent.js','ascentLegacy.js':'js/engine/ascentLegacy.js',
   'numericalLaunch.js':'js/three/numericalLaunch.js','numericalAscent.js':'js/ui/numericalAscent.js',
@@ -126,13 +138,18 @@ for (const [name,destination] of Object.entries({
   'flightCamera.js':'js/ui/flightCamera.js',
   ...Object.fromEntries(fs.readdirSync(path.join(project,'Tools/EmbeddedUI/eyes-textures')).map(name=>['eyes-textures/'+name,'textures/eyes/'+name])),
   'launchExhaust.js':'js/three/launchExhaust.js','workshop/collision.js':'js/workshop/collision.js',
-  'workshop/blueprint.js':'js/workshop/blueprint.js','workshop.js':'js/ui/workshop.js',
+  'workshop/blueprint.js':'js/workshop/blueprint.js','workshop/autonomy.js':'js/workshop/autonomy.js',
+  'workshop/structure.js':'js/workshop/structure.js','workshop.js':'js/ui/workshop.js',
+  'rocketSelect.js':'js/ui/rocketSelect.js',
   'brief.js':'js/ui/brief.js',
   'report.js':'js/ui/report.js',
+  'featuredFlight.js':'js/unity/featuredFlight.js',
   'review.js':'js/ui/review.js',
   'stageSelect.js':'js/ui/missionSelect.js',
   'campaignAtlas.js':'js/campaignAtlas.js',
   'stageSelect.css':'css/stageSelect.css',
+  'media/manchar-landsat.jpg':'images/missions/manchar-landsat.jpg',
+  'media/mars-viking-globe.jpg':'images/missions/mars-viking-globe.jpg',
   'keplerDebrief.js':'js/ui/keplerDebrief.js',
   'liveAdapter.js':'js/liveAdapter.js','keplerOperations.js':'js/ui/keplerOperations.js',
   'campaignPresentation.js':'js/unity/campaignPresentation.js','campaignEvidenceView.js':'js/unity/campaignEvidenceView.js',

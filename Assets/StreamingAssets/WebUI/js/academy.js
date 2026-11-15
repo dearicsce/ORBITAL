@@ -10,12 +10,13 @@ export const LESSONS = [
   ['Internal equipment','Install a medium battery and the basic flight computer. Their bays provide eclipse power and data processing.'],
   ['Purpose','Install the optical camera and X-band radio. The camera fills the recorder. The radio empties it during ground passes.'],
   ['Engineering review','The instructor installed a fuel pack and reaction wheels, then disconnected the radio. Select the radio and reset its placement. Clear launch blockers before continuing.'],
-  ['First launch','Inspect the Kestrel training preset and its payload margin. Launch into the assigned low Earth orbit.'],
+  ['First launch','Inspect the Vector 5 training preset and its payload margin. Launch into the assigned low Earth orbit.'],
   ['First operations','Deploy the solar wings. Command Observe until data reaches the recorder, then command Transmit during a ground pass.'],
   ['First custom rocket','Build a two-stage ORBITAL launcher using the training hardware. Check its staging and launch margin.']
 ];
 
-export function readAcademy(storage = globalThis.localStorage) {
+import {profileStorage} from './unity/practiceProfile.js';
+export function readAcademy(storage = profileStorage()) {
   try {
     const state=JSON.parse(storage?.getItem(KEY)||'null');
     if(state?.version===1&&Number.isInteger(state.step)&&state.step>=0&&state.step<=LESSONS.length&&Number.isInteger(state.furthest)&&state.furthest>=state.step&&state.furthest<=LESSONS.length&&Array.isArray(state.faces)&&state.wings&&typeof state.wings==='object')return state;
@@ -23,7 +24,7 @@ export function readAcademy(storage = globalThis.localStorage) {
   return {version:1,step:0,furthest:0,faces:[],wings:{},folded:false,unfolded:false,blueprint:null,flight:null,skipped:false};
 }
 
-export function saveAcademy(state, storage = globalThis.localStorage) {
+export function saveAcademy(state, storage = profileStorage()) {
   try {storage?.setItem(KEY,JSON.stringify(state));return true;} catch {return false;}
 }
 

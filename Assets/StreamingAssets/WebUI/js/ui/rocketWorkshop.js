@@ -21,7 +21,7 @@ export function renderRocketWorkshop(container,data,params={}){
  const mission=data.missions.find(m=>m.id===design.missionId);
  const evaluation=evaluateDesign(design,data);
  const orbit=data.orbits.find(o=>o.id===(missionMode?design.orbitId:'leo'));
- const defaultTransfer=missionMode&&mission?.transfer&&orbit?recommendedPlan(mission,orbit.id,completed):null;
+ const defaultTransfer=missionMode&&mission?.transfer&&orbit?(params.planDraft??recommendedPlan(mission,orbit.id,completed)):null;
  const trajectory=defaultTransfer?transferTrajectory(mission,design,defaultTransfer):null;
  const service=defaultTransfer?serviceMass(defaultTransfer,evaluation.spacecraftMass):null;
  const payloadKg=missionMode?evaluation.spacecraftMass+(service?.wetKg||0):150;
@@ -31,11 +31,11 @@ export function renderRocketWorkshop(container,data,params={}){
   const existing=academy?academy.rocket:library.find(current.rocketId);
   if(existing){rocket=structuredClone(existing);selected=existing.id;}
  }catch(error){notice=error.message;}
- container.innerHTML=`<section class="screen content-screen rocket-bench" data-screen="rocketWorkshop"><header class="screen-top"><button class="btn" id="rocket-back">← ${academy?'Flight Academy':missionMode?'Launcher presets':'Mission control'}</button><div><p class="orbital-eyebrow">ORBITAL / VEHICLE ENGINEERING</p><h1>Rocket Workshop</h1></div></header>
+ container.innerHTML=`<section class="screen content-screen rocket-bench" data-screen="rocketWorkshop"><header class="screen-top"><button class="btn" id="rocket-back">← ${academy?'Flight Academy':params.planDraft?'Transfer plan':missionMode?'Launcher presets':'Mission control'}</button><div><p class="orbital-eyebrow">ORBITAL / VEHICLE ENGINEERING</p><h1>Rocket Workshop</h1></div></header>
  ${academy?academyGuide(academy,{nextLabel:'Finish Academy →'}):'<div class="rocket-library"><label>My Rockets <select id="rocket-library"></select></label><button class="btn" id="rocket-new">New launcher</button><button class="btn" id="rocket-save">Save</button><button class="btn" id="rocket-save-as">Save as new</button><button class="btn" id="rocket-reference">Load reference vehicle</button></div>'}
  <p class="rocket-status" id="rocket-status" role="status"></p><div class="rocket-layout"><section class="glass rocket-options"><h2>Vehicle components</h2><label>Vehicle name <input id="rocket-name" maxlength="70"></label>
  ${Object.entries(ROCKET_PARTS).map(([slot,choices])=>`<label>${ROCKET_LABELS[slot]}<select data-rocket-slot="${slot}"><option value="">${slot==='boosters'?'No boosters':'Select a component'}</option>${choices.map(p=>`<option value="${p.id}" ${rocketPartUnlocked(p,completed)?'':'disabled'}>${p.name}${p.requires&&!completed[p.requires]?' · Locked':''}</option>`).join('')}</select></label>`).join('')}
- </section><section class="glass rocket-visual"><h2>Vehicle integration bay</h2><div class="rocket-hangar" id="rocket-diagram" aria-label="Preview of selected rocket components"></div><p>Drag to orbit · scroll to inspect</p><small>Catalogue tank diameters · schematic stage lengths</small></section>
+ </section><section class="glass rocket-visual"><h2>Vehicle integration bay</h2><div class="rocket-hangar" id="rocket-diagram" aria-label="Preview of selected rocket components"></div><p>Drag to orbit · scroll to inspect</p><small>Schematic proportions · engineering checks use catalogue dimensions</small></section>
  <section class="glass rocket-engineering"><h2>Engineering review</h2><div id="rocket-margins"></div><h3>Staging sequence</h3><ol id="rocket-staging"></ol><button class="btn" id="rocket-stage">Set staging sequence</button><p><small>Stack delta-v includes fixed ascent loss allowance in the requirement. Upper-stage reserve follows the selected orbit or transfer.</small></p></section></div>
  ${missionMode?'<footer class="screen-actions"><button class="btn btn-primary" id="rocket-use">Use launcher →</button></footer>':''}</section>`;
  const find=id=>container.querySelector('#rocket-'+id);
@@ -93,12 +93,12 @@ export function renderRocketWorkshop(container,data,params={}){
   bindAcademyGuide(container,academy,{back,skip:()=>showScreen('missionSelect'),next:()=>{if(!engineering().issues.length){saveTraining();advanceAcademy(academy);back();}}});
   find('back').onclick=()=>container.querySelector('#academy-back').click();
  }else{
-  find('back').onclick=()=>showScreen(missionMode?'rocketSelect':'menu');
+  find('back').onclick=()=>showScreen(params.planDraft?'flightPlan':missionMode?'rocketSelect':'menu',{planDraft:params.planDraft});
   find('reference').onclick=()=>{rocket=referenceRocket(missionMode?mission:null);selected='';notice='Reference configuration loaded as a separate draft.';updateLibrary();update();};
   find('new').onclick=()=>{rocket=newRocket();selected='';notice='New launcher draft.';updateLibrary();update();};
   find('library').onchange=e=>{try{const item=library.find(e.target.value);rocket=item?structuredClone(item):newRocket();selected=item?.id||'';update();}catch(error){notice=error.message;update();}};
   find('save').onclick=()=>save();find('save-as').onclick=()=>save(true);
-  if(find('use'))find('use').onclick=()=>{if(engineering().issues.length||!save())return;setDesign({rocketId:rocket.id,planId:null});saveProgress();showScreen('orbitSelect');};
+  if(find('use'))find('use').onclick=()=>{if(engineering().issues.length||!save())return;setDesign({rocketId:rocket.id,rocketBlueprint:rocket,planId:null,flightPlan:null});saveProgress();showScreen(params.planDraft?'flightPlan':'orbitSelect',{planDraft:params.planDraft});};
  }
  updateLibrary();update();
  return ()=>view?.destroy();

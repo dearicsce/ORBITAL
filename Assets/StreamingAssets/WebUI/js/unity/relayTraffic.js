@@ -10,7 +10,7 @@ export function relayAccess(state,startSec,seconds){
  let visible=0,n=0;for(let t=startSec+7.5;t<startSec+seconds;t+=15){n++;const pos=toFixed(propagate(state.orbit,t),state.orbit.body,t+(state.orbit.epochS??0));visible+=Number(elevation(pos,source,state.orbit.body)>=10);}
  return n?visible/n:0;
 }
-export function stepRelay(state,env,powered,mode,startSec,seconds){
+export function stepRelay(state,env,powered,mode,startSec,seconds,availability=null){
  const q=state.relayTraffic;if(!q)return {sentGb:0};
  const endSec=startSec+seconds,windows=state.evidence?.scenario.windows??[],target=windows.find(([,a,b])=>state.tick>=a&&state.tick<b)?.[0];
  const sourceFraction=relayAccess(state,startSec,seconds),earthFraction=env.contactFraction??Number(env.contact);
@@ -22,13 +22,13 @@ export function stepRelay(state,env,powered,mode,startSec,seconds){
  for(const key of ['source','onboard'])q[key]=q[key].filter(m=>{if(m.expirySec<endSec){q.expired.push({...m,expiredSec:endSec,owner:key});return false;}return true;});
  // A transponder receives source traffic rather than creating instrument bytes.
  // The same catalogue link rate bounds each hop; half-duplex timing is averaged.
- let incoming=powered&&mode==='observe'?(state.hardware.instantDownlinkGbDay??state.hardware.downlinkGbDay)/86400*seconds*sourceFraction:0;
+ let incoming=(state.hardware.instantDownlinkGbDay??state.hardware.downlinkGbDay)/86400*seconds*sourceFraction*(availability?.sourceFraction??Number(powered&&mode==='observe'));
  let free=Math.max(0,state.storageCapacityGb-state.storageGb-queuedRelayGb(state));
  for(const m of [...q.source]){
   if(m.remainingGb>incoming||m.remainingGb>free)break;
-  incoming-=m.remainingGb;free-=m.remainingGb;q.source.splice(q.source.indexOf(m),1);q.onboard.push(m);
+  incoming-=m.remainingGb;free-=m.remainingGb;q.source.splice(q.source.indexOf(m),1);m.pickupSec=endSec;q.onboard.push(m);
  }
- let sentGb=0,capacity=powered&&(mode==='observe'||mode==='downlink')?(state.hardware.instantDownlinkGbDay??state.hardware.downlinkGbDay)/86400*seconds*earthFraction:0;
+ let sentGb=0,capacity=(state.hardware.instantDownlinkGbDay??state.hardware.downlinkGbDay)/86400*seconds*(availability?.earthFraction??(powered&&(mode==='observe'||mode==='downlink')?earthFraction:0));
  const held=q.policy==='batch'&&state.tick%6!==5&&mode!=='downlink';
  if(!held){
   q.onboard.sort((a,b)=>q.policy==='urgent'?(Number(b.urgent)-Number(a.urgent)||a.expirySec-b.expirySec):a.createdSec-b.createdSec);

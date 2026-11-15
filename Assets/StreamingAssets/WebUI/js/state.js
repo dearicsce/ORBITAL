@@ -1,3 +1,4 @@
+import {profileStorage} from './unity/practiceProfile.js';
 // Game state management and local persistence
 import { canCompleteFlight } from './flightCompletion.js';
 import {migrateDesign,validateProgress,validateFlightRecord,assertSerializable} from './contracts/validate.js';
@@ -43,6 +44,18 @@ function getDefaultState() {
 }
 
 let state = getDefaultState();
+export function setPracticeMode(active, origin = null) {
+  if (active) {
+    state.practiceMode = true;
+    state.practiceOrigin = origin || state.currentMissionId || 'm1';
+  } else {
+    delete state.practiceMode;
+    delete state.practiceOrigin;
+  }
+}
+export function isPracticeMode() {
+  return Boolean(state.practiceMode);
+}
 
 export function getState() {
   return JSON.parse(JSON.stringify(state));
@@ -141,7 +154,7 @@ export function completeMission(missionId, rating, passStars = 3.0, flight = nul
 
 export function saveProgress(storage) {
   try {
-    if (storage === undefined) storage = globalThis.localStorage;
+    if (storage === undefined) storage = profileStorage();
     if (!storage) return false;
     const payload = JSON.stringify(state);
     storage.setItem(STORAGE_KEY, payload);
@@ -153,7 +166,7 @@ export function saveProgress(storage) {
 
 export function loadProgress(storage) {
   try {
-    if (storage === undefined) storage = globalThis.localStorage;
+    if (storage === undefined) storage = profileStorage();
     if (!storage) return false;
     const raw = storage.getItem(STORAGE_KEY);
     if (!raw) return false;

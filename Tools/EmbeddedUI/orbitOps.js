@@ -19,14 +19,14 @@ export function createOrbitOps(container,{orbitId,design,data,initialProgress=0,
  const input=flightCameraInput(kit.renderer?.domElement);
  const frame=createFlightFrame(kit.scene,kit.camera,craft,globe,orbitId,orbit,input,container);
  const effects=createOrbitalEventFX(kit.scene,craft,kit.camera);
- let elapsedSec=initialProgress*OPERATION_WINDOW_SEC,presentationPaused=false,activeOrbit=orbit;
+ let elapsedSec=initialProgress*OPERATION_WINDOW_SEC,presentationPaused=false,activeOrbit=orbit,attitude=null;
  frame.sample(elapsedSec);
- kit.draw=(_dt,now)=>{frame.sample(elapsedSec,activeOrbit,presentationPaused);localOrbitPath.position.copy(frame.origin);localOrbitPath.visible=container.dataset.orbitCamera!=='solar';assembly.animate(stowed?1:0);effects.update(now);};
+ kit.draw=(_dt,now)=>{frame.sample(elapsedSec,activeOrbit,presentationPaused,attitude);localOrbitPath.position.copy(frame.origin);localOrbitPath.visible=container.dataset.orbitCamera!=='solar';assembly.animate(stowed?1:0);effects.update(now);};
  return {
-  setTime(seconds,{orbit:nextOrbit,paused=false}={}){elapsedSec=seconds;presentationPaused=paused;activeOrbit=nextOrbit||activeOrbit;frame.sample(elapsedSec,activeOrbit,presentationPaused);},
+  setTime(seconds,{orbit:nextOrbit,paused=false,attitude:nextAttitude=null}={}){elapsedSec=seconds;presentationPaused=paused;activeOrbit=nextOrbit||activeOrbit;attitude=nextAttitude;frame.sample(elapsedSec,activeOrbit,presentationPaused,attitude);},
   setProgress(p){this.setTime(Math.max(0,Math.min(1,p))*OPERATION_WINDOW_SEC);},
-  setCamera(mode,north){frame.setCamera(mode,north);frame.sample(elapsedSec,activeOrbit,presentationPaused);},
-  focusTarget(id){frame.focusTarget(id);frame.sample(elapsedSec,activeOrbit,presentationPaused);},
+  setCamera(mode,north){frame.setCamera(mode,north);frame.sample(elapsedSec,activeOrbit,presentationPaused,attitude);},
+  focusTarget(id){frame.focusTarget(id);frame.sample(elapsedSec,activeOrbit,presentationPaused,attitude);},
   onTargetSelected(callback){frame.onTargetSelected(callback);},
   sun:kit.sun,craft,kit,draw:kit.draw,
   getMetrics:()=>({...kit.metrics,drawCalls:kit.renderer?.info.render.calls||0}),

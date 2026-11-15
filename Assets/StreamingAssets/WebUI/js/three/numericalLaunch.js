@@ -67,7 +67,7 @@ function mountNumericalLaunch(container,{design,data,target,payloadKg,checkpoint
  const deployment=flight.orbit&&payloadDeployment(flight,payloadKg,releaseS);
  let time=Math.max(0,Math.min(Number.isFinite(checkpoint?.timeS)?checkpoint.timeS:0,total)),speed=speeds.includes(checkpoint?.speed)?checkpoint.speed:1,paused=checkpoint?.paused??false,finished=false,ready=false;
  let cameraMode=checkpoint?.camera??'track',cameraBlend=0,phase='',eventIndex=sampleFlight(flight,time).eventCount;
- let liveOrbit=null,operationTime=0,operationPaused=false,operationMode='follow',northVisible=false,orbitRing=null,orbitFrame=null;
+ let liveOrbit=null,operationTime=0,operationPaused=false,operationAttitude=null,operationMode='follow',northVisible=false,orbitRing=null,orbitFrame=null;
  const kit=createScene(container,{controls:false,far:9e6,logDepth:true});
  const cameraInput=flightCameraInput(kit.renderer?.domElement);
  const framing=flightFraming(container,kit.camera);
@@ -152,7 +152,10 @@ function mountNumericalLaunch(container,{design,data,target,payloadKg,checkpoint
    const radial=direction(event.positionM).normalize();
    const kick=new THREE.Vector3();
    if(id.startsWith('booster'))kick.set(local.x,0,local.z).normalize().multiplyScalar(2);
-   if(id.startsWith('fairing'))kick.set(0,0,id==='fairing-left'?1.5:-1.5);
+   if(id.startsWith('fairing')){
+    const center=new THREE.Box3().setFromObject(node).getCenter(new THREE.Vector3());
+    kick.set(center.x-local.x,0,center.z-local.z).normalize().multiplyScalar(1.5);
+   }
    const before=sampleFlight(flight,event.timeS-.05);
    const offset=local.clone().applyQuaternion(q);
    const rotational=offset.clone().sub(local.clone().applyQuaternion(orientation(before))).multiplyScalar(metresPerUnit/.05);
@@ -201,7 +204,7 @@ function mountNumericalLaunch(container,{design,data,target,payloadKg,checkpoint
   return orbitFrame;
  }
  function drawOrbit(now){
-  ensureOrbitFrame().sample(operationTime,liveOrbit,operationPaused);
+  ensureOrbitFrame().sample(operationTime,liveOrbit,operationPaused,operationAttitude);
   orbitRing.position.copy(orbitFrame.origin);
   orbitRing.visible=container.dataset.orbitCamera!=='solar';
   assembly.animate(0);orbitalEffects.update(now);
@@ -313,7 +316,7 @@ function mountNumericalLaunch(container,{design,data,target,payloadKg,checkpoint
   getOrbitView(){
    if(!orbitRing)return null;
    return {
-    setTime(seconds,{paused=false}={}){operationTime=seconds;operationPaused=paused;},setProgress(p){operationTime=p*OPERATION_WINDOW_SEC;},
+    setTime(seconds,{paused=false,attitude=null}={}){operationTime=seconds;operationPaused=paused;operationAttitude=attitude;},setProgress(p){operationTime=p*OPERATION_WINDOW_SEC;},
     setCamera(mode,northPole){operationMode=mode;northVisible=northPole;ensureOrbitFrame().setCamera(mode,northPole);},
     focusTarget(id){ensureOrbitFrame().focusTarget(id);},
     onTargetSelected(callback){ensureOrbitFrame().onTargetSelected(callback);},

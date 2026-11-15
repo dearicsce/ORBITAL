@@ -66,6 +66,7 @@ export function receive(e, fragments, receivedSec, deadlineSec) {
     if (!sample.effectiveSec) continue;
     if (receivedSec <= deadlineSec + EPS) {
       sample.usefulGb += fresh;
+      sample.firstUsefulReceiptSec ??= receivedSec;
       e.usefulGb += fresh;
       // An authored inspection-priority decay, not an observed fire evolution
       // or a probability that an archived detection was a fire.

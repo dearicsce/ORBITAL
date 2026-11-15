@@ -12702,7 +12702,8 @@ const qy = () => {
             "Return policy:",
             /* @__PURE__ */ o.jsxs("select", { value: N.policy, onChange: (B) => b.choosePolicy(B.target.value), children: [
               /* @__PURE__ */ o.jsx("option", { value: "all", children: "All six readings" }),
-              /* @__PURE__ */ o.jsx("option", { value: "bracket", children: "Bracket four · sample both sides of the window" })
+              /* @__PURE__ */ o.jsx("option", { value: "bracket", children: "Bracket four · sample both sides of the window" }),
+              /* @__PURE__ */ o.jsx("option", { value: "three_slot", children: "Three slot · minimal 3 timestamps (before, dip, after)" })
             ] })
           ] })
         ] }),

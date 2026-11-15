@@ -1,3 +1,4 @@
+import {profileStorage, usingPracticeProfile} from './unity/practiceProfile.js';
 import {migrateMissionRun} from './contracts/missionRun.js';
 import {synchronizeLifecycle} from './unity/missionLifecycle.js';
 
@@ -19,10 +20,10 @@ function report(message){
 export function getFlightSession(storage){
  if(current)return current;
  try{
-  const durable=storage===undefined?globalThis.localStorage:storage;
+  const durable=storage===undefined?profileStorage():storage;
   const raw=durable?.getItem(KEY);
   // Older builds kept both copies. Prefer the durable checkpoint after a restart.
-  const saved=raw??(storage===undefined?globalThis.sessionStorage?.getItem(KEY):null);
+  const saved=raw??(storage===undefined&&!usingPracticeProfile()?globalThis.sessionStorage?.getItem(KEY):null);
   if(saved)current=migrateMissionRun(JSON.parse(saved),worldData);
  }catch{
   report('The saved flight could not be read. Preserve the profile to recover the checkpoint.');
@@ -35,7 +36,7 @@ export function setFlightSession(session,storage){
   if(session&&(supersededObjects.has(session)||session.runId&&supersededRuns.has(session.runId)))return false;
   synchronizeLifecycle(session);
   if(session)migrateMissionRun(session,worldData);
-  const durable=storage===undefined?globalThis.localStorage:storage;
+  const durable=storage===undefined?profileStorage():storage;
   if(!durable)throw Error('Storage unavailable');
   if(session){
    const previous=durable.getItem(KEY);
@@ -47,7 +48,7 @@ export function setFlightSession(session,storage){
    durable.removeItem(KEY);
   }
   // Clear the obsolete session copy once a durable write has succeeded.
-  if(storage===undefined)try{globalThis.sessionStorage?.removeItem(KEY);}catch{}
+  if(storage===undefined&&!usingPracticeProfile())try{globalThis.sessionStorage?.removeItem(KEY);}catch{}
   if(current&&current!==session)supersededObjects.add(current);
   if(current?.runId&&current.runId!==session?.runId)supersededRuns.add(current.runId);
   current=session;

@@ -1,8 +1,9 @@
 import {copy,validateBlueprint} from './blueprint.js';
+import {profileStorage} from '../unity/practiceProfile.js';
 export const LIBRARY_KEY='orbital_blueprints_v1',DRAFT_KEY='orbital_workshop_draft_v1';
 export function createLibrary(data,storage,missionId){
  const draftKey=missionId?DRAFT_KEY+':'+missionId:DRAFT_KEY;
- if(storage===undefined)try{storage=globalThis.localStorage;}catch{}
+ if(storage===undefined)try{storage=profileStorage();}catch{}
  if(!storage)storage={getItem(){throw Error('Browser storage is unavailable. Export the working draft for a portable backup.');},setItem(){throw Error('Browser storage is unavailable.');}};
  function read(){const raw=storage.getItem(LIBRARY_KEY);if(!raw)return [];const list=JSON.parse(raw);if(!Array.isArray(list)||list.length>100)throw Error('Invalid satellite library');return list.map(b=>validateBlueprint(b,data));}
  function write(list){storage.setItem(LIBRARY_KEY,JSON.stringify(list));}

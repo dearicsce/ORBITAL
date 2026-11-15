@@ -30,7 +30,7 @@ export function checkLaunchGate(design, data, allowed=null,completed=null) {
   if (locationIssue) checks.push({id:'mission-orbit',ok:false,message:locationIssue});
   if(design.flightWorkflow&&!mission?.transfer&&!design.flightPlan)checks.push({id:'flight-plan',ok:false,message:'Confirm the flight plan before launch.'});
   if(design.rocketId&&!design.rocketBlueprint)checks.push({id:'launcher-blueprint',ok:false,message:'Select an available rocket blueprint.'});
-  if(mission?.transfer)for(const [index,message] of planChecks(design.flightPlan,design,mission,data,evalResult,completed).entries())checks.push({id:'transfer-'+index,ok:false,message});
+  if(mission?.transfer)for(const [index,issue] of planChecks(design.flightPlan,design,mission,data,evalResult,completed,{structured:true}).entries())checks.push({id:'transfer-'+index,ok:false,...issue});
   const departureDv=mission?.transfer&&design.flightPlan&&!locationIssue?transferTrajectory(mission,design,design.flightPlan).departureDv:0;
   if(design.rocketBlueprint)for(const [index,message] of rocketEngineering(design.rocketBlueprint,evalResult.launchMass,{completed,requirement:requiredLaunchDv(orbit?.id,orbit?.launcherClass)+departureDv}).issues.entries())checks.push({id:'rocket-'+index,ok:false,message});
 
@@ -186,7 +186,7 @@ export function checkLaunchGate(design, data, allowed=null,completed=null) {
   if(design.assembly)for(const [i,issue]of placementIssues(design.assembly,data,allowed).entries())checks.push({id:"placement-"+i,ok:false,message:issue.message});
   const service=mission?.transfer&&design.flightPlan?serviceMass(design.flightPlan,evalResult.spacecraftMass):null;
   const fairing=service?.wetKg&&launcher?{...launcher,fairingHeightM:launcher.fairingHeightM-Math.min(2,.35+service.wetKg/250)}:launcher;
-  if(design.assembly)for(const issue of geometryIssues(design.assembly,data,fairing).filter(i=>i.instanceId==='bus'))checks.push({id:'fairing',ok:false,message:issue.message});
+  if(design.assembly)for(const issue of geometryIssues(design.assembly,data,fairing).filter(i=>i.instanceId==='bus'))checks.push({id:'fairing',ok:false,message:issue.message,limitLabel:issue.measurement?issue.measurement.limit+' '+issue.measurement.unit+' fairing limit':''});
   return checks;
 }
 

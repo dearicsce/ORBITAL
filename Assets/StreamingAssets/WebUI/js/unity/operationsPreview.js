@@ -2,10 +2,10 @@ import {operationEnvironment,MINUTES_PER_TICK} from '../engine/operations.js';
 import {escapeHtml as escape} from '../ui/html.js';
 import {targetAccess,validateBundleIdentity} from './sourceData.js';
 
-export function opportunityTimeline(state){
+export function opportunityTimeline(state, intervals=8){
  const entry=validateBundleIdentity(state.evidence?.bundle),scenario=state.evidence?.scenario;
  const rows=[];
- for(let offset=0;offset<8&&state.tick+offset<state.totalTicks;offset++){
+ for(let offset=0;offset<intervals&&state.tick+offset<state.totalTicks;offset++){
   const sample={...state,tick:state.tick+offset,contactOutage:Math.max(0,(state.contactOutage||0)-offset)};
   const env=operationEnvironment(sample),seconds=sample.tick*MINUTES_PER_TICK*60;
   const target=scenario?.windows?.find(([,a,b])=>sample.tick>=a&&sample.tick<b)?.[0]||'Outside scheduled targets';

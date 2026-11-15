@@ -62,9 +62,13 @@ export function createLaunchVehicle(id, { upperOnly = false, custom = null } = {
   const isHeavy = custom?.core?.id === 'core-frontier' || id === 'roc' || (!isSuperHeavy && custom?.booster?.count >= 2);
   const isLight = coreDiameter <= 1.8 && !isHeavy && !isSuperHeavy;
 
-  const r = (coreDiameter * (isSuperHeavy ? 0.38 : 0.29));
+  const scale = isSuperHeavy ? 0.38 : 0.29;
+  const nominalR = coreDiameter * scale;
+  const fairingRadius = custom?.fairing?.radiusM ? custom.fairing.radiusM * .5 : nominalR;
+  const r = Math.max(nominalR, fairingRadius * 1.055);
+  root.userData.coreRadius = r;
   const upperDiameter = custom?.upper?.diameterM || coreDiameter;
-  const upperR = upperDiameter * (isSuperHeavy ? 0.38 : 0.29);
+  const upperR = Math.min(r, Math.max(upperDiameter * scale, fairingRadius * .90));
 
   const lower = new THREE.Group();
   lower.name = 'stage_lower';
@@ -90,6 +94,7 @@ export function createLaunchVehicle(id, { upperOnly = false, custom = null } = {
 
   // 1. Core / First Stage Tank
   cylinder(lower, 'first_stage_tank', r, r, lowerH, lowerH / 2, matWhiteAero);
+  cylinder(lower, 'engine_skirt', r, r * .985, .56, .28, matDarkCarbon);
 
   // Decorative aerodynamic raceway along the core
   const raceway = new THREE.Mesh(
@@ -102,7 +107,7 @@ export function createLaunchVehicle(id, { upperOnly = false, custom = null } = {
 
   // Interstage section with dark carbon finish and structural stiffeners
   const interstageH = isSuperHeavy ? 1.4 : isLight ? 0.75 : 1.0;
-  cylinder(lower, 'interstage', r * 1.01, r * 1.01, interstageH, lowerH - interstageH / 2, matDarkCarbon);
+  cylinder(lower, 'interstage', r, r, interstageH, lowerH - interstageH / 2, matDarkCarbon);
 
   // Vertical stiffener ribs around interstage
   const ribCount = isLight ? 8 : 16;
@@ -169,6 +174,7 @@ export function createLaunchVehicle(id, { upperOnly = false, custom = null } = {
 
   // 3. Upper Stage
   cylinder(upper, 'upper_stage_tank', upperR, upperR, upperH, upperH / 2 + 0.1, matWhiteAero);
+  if (!upperOnly) cylinder(upper, 'interstage_transition', upperR, r, .53, .015, matDarkCarbon);
 
   // Upper Stage De Laval Vacuum Engine (larger expansion ratio)
   const upperEngine = createDeLavalNozzle(upperR * 0.14, upperR * 0.54, 0.85, matNozzleBell);
@@ -186,15 +192,16 @@ export function createLaunchVehicle(id, { upperOnly = false, custom = null } = {
     root.add(lower);
 
     // Aerodynamic Fairing Halves
-    const fairingRadius = custom?.fairing?.radiusM ? custom.fairing.radiusM * 0.47 : r * 1.25;
-    const fairingBaseY = lowerH + upperH + 0.45;
+    const fairingHeight = custom?.fairing?.heightM ? Math.max(2.4, custom.fairing.heightM*.62) : isLight ? 3.4 : 4.25;
+    const fairingBaseY = upper.position.y + upperH - .04;
     const fairingPoints = [
-      new THREE.Vector2(fairingRadius * 1.05, 0),
-      new THREE.Vector2(fairingRadius * 1.15, 0.25),
-      new THREE.Vector2(fairingRadius * 1.15, 2.2),
-      new THREE.Vector2(fairingRadius * 0.95, 3.1),
-      new THREE.Vector2(fairingRadius * 0.52, 3.8),
-      new THREE.Vector2(0, 4.25)
+      new THREE.Vector2(upperR, 0),
+      new THREE.Vector2(fairingRadius, fairingHeight * .12),
+      new THREE.Vector2(fairingRadius, fairingHeight * .48),
+      new THREE.Vector2(fairingRadius * .94, fairingHeight * .67),
+      new THREE.Vector2(fairingRadius * .72, fairingHeight * .82),
+      new THREE.Vector2(fairingRadius * .40, fairingHeight * .94),
+      new THREE.Vector2(0, fairingHeight)
     ];
 
     for (let i = 0; i < 2; i++) {
@@ -245,10 +252,11 @@ export function createLaunchVehicle(id, { upperOnly = false, custom = null } = {
       // Attachment struts linking booster to core
       for (const strutY of [1.5, boosterH * 0.85]) {
         const strut = new THREE.Mesh(
-          new THREE.BoxGeometry(r * 0.35, 0.08, 0.12),
+          new THREE.BoxGeometry(r * .65, 0.12, 0.16),
           matTitanium
         );
-        strut.position.set(-Math.cos(angle) * r * 0.28, strutY, -Math.sin(angle) * r * 0.28);
+        strut.rotation.y = -angle;
+        strut.position.set(-Math.cos(angle) * r * .45, strutY, -Math.sin(angle) * r * .45);
         booster.add(strut);
       }
 

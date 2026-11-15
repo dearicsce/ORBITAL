@@ -43,3 +43,143 @@ progress { width:100%;accent-color:#65dcea; }.webgl-note { padding:100px 24px; }
 [hidden] { display:none!important; }
 .loading-screen { width:min(480px,90vw);padding:32px; }
 
+/* Debrief 3-Field Grid and Causal Replay */
+.debrief-fields-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: 0; }
+.debrief-field-card { background: var(--orbital-surface, #121d29); border: 1px solid var(--orbital-border, #32485a); border-radius: 7px; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+.debrief-field-header { border-bottom: 1px solid var(--orbital-border, #32485a); padding-bottom: 8px; }
+.debrief-field-title { font-size: 14px; font-weight: 600; color: var(--orbital-text, #e8f0f4); margin: 0; }
+.debrief-field-verdict { font-size: 13px; font-weight: 600; padding: 6px 10px; border-radius: 4px; }
+.debrief-field-verdict.pass { background: rgba(134, 207, 170, 0.15); color: var(--orbital-success, #86cfaa); border: 1px solid rgba(134, 207, 170, 0.3); }
+.debrief-field-verdict.fail { background: rgba(237, 141, 137, 0.15); color: var(--orbital-danger, #ed8d89); border: 1px solid rgba(237, 141, 137, 0.3); }
+.debrief-field-verdict.warn { background: rgba(228, 185, 107, 0.15); color: var(--orbital-warning, #e4b96b); border: 1px solid rgba(228, 185, 107, 0.3); }
+.debrief-metric-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; font-size: 13px; }
+.debrief-metric-list li { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .8fr); gap: 4px 12px; color: var(--orbital-text-muted, #a7b7c4); }
+.debrief-metric-list li > :last-child { text-align: end; }
+.debrief-metric-list strong { color: var(--orbital-text, #e8f0f4); font-weight: 500; }
+.debrief-causal-card { background: var(--orbital-surface-raised, #1a2937); border: 1px solid var(--orbital-border-strong, #526d81); border-left: 4px solid var(--orbital-warning, #e4b96b); border-radius: 7px; padding: 18px; margin: 16px 0; display: flex; flex-direction: column; gap: 12px; }
+.debrief-causal-card.pass { border-left-color: var(--orbital-success, #86cfaa); }
+.debrief-causal-card.fail { border-left-color: var(--orbital-danger, #ed8d89); }
+.causal-eyebrow { font-size: 11px; font-weight: 700; color: var(--orbital-accent, #9adbd8); letter-spacing: 0.05em; text-transform: uppercase; }
+.causal-title { font-size: 16px; font-weight: 600; color: var(--orbital-text, #e8f0f4); margin: 4px 0; }
+.causal-consequence { font-size: 13px; color: var(--orbital-text-muted, #a7b7c4); margin: 0; }
+.causal-consequence strong { color: var(--orbital-text, #e8f0f4); }
+.causal-action-box { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; background: var(--orbital-surface, #121d29); border: 1px solid var(--orbital-border, #32485a); border-radius: 5px; padding: 12px 16px; margin-top: 4px; }
+.causal-action-text { font-size: 13px; color: var(--orbital-text, #e8f0f4); margin: 0; flex: 1; }
+@media (max-width: 900px) {
+  .debrief-fields-grid { grid-template-columns: 1fr; }
+  .causal-action-box { flex-direction: column; align-items: stretch; }
+}
+
+#app > .mission-shell[data-screen=report] { display: block; box-sizing: border-box; min-width: 0; }
+#app .mission-shell[data-screen=report] > .mission-header,
+#app .mission-shell[data-screen=report] > .mission-panel { box-sizing: border-box; width: 100%; min-width: 0; }
+#app .mission-shell[data-screen=report] > :is(.mission-header, .mission-panel) { overflow-wrap: anywhere; }
+#app .mission-shell[data-screen=report] :is(.header-branding, .screen-breadcrumbs, .panel-actions, .practice-notice-banner) {
+  min-width: 0; flex-wrap: wrap; gap: 8px 12px;
+}
+#app .mission-panel > * { min-width: 0; }
+#app .mission-panel .judges-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); }
+#app [data-screen=report] .report-summary-hero { flex-wrap: wrap; }
+#app [data-screen=report] .report-summary-hero > :first-child { flex-basis: min(100%, 340px); }
+#app [data-screen=report] .report-hero-actions { min-width: 0; max-width: 100%; flex-wrap: wrap; }
+#app [data-screen=report] .report-hero-actions .btn { white-space: normal; }
+#app [data-screen=report] .flight-resource-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 116px), 1fr)); }
+#app [data-screen=report] .flight-decisions .fault-recovery { display: block; }
+#app [data-screen=report] .flight-decisions .fault-recovery li { display: block; padding-inline-start: 12px; }
+#app [data-screen=report] :is(.judge-card, .judge-header-info, .campaign-table) { min-width: 0; }
+#app [data-screen=report] .campaign-table { max-width: 100%; }
+@media (min-width: 1101px) {
+  #app [data-screen=report] .flight-result-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+}
+
+#app .planning-screen .plan-layout { grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr); align-items: start; }
+#app .planning-screen :is(#plan-options, #plan-telemetry, .plan-readiness) { min-width: 0; overflow-wrap: anywhere; }
+#app .planning-screen .plan-readiness {
+  padding: 15px 18px; background: var(--orbital-surface, #121d29);
+  border: 1px solid var(--orbital-border, #32485a); border-radius: 7px;
+}
+#app .planning-screen .plan-readiness.is-blocked { border-inline-start: 4px solid #ff9996; }
+.plan-readiness h3 { margin: 0 0 10px; font-size: 1rem; }
+.plan-readiness ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+.plan-issue { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; }
+.plan-issue > div { flex: 1 1 380px; min-width: 0; }
+.plan-issue p { margin: 2px 0 0; }
+#app .planning-screen :is(.plan-readiness.is-blocked h3, .plan-issue, #plan-telemetry .plan-metric-failed) { color: #ffaaa7; }
+#app .planning-screen .plan-issue .btn { color: #ffaaa7; border-color: #ad6464; white-space: normal; }
+#app .planning-screen #plan-telemetry dl { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+#plan-telemetry .plan-metric-failed { font-weight: 650; }
+#plan-telemetry .plan-metric-limit { display: block; font-size: .82em; margin-top: 2px; }
+@media (max-width: 780px) {
+  #app .planning-screen .plan-layout { grid-template-columns: minmax(0, 1fr); }
+  #app .planning-screen .screen-top { flex-wrap: wrap; }
+}
+
+/* Practice Showcase Modal */
+.stage-practice-modal-backdrop { position: fixed; inset: 0; background: rgba(5, 12, 19, 0.82); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px; animation: screen-in 0.2s ease-out; }
+.stage-practice-modal { background: var(--orbital-surface, #121d29); border: 1px solid var(--orbital-border-strong, #526d81); border-radius: 8px; width: min(720px, 95vw); max-height: 90vh; overflow-y: auto; padding: 24px; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6); }
+.practice-modal-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid var(--orbital-border, #32485a); padding-bottom: 12px; }
+.practice-modal-header h2 { margin: 0; font-size: 1.25rem; color: #9adbd8; }
+.practice-modal-header p { margin: 4px 0 0; font-size: 0.85rem; color: #a7b7c4; }
+.practice-modal-close { background: none; border: none; font-size: 1.5rem; color: #a7b7c4; cursor: pointer; padding: 0 8px; line-height: 1; }
+.practice-modal-close:hover { color: #fff; }
+.practice-mission-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 8px 0; }
+.practice-mission-card { background: var(--orbital-surface-raised, #1a2937); border: 1px solid var(--orbital-border, #32485a); border-radius: 6px; padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+.practice-card-badge { font-size: 0.7rem; font-weight: 700; color: #9adbd8; letter-spacing: 0.05em; text-transform: uppercase; }
+.practice-card-title { font-size: 0.95rem; font-weight: 600; color: #e8f0f4; margin: 0; }
+.practice-card-desc { font-size: 0.8rem; color: #a7b7c4; line-height: 1.4; margin: 0; flex: 1; }
+.practice-card-btn { margin-top: auto; }
+@media (max-width: 760px) {
+  .practice-mission-grid { grid-template-columns: 1fr; }
+}
+
+/* Spacecraft Adaptation Panel */
+.ws-adaptation-panel { background: rgba(26, 41, 55, 0.9); border: 1px solid #526d81; border-left: 4px solid #7fe0f8; border-radius: 6px; padding: 16px; margin: 12px 0; display: flex; flex-direction: column; gap: 10px; }
+.adaptation-header { display: flex; justify-content: space-between; align-items: baseline; }
+.adaptation-title { font-size: 0.95rem; font-weight: 700; color: #7fe0f8; margin: 0; }
+.adaptation-badge { font-size: 0.72rem; padding: 2px 6px; background: rgba(127, 224, 248, 0.15); color: #7fe0f8; border-radius: 3px; font-weight: 600; }
+.adaptation-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin: 4px 0; }
+.adaptation-table th, .adaptation-table td { padding: 4px 8px; text-align: left; }
+.adaptation-table th { color: #a7b7c4; font-weight: 600; border-bottom: 1px solid #32485a; }
+.adaptation-table td { color: #e8f0f4; border-bottom: 1px solid rgba(50, 72, 90, 0.5); }
+.adaptation-table td.delta-warn { color: #f1bd74; font-weight: 600; }
+.adaptation-table td.delta-good { color: #86cfaa; }
+.adaptation-reason { font-size: 0.82rem; color: #a7b7c4; line-height: 1.4; margin: 0; }
+.adaptation-launcher-alert { background: rgba(237, 141, 137, 0.12); border: 1px solid rgba(237, 141, 137, 0.35); border-radius: 4px; padding: 8px 12px; font-size: 0.82rem; color: #ed8d89; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+
+
+
+.spacecraft-workshop-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .5rem;
+  padding: .15rem 1rem .4rem;
+}
+.spacecraft-test, #ws-rules fieldset {
+  border: 1px solid #3b5366;
+  margin: .65rem 0;
+  padding: .55rem .7rem;
+}
+.spacecraft-test h3 { margin: 0; font-size: 1rem; }
+.spacecraft-test { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .2rem .65rem; align-items: center; }
+.spacecraft-test > p { grid-column: 1 / -1; }
+.spacecraft-test > [data-test] { grid-column: 2; grid-row: 1; }
+.spacecraft-test > [data-test-route] { justify-self: start; }
+.spacecraft-test h3 span { margin-left: .5rem; font-size: .85rem; color: #f1dab0; }
+.spacecraft-test p { margin: .3rem 0; }
+#ws-rules label { display: inline-block; margin: .2rem .55rem .2rem 0; }
+.pointing-status { font-size: .82rem; line-height: 1.35; }
+
+#app .report-detail { padding: 12px 16px; border: 1px solid var(--orbital-border-subtle); border-radius: 6px; }
+#app .report-detail > summary { cursor: pointer; font-weight: 600; }
+#app .report-detail[open] > summary { margin-bottom: 12px; }
+#app .report-hero-actions .panel-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; border: 0; }
+
+.report-mission-summary { display: flex; gap: 16px; align-items: center; }
+.report-mission-art { position: relative; flex: 0 0 108px; height: 88px; overflow: hidden; border-radius: 5px; background: #0b1520; }
+.report-mission-art > :is(svg,img), .report-mission-art .mission-photo-frame { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.report-mission-art :is(.mission-art-coordinate,.transfer-art-tag) { display: none; }
+.kepler-curve-art { width: 100%; height: 100%; }
+@media (max-width: 800px) {
+  .report-mission-art { flex-basis: 80px; height: 64px; }
+}

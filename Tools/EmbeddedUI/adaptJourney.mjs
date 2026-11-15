@@ -1,4 +1,10 @@
 export function adaptJourney(edit){
+ edit('js/ui/simulation.js',
+   ['export function clearSimulationResults(){session=null;clearFlightSession();}', `export function clearSimulationResults(){
+ if(clearFlightSession()===false)return false;
+ session=null;
+ return true;
+}`]);
  edit('js/ui/router.js',
   ["import { renderMenu,cleanupMenu }", "import { renderMenu }"],
   ["cleanup?.();cleanup=null;cleanupMenu();clearLines();", "cleanup?.();cleanup=null;clearLines();"],
@@ -8,11 +14,34 @@ export function adaptJourney(edit){
   [" if(name==='report'&&(!getSimulationResults()||getSimulationResults().design.missionId!==design.missionId))name=mission?'design':'menu';",
    " if(name==='report'&&getSimulationResults()?.phase!=='report')name=mission?'design':'menu';\n const savedReport=name==='report';"],
   [" if(!['menu','missionSelect','evidence','workshop','academy','rocketWorkshop'].includes(name)&&!mission)", " if(!savedReport&&!['menu','missionSelect','evidence','workshop','academy','rocketWorkshop'].includes(name)&&!mission)"],
-  [" if(mission&&mission.id!=='tutorial'){"," if(!savedReport&&mission&&mission.id!=='tutorial'){"],
-  [" if(mission&&!['menu'"," if(!savedReport&&mission&&!['menu'"],
+  [" if(mission&&mission.id!=='tutorial'){"," if(!savedReport&&!state.practiceMode&&mission&&mission.id!=='tutorial'){"],
+  [" if(mission&&!['menu'"," if(!savedReport&&!state.practiceMode&&mission&&!['menu'"],
   [" saveProgress();const nextCleanup=", " if(saveProgress())rememberCampaignDraft(name,params,getState().currentDesign);\n const nextCleanup="],
   ["if(typeof nextCleanup==='function')cleanup=nextCleanup;", "const journeyCleanup=bindJourney(appContainer,worldData,name,params,showScreen,getSimulationResults());cleanup=()=>{journeyCleanup();if(typeof nextCleanup==='function')nextCleanup();};"]);
+ // Keep practice purchases, named designs, plans and campaign checkpoints in the practice profile.
+ for (const [file, anchor, count] of [
+   ['state.js', '// Game state', 2], ['academy.js', 'export function readAcademy', 2],
+   ['workshop/library.js', 'export const LIBRARY_KEY', 1], ['workshop/economy.js', 'export const ECONOMY_KEY', 2],
+   ['rocket/library.js', 'export function rocketLibrary', 1], ['transfer/library.js', 'export function planLibrary', 1],
+ ]) {
+   const directory = file.includes('/') ? '..' : '.';
+   edit('js/' + file, [anchor, "import {profileStorage} from '" + directory + "/unity/practiceProfile.js';\n" + anchor],
+     ['globalThis.localStorage', 'profileStorage()', count]);
+ }
  edit('js/state.js',
+  ['let state = getDefaultState();', `let state = getDefaultState();
+export function setPracticeMode(active, origin = null) {
+  if (active) {
+    state.practiceMode = true;
+    state.practiceOrigin = origin || state.currentMissionId || 'm1';
+  } else {
+    delete state.practiceMode;
+    delete state.practiceOrigin;
+  }
+}
+export function isPracticeMode() {
+  return Boolean(state.practiceMode);
+}`],
   ['    state.currentDesign = candidate;', "    state.currentDesign = candidate;\n    if(typeof window!=='undefined')window.dispatchEvent(new Event('orbital-design-change'));"]);
  edit('js/ui/review.js',
   ["if(!ok||!playableLaunchChecks(design,data).every(c=>c.ok))return;", "if(JSON.stringify(resolveFlightDesign(getState().currentDesign))!==JSON.stringify(design)){showScreen('review');return;}if(!ok||!playableLaunchChecks(design,data).every(c=>c.ok))return;"]);

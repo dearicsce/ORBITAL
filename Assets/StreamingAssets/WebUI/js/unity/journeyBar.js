@@ -23,7 +23,7 @@ export function validationDestination(id) {
 }
 
 export function bindJourney(container, data, screen, params, showScreen, flight) {
-  if(screen==='report')return ()=>{};
+  if (screen === 'report' || screen === 'rocketSelect') return () => {};
   const design = getState().currentDesign;
   if (!design.flightWorkflow || design.missionId === 'tutorial' || (!planning.includes(screen) && !['rocketWorkshop', 'simulation', 'report'].includes(screen))) return () => {};
   if (['workshop', 'rocketWorkshop'].includes(screen) && !params.mission) return () => {};

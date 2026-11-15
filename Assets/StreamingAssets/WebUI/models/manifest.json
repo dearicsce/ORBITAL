@@ -1446,5 +1446,17 @@
     "defer": true,
     "credit": "Original ORBITAL procedural educational vehicle visual (js/three/launchVehicle.js)",
     "procedural": "complete_launch_vehicle"
+  },
+  "thermal_radiator": {
+    "file": "models/thermal/thermal_radiator.glb",
+    "credit": "ORBITAL original Blender model"
+  },
+  "thermal_blanket": {
+    "file": "models/thermal/thermal_blanket.glb",
+    "credit": "ORBITAL original Blender model"
+  },
+  "thermal_heater": {
+    "file": "models/thermal/thermal_heater.glb",
+    "credit": "ORBITAL original Blender model"
   }
 }

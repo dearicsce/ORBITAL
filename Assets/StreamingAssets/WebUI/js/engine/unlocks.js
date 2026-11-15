@@ -1,5 +1,7 @@
 import {readEconomy} from '../workshop/economy.js';
+import {practicePrerequisites} from '../unity/practiceProfile.js';
 export function getUnlocked(data, completedMissions = []) {
+  completedMissions = [...completedMissions, ...practicePrerequisites()];
   const parts = [];
   const instruments = [];
   const launchers = [];

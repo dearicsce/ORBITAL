@@ -11,6 +11,8 @@
  * 4. Retired drafts or active runs safely redirect to eligible active missions with a clear notice.
  */
 
+import {isCoreMission} from '../campaignAtlas.js';
+
 export const RETIRED_MISSION_IDS = new Set(['proxima-sail']);
 export const RETIRED_LEVEL_IDS = new Set(['stars', 'galaxy']);
 export const RETIRED_CHAPTER_IDS = new Set(['Nearby stars', 'Milky Way overview']);
@@ -127,15 +129,14 @@ export function getNextRecommendedMission(state, data) {
   const completed = state?.completedMissions || {};
 
   // 1. First unlocked, uncompleted core mission
-  const nextCore = active.find(m => m.core && !completed[m.id] && isMissionUnlocked(m, completed));
+  const nextCore = active.find(m => isCoreMission(m) && !completed[m.id] && isMissionUnlocked(m, completed));
   if (nextCore) return nextCore;
 
   // 2. First unlocked, uncompleted mission in stage order
   const nextAny = active.find(m => !completed[m.id] && isMissionUnlocked(m, completed));
   if (nextAny) return nextAny;
 
-  // 3. If all completed, return first mission for replay or the terminal stage
-  return active.find(m => !completed[m.id]) || active[0];
+  return null;
 }
 
 /**

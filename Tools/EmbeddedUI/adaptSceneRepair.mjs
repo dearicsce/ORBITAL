@@ -1,4 +1,18 @@
 export function adaptSceneRepair(edit) {
+  edit('js/three/localTexture.js',
+    ['const texture=new THREE.Texture();', "const texture=new THREE.Texture();\n  if (typeof document === 'undefined') return texture;"]);
+  edit('js/three/sceneKit.js',
+    ['const pmrem=new THREE.PMREMGenerator(renderer),room=new RoomEnvironment();const environment=pmrem.fromScene(room,.04);scene.environment=space?null:environment.texture;room.dispose();pmrem.dispose();',
+    `let environment = null;
+  if (!space) {
+    const pmrem = new THREE.PMREMGenerator(renderer), room = new RoomEnvironment();
+    environment = pmrem.fromScene(room, .04);
+    scene.environment = environment.texture;
+    room.dispose();
+    pmrem.dispose();
+  }`],
+    ['environment.dispose();renderer.domElement', 'environment?.dispose();renderer.domElement']);
+
   edit('js/three/orbitOps.js',
     ["import {OPERATION_WINDOW_SEC}", "import {flightCameraInput} from './flightCameraInput.js';\nimport {OPERATION_WINDOW_SEC}"],
     [" const frame=createFlightFrame(kit.scene,kit.camera,craft,globe,orbitId,orbit);", " const input=flightCameraInput(kit.renderer?.domElement);\n const frame=createFlightFrame(kit.scene,kit.camera,craft,globe,orbitId,orbit,input);\n const hardwareFill=new THREE.DirectionalLight(0xb2cadc,.65);hardwareFill.target=craft;kit.scene.add(hardwareFill);"],

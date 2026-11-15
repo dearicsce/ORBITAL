@@ -1,0 +1,35 @@
+name: Publish ORBITAL
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: orbital-pages
+  cancel-in-progress: true
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - name: Download browser assets
+        run: git lfs pull --include='Assets/StreamingAssets/WebUI/**' --exclude=''
+      - name: Prepare browser game
+        run: |
+          cp -R Assets/StreamingAssets/WebUI _site
+          touch _site/.nojekyll
+          cp ReferenceSource/js/three/earth.js _site/js/three/earth.js
+          sed -i "s|from '../unity/nativeSceneKit.js'|from './sceneKit.js'|" _site/js/three/workshopView.js
+          find _site -name '*.meta' -delete
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - uses: actions/deploy-pages@v4
+

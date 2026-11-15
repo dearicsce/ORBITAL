@@ -2,6 +2,8 @@ import {createRelayTraffic,queuedRelayGb,stepRelay} from '../unity/relayTraffic.
 import {floodwatchSampling} from '../unity/floodwatch.js';
 import {createEvidence,evidenceSummary,scienceObjectives,scienceCompletion,note} from '../unity/scienceEvidence.js';
 import {observeInterval,recordOperationsAcquisition,recordOperationsReceipt,discard} from '../unity/scienceOperations.js';
+import {createSystems,MODES} from '../unity/spacecraftSystems.js';
+import {SYSTEM_INCIDENTS,commandSystemFault,stepSpacecraftOperations,systemsSummary} from '../unity/systemsOperations.js';
 import {projectAssembly} from '../workshop/blueprint.js';
 // Fixed-step educational operations model. Time is simulated minutes; energy Wh;
 // data GB; power W. No browser, randomness, renderer or wall clock dependencies.
@@ -11,6 +13,7 @@ const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 export {OPERATION_TICKS};
 export const MINUTES_PER_TICK=OPERATION_STEP_SEC/60;
 export const INCIDENTS={
+  radio:SYSTEM_INCIDENTS.radio,
   contact:{name:'Ground station outage',description:'The next scheduled ground pass is unavailable. Protect the recorder or spend propellant to improve the link geometry.',choices:[{id:'buffer',label:'Store and wait',cost:'Lose 8 ticks of ground contact'},{id:'maneuver',label:'Adjust the orbit',cost:'Use 3 kg propellant; restore contact'}]},
   battery:{name:'Battery performance warning',description:'Cell temperatures are rising. Reduce loads for a short recovery, or accept a smaller usable energy reserve.',choices:[{id:'recover',label:'Thermal recovery',cost:'Safe mode for 5 ticks'},{id:'continue',label:'Continue observations',cost:'Usable battery capacity falls 20%'}]},
   thermal:{name:'Instrument overheating',description:'Continuous observations are warming the payload. A cooldown protects it; pushing through reduces measurement quality.',choices:[{id:'cool',label:'Cool the instrument',cost:'Safe mode for 5 ticks'},{id:'push',label:'Keep collecting',cost:'Science efficiency falls 20%'}]},
@@ -19,7 +22,7 @@ export const INCIDENTS={
   debris:{name:'Conjunction alert',description:'A predicted close approach requires a response. A small burn preserves the observing schedule; a conservative reorientation interrupts it.',choices:[{id:'burn',label:'Avoidance maneuver',cost:'Use 3 kg propellant'},{id:'hold',label:'Protect and reorient',cost:'Safe mode for 7 ticks'}]}
 };
 
-export function createOperations(design,data,evaluation,{science=true,relayTraffic=false}={}) {
+export function createOperations(design,data,evaluation,{science=true,relayTraffic=false,systems=design.missionId!=='tutorial'}={}) {
   design=projectAssembly(design,data);
   const mission=data.missions.find(m=>m.id===design.missionId);
   const instruments=(design.instrumentIds||[]).map(id=>data.instruments.find(p=>p.id===id)).filter(Boolean);
@@ -32,6 +35,7 @@ export function createOperations(design,data,evaluation,{science=true,relayTraff
   const relay=instruments.some(p=>p.kind==='relay'&&(mission.relevance?.[p.id]??mission.relevance?.[p.roleId]??0)>0);
   const elements=design.orbitElements||presetOrbit(design.orbitId);
   return {
+    ...(systems?{systems:createSystems(design,data)}:{}),
     ...(relayTraffic&&relay?{relayTraffic:createRelayTraffic()}:{}),
     evidence:createEvidence(mission.id,instruments,evaluation.batteryUsableWh,science,design.scienceBundleId),
     sampling:floodwatchSampling(mission.id,elements),linkedRelay:true,
@@ -42,7 +46,7 @@ export function createOperations(design,data,evaluation,{science=true,relayTraff
     fuelKg:Math.max(0,evaluation.fuelKg-(orbit?.insertionFuel||0)),temperature:24,efficiency:1,
     cooldown:0,contactOutage:0,pendingIncident:null,resolvedIncidents:[],log:[],history:[],
     profile:{coverage:45,delivered:1,contact:0.25,eclipse:0.25,...mission.profile,...(evaluation.orbitForecast?{contact:evaluation.orbitForecast.contactFraction,eclipse:1-evaluation.orbitForecast.sunlitFraction}:{})},
-    hardware:{modelVersion:2,panelW:evaluation.panelPower,baseW:Math.max(5,evaluation.averageLoad-instrumentPower-(radio?.power||0)),radioTransmitW:radio?.transmitPowerW??radio?.power??0,radioStandbyW:radio?.standbyPowerW??0,payloadW:instrumentPower,dataGbDay:Math.min(rawData,computer?.maxDataGbDay||0),downlinkGbDay:evaluation.downlinkPerDay,...((design.orbitElements||presetOrbit(design.orbitId))?{instantDownlinkGbDay:evaluation.instantDownlinkGbDay??(radio?.baseDownlinkGbDay||0)*(orbit?.distanceFactor??1)*24}:{}),relevant,relay,orbitFit:mission.orbitFit?.[design.orbitId]||0,radHard:Boolean(computer?.radTolerant)},
+    hardware:{directional:!relay&&instruments.some(p=>(mission.relevance?.[p.id]??mission.relevance?.[p.roleId]??0)>0&&p.kind!=='relay'&&!/magnetometer|particle|plasma|radiation/i.test(p.id)),modelVersion:2,panelW:evaluation.panelPower,baseW:Math.max(5,evaluation.averageLoad-instrumentPower-(radio?.power||0)),radioTransmitW:radio?.transmitPowerW??radio?.power??0,radioStandbyW:radio?.standbyPowerW??0,payloadW:instrumentPower,dataGbDay:Math.min(rawData,computer?.maxDataGbDay||0),downlinkGbDay:evaluation.downlinkPerDay,...((design.orbitElements||presetOrbit(design.orbitId))?{instantDownlinkGbDay:evaluation.instantDownlinkGbDay??(radio?.baseDownlinkGbDay||0)*(orbit?.distanceFactor??1)*24}:{}),relevant,relay,orbitFit:mission.orbitFit?.[design.orbitId]||0,radHard:Boolean(computer?.radTolerant)},
     difficulty:design.difficulty||'normal',sunlit:(design.orbitElements||presetOrbit(design.orbitId))?geometryAt(design.orbitElements||presetOrbit(design.orbitId),0).sunlit:true,contact:(design.orbitElements||presetOrbit(design.orbitId))?geometryAt(design.orbitElements||presetOrbit(design.orbitId),0,EARTH_STATIONS.filter(s=>!design.stationIds||design.stationIds.includes(s.id))).contact:false,generationW:evaluation.panelPower,loadW:evaluation.averageLoad
   };
 }
@@ -54,7 +58,7 @@ export function operationEnvironment(state) {
 }
 
 export function chooseMode(state,mode) {
-  if(!['auto','observe','downlink','safe'].includes(mode)||state.finished)return false;
+  if(!MODES.includes(mode)||state.finished||mode==='charge'&&!state.systems)return false;
   state.mode=mode;
   state.log.push({tick:state.tick,type:'command',text:'Command: '+mode});
   return true;
@@ -62,6 +66,8 @@ export function chooseMode(state,mode) {
 
 export function resolveIncident(state,choiceId) {
   const incident=state.pendingIncident;if(!incident)return false;
+  const systemResult=commandSystemFault(state,choiceId);
+  if(systemResult!==null)return systemResult;
   if(!INCIDENTS[incident.id]?.choices.some(c=>c.id===choiceId))return false;
   if(['maneuver','burn'].includes(choiceId)&&state.fuelKg<3)return false;
   if(['maneuver','burn'].includes(choiceId))state.fuelKg-=3;
@@ -83,6 +89,7 @@ export function resolveIncident(state,choiceId) {
 export function stepOperations(state) {
   if(state.paused||state.pendingIncident||state.finished)return state;
   const env=operationEnvironment(state),h=state.hardware,minutes=MINUTES_PER_TICK;
+  if(state.systems)return stepSpacecraftOperations(state,env,INCIDENTS);
   let mode=state.mode;
   if(mode==='auto') {
     if(state.batteryWh<state.batteryCapacityWh*0.22||state.temperature>64)mode='safe';
@@ -156,7 +163,7 @@ export function operationObjectives(state) {
 export function operationSummary(state) {
   const objectives=operationObjectives(state);
   const windowCompleted=state.tick>=state.totalTicks&&!state.pendingIncident;
-  return {...evidenceSummary(state.evidence),missionId:state.missionId,windowCompleted,finished:state.finished,passed:state.finished&&windowCompleted&&objectives.every(o=>o.passed),objectives,
+  return {...evidenceSummary(state.evidence),...systemsSummary(state.systems),missionId:state.missionId,windowCompleted,finished:state.finished,passed:state.finished&&windowCompleted&&objectives.every(o=>o.passed),objectives,
     scienceFactor:state.evidence?scienceCompletion(state.evidence):clamp(objectives[0].value/Math.max(1,state.profile.coverage),0,1),
     deliveredGb:state.deliveredGb,collectedGb:state.collectedGb,lostGb:state.lostGb,storageGb:state.storageGb,
     batteryWh:state.batteryWh,fuelKg:state.fuelKg,decisions:state.resolvedIncidents.length,

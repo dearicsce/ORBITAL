@@ -109,10 +109,10 @@ export function createLaunchSpace(kit,design,data,continuation={}) {
   const trackingTarget=craft.position.clone().add(offset(initialTarget,finalTarget));
   kit.camera.up.copy(initialUp).applyQuaternion(inverseEntry).lerp(new THREE.Vector3(0,1,0),cameraBlend).applyQuaternion(heading).normalize();
   kit.camera.lookAt(trackingTarget);
- },updateOperations(progress,_dt,now,{orbit=null,elapsedSec=progress*OPERATION_WINDOW_SEC,paused=false}={}){
+ },updateOperations(progress,_dt,now,{orbit=null,elapsedSec=progress*OPERATION_WINDOW_SEC,paused=false,attitude=null}={}){
   effects.update(now);assembly.animate();
   if(!frame){frameInput=flightCameraInput(kit.renderer?.domElement);frame=createFlightFrame(group,kit.camera,craft,moon||earth,design.orbitId,orbit||design.orbitElements,frameInput,kit.renderer?.domElement.parentElement);}
   if(lunar)earth.visible=false;
-  frame.sample(elapsedSec,orbit||design.orbitElements,paused);ring.position.copy(frame.origin);ring.visible=kit.renderer?.domElement.parentElement.dataset.orbitCamera!=='solar';
+  frame.sample(elapsedSec,orbit||design.orbitElements,paused,attitude);ring.position.copy(frame.origin);ring.visible=kit.renderer?.domElement.parentElement.dataset.orbitCamera!=='solar';
  },setCamera(mode,north){frame?.setCamera(mode,north);},focusTarget(id){frame?.focusTarget(id);},onTargetSelected(callback){frame?.onTargetSelected(callback);},flash:effects.flash,destroy(){dead=true;frame?.destroy();frameInput?.destroy();earth.userData.stopTexture?.();moon?.userData.stopTexture?.();assembly.destroy();if(!continuation.group){disposeObject(group);group.removeFromParent();}}};
 }

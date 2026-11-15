@@ -25,7 +25,7 @@ export function enrichCampaign(data) {
   const heavy=data.launchers.find(l=>l.id==='roc');if(heavy)heavy.unlock='after_m3';
   data.missions.push(...structuredClone(TRANSFER_MISSIONS));
   const extended=data.launchers.find(l=>l.id==='roc');if(extended)extended.name='ORBITAL Atlas-derived heavy preset';
-  const concept=data.launchers.find(l=>l.id==='albatross');if(concept)concept.name='Ares I · concept preset';
+
   data.campaignVersion=3;
   return adaptWorld(extendCatalogue(data));
 }
