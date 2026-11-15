@@ -5,6 +5,10 @@ An educational spacecraft design and mission game built with Unity.
 Design a spacecraft and launcher, fly campaign missions, manage resources,
 and compare the evidence returned by your mission.
 
+## Play in Chrome
+
+[Launch ORBITAL in your browser](https://dearicsce.github.io/ORBITAL/).
+
 ## Play the Windows demo
 
 [Download ORBITAL for Windows](https://github.com/dearicsce/ORBITAL/releases/tag/v1.0.0-demo)
